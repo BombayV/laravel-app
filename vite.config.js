@@ -6,7 +6,7 @@ import * as path from "path";
 export default defineConfig({
     resolve: {
       alias: {
-          'ziggy-js': path.resolve('vendor/tightenco/ziggy/dist/vue.es.js'),
+          'ziggy-js': path.resolve('vendor/tightenco/ziggy'),
       }
     },
     plugins: [
