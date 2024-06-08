@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
+import {Head, Link, usePage} from '@inertiajs/vue3';
 
 defineProps<{
     canLogin?: boolean;
@@ -14,6 +14,8 @@ function handleImageError() {
     document.getElementById('docs-card-content')?.classList.add('!flex-row');
     document.getElementById('background')?.classList.add('!hidden');
 }
+
+usePage<any>()
 </script>
 
 <template>
