@@ -1,13 +1,37 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
-import Dropdown from '@/Components/Dropdown.vue';
-import DropdownLink from '@/Components/DropdownLink.vue';
-import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
-
-const showingNavigationDropdown = ref(false);
+import {
+  Cloud,
+  UserSearch,
+  LogOut,
+  Settings,
+  User,
+  Box,
+  ShoppingCart,
+  BadgeDollarSign,
+  ClipboardPlus,
+  ReceiptText,
+  PackageCheck
+} from 'lucide-vue-next'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from '@/Components/ui/dropdown-menu'
+import {Button} from "@/Components/ui/button";
+import Toaster from "@/Components/ui/toast/Toaster.vue";
 </script>
 
 <template>
@@ -20,117 +44,85 @@ const showingNavigationDropdown = ref(false);
                         <div class="flex">
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
-                                <Link :href="route('dashboard')">
+                                <Link :href="route('dashboard')" class="flex items-center gap-x-6">
                                     <ApplicationLogo
                                         class="block h-9 w-auto fill-current text-gray-800"
                                     />
+                                  <h1 class="text-2xl font-semibold text-gray-800 leading-tight">Hueco UTE</h1>
                                 </Link>
                             </div>
-
-                            <!-- Navigation Links -->
-                            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Dashboard
-                                </NavLink>
-                            </div>
                         </div>
 
-                        <div class="hidden sm:flex sm:items-center sm:ms-6">
-                            <!-- Settings Dropdown -->
-                            <div class="ms-3 relative">
-                                <Dropdown align="right" width="48">
-                                    <template #trigger>
-                                        <span class="inline-flex rounded-md">
-                                            <button
-                                                type="button"
-                                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
-                                            >
-                                                {{ ($page.props.auth as any).user.name }}
-
-                                                <svg
-                                                    class="ms-2 -me-0.5 h-4 w-4"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 20 20"
-                                                    fill="currentColor"
-                                                >
-                                                    <path
-                                                        fill-rule="evenodd"
-                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                        clip-rule="evenodd"
-                                                    />
-                                                </svg>
-                                            </button>
-                                        </span>
-                                    </template>
-
-                                    <template #content>
-                                        <DropdownLink :href="route('profile.edit')"> Profile </DropdownLink>
-                                        <DropdownLink :href="route('logout')" method="post" as="button">
-                                            Log Out
-                                        </DropdownLink>
-                                    </template>
-                                </Dropdown>
-                            </div>
-                        </div>
-
-                        <!-- Hamburger -->
-                        <div class="-me-2 flex items-center sm:hidden">
-                            <button
-                                @click="showingNavigationDropdown = !showingNavigationDropdown"
-                                class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
-                            >
-                                <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                                    <path
-                                        :class="{
-                                            hidden: showingNavigationDropdown,
-                                            'inline-flex': !showingNavigationDropdown,
-                                        }"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M4 6h16M4 12h16M4 18h16"
-                                    />
-                                    <path
-                                        :class="{
-                                            hidden: !showingNavigationDropdown,
-                                            'inline-flex': showingNavigationDropdown,
-                                        }"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M6 18L18 6M6 6l12 12"
-                                    />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Responsive Navigation Menu -->
-                <div
-                    :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }"
-                    class="sm:hidden"
-                >
-                    <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                            Dashboard
-                        </ResponsiveNavLink>
-                    </div>
-
-                    <!-- Responsive Settings Options -->
-                    <div class="pt-4 pb-1 border-t border-gray-200">
-                        <div class="px-4">
-                            <div class="font-medium text-base text-gray-800">
+                        <div class="flex items-center">
+                          <DropdownMenu>
+                            <DropdownMenuTrigger as-child>
+                              <Button variant="outline">
                                 {{ ($page.props.auth as any).user.name }}
-                            </div>
-                            <div class="font-medium text-sm text-gray-500">{{ ($page.props.auth as any).user.email }}</div>
-                        </div>
-
-                        <div class="mt-3 space-y-1">
-                            <ResponsiveNavLink :href="route('profile.edit')"> Profile </ResponsiveNavLink>
-                            <ResponsiveNavLink :href="route('logout')" method="post" as="button">
-                                Log Out
-                            </ResponsiveNavLink>
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent class="w-56 mr-4 sm:mr-8 xl:mr-6 2xl:mr-0 mt-1.5">
+                              <DropdownMenuLabel>Mi Cuenta</DropdownMenuLabel>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuGroup>
+                                <DropdownMenuItem as="a" :href="route('clientes')" method="get">
+                                  <UserSearch class="mr-2 h-4 w-4" />
+                                  <span>Clientes</span>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem as="a" :href="route('productos')" method="get">
+                                  <ShoppingCart class="mr-2 h-4 w-4" />
+                                  <span>Productos</span>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem as="a" :href="route('inventario')" method="get">
+                                  <Box class="mr-2 h-4 w-4" />
+                                  <span>Inventario</span>
+                                </DropdownMenuItem>
+                              </DropdownMenuGroup>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuGroup>
+                                <DropdownMenuItem as="a" :href="route('pedidos')" method="get">
+                                  <PackageCheck class="mr-2 h-4 w-4" />
+                                  <span>Pedidos</span>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem as="a" :href="route('ventas')" method="get">
+                                  <BadgeDollarSign class="mr-2 h-4 w-4" />
+                                  <span>Ventas</span>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem as="a" :href="route('facturas')" method="get">
+                                  <ReceiptText class="mr-2 h-4 w-4" />
+                                  <span>Facturas</span>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem as="a" :href="route('reportes')" method="get">
+                                  <ClipboardPlus class="mr-2 h-4 w-4" />
+                                  <span>Reportes</span>
+                                </DropdownMenuItem>
+                              </DropdownMenuGroup>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuGroup>
+                                <DropdownMenuItem>
+                                  <User class="mr-2 h-4 w-4" />
+                                  <span>Perfil</span>
+                                  <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                  <Settings class="mr-2 h-4 w-4" />
+                                  <span>Ajustes</span>
+                                  <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+                                </DropdownMenuItem>
+                              </DropdownMenuGroup>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem disabled>
+                                <Cloud class="mr-2 h-4 w-4" />
+                                <span>API</span>
+                              </DropdownMenuItem>
+                              <DropdownMenuSeparator />
+                              <Link :href="route('logout')" method="post">
+                                <DropdownMenuItem as="a">
+                                  <LogOut class="mr-2 h-4 w-4" />
+                                  <span>Cerrar Sesión</span>
+                                </DropdownMenuItem>
+                              </Link>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                         </div>
                     </div>
                 </div>
@@ -149,4 +141,5 @@ const showingNavigationDropdown = ref(false);
             </main>
         </div>
     </div>
+    <Toaster :duration="5000" />
 </template>
