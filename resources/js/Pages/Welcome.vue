@@ -1,12 +1,22 @@
-<script setup lang="ts">
-import {Head, Link} from '@inertiajs/vue3';
+<script setup>
+import { Head, Link } from '@inertiajs/vue3';
 
-defineProps<{
-    canLogin?: boolean;
-    canRegister?: boolean;
-    laravelVersion: string;
-    phpVersion: string;
-}>();
+defineProps({
+    canLogin: {
+        type: Boolean,
+    },
+    canRegister: {
+        type: Boolean,
+    },
+    laravelVersion: {
+        type: String,
+        required: true,
+    },
+    phpVersion: {
+        type: String,
+        required: true,
+    },
+});
 
 function handleImageError() {
     document.getElementById('screenshot-container')?.classList.add('!hidden');
@@ -44,7 +54,7 @@ function handleImageError() {
                     </div>
                     <nav v-if="canLogin" class="-mx-3 flex flex-1 justify-end">
                         <Link
-                            v-if="($page.props.auth as any).user"
+                            v-if="$page.props.auth.user"
                             :href="route('dashboard')"
                             class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
                         >
