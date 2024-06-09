@@ -27,6 +27,7 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard/clientes', [ClientsController::class, 'create'])->name('clientes');
+    Route::post('/dashboard/clientes', [ClientsController::class, 'store'])->name('clientes.store');
 });
 
 Route::middleware('auth')->group(function () {

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('cli_ape', 30);
             $table->string('cli_tel', 10);
             $table->string('cli_ema', 50);
-            $table->string('cli_dir', 50);
+            $table->string('cli_dir', 100);
             $table->string('cli_sex', 1);
             $table->timestamps();
         });

@@ -24,12 +24,12 @@ class UpdateclienteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'cli_nom' => 'required|string',
-            'cli_ape' => 'required|string',
-            'cli_tel' => 'required|string',
-            'cli_ema' => 'required|email',
-            'cli_dir' => 'required|string',
-            'cli_sex' => 'required|string',
+            'nombre' => 'required|string',
+            'apellido' => 'required|string',
+            'telefono' => 'required|string',
+            'email' => 'required|email',
+            'direccion' => 'required|string',
+            'sexo' => 'required|string',
         ];
     }
     public function failedValidation(Validator $validator)

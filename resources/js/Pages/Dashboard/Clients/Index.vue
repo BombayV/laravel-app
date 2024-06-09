@@ -7,7 +7,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import {Head, useForm} from '@inertiajs/vue3';
 import { ColumnDef } from '@tanstack/vue-table';
 import { ArrowUpDown } from 'lucide-vue-next';
-import { h } from 'vue';
+import {h, ref, watch} from 'vue';
 import {
   Dialog,
   DialogContent,
@@ -20,10 +20,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-import {toast} from "@/components/ui/toast";
+import {useToast} from "@/components/ui/toast";
 
-defineProps<{
-	data: any;
+const props = defineProps<{
+	data?: any;
+  result?: any;
 }>();
 
 type CustomColumnDef =
@@ -32,6 +33,7 @@ type CustomColumnDef =
 			name: string;
 	  };
 
+const { toast } = useToast();
 const CLIENTS_COLUMNS: CustomColumnDef[] = [
 	{
 		id: 'select',
@@ -97,14 +99,15 @@ const CLIENTS_COLUMNS: CustomColumnDef[] = [
     id: 'actions',
     header: () => h('div', { class: 'text-right' }, ['Acciones']),
     cell: () => h('div', { class: 'text-right' }, [
-      h(Button, { variant: 'outline' }, ['Editar']),
-      h(Button, { variant: 'outline' }, ['Eliminar'])
+      // h(Button, { variant: 'outline' }, ['Editar']),
+      // h(Button, { variant: 'outline' }, ['Eliminar'])
     ]),
     enableSorting: false,
     enableHiding: false
   }
 ];
 
+const data = ref(props.data);
 const form = useForm({
   nombre: '',
   apellido: '',
@@ -117,11 +120,30 @@ const filters: string = 'cli_nom';
 
 const submit = () => {
   form.post(route('clientes.store'), {
-    onFinish: () => {
+    onSuccess: (none) => {
       console.log('Form submitted');
+      console.log(none);
+      form.reset();
+    },
+    onError: (errors) => {
+      console.log(errors);
+      toast({
+        title: 'Error al crear el cliente',
+        description: Object.values(errors)[0] || 'Por favor, revise los campos e intente de nuevo.',
+        duration: 5000,
+        variant: 'destructive'
+      });
     }
   });
 };
+
+watch(
+  () => props.result,
+  (result) => {
+    data.value.push(result);
+  }
+)
+
 </script>
 
 <template>

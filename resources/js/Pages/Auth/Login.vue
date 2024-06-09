@@ -23,24 +23,18 @@ const submit = () => {
 	form.post(route('login'), {
 		onFinish: () => {
 			form.reset('password');
-		}
+		},
+    onError: () => {
+      toast({
+        title: 'Uh oh! Algo salió mal.',
+        description: 'Por favor, revisa tus credenciales e intenta de nuevo.',
+        variant: 'destructive'
+      });
+    }
 	});
 };
 
 const { toast } = useToast();
-
-watch(
-	() => form.errors,
-	(value) => {
-		if (value) {
-			toast({
-				title: 'Uh oh! Algo salió mal.',
-				description: 'Por favor, revisa tus credenciales e intenta de nuevo.',
-				variant: 'destructive'
-			});
-		}
-	}
-);
 </script>
 
 <template>
