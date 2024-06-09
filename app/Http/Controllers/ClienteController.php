@@ -54,7 +54,6 @@ class ClienteController extends Controller
           DB::commit();
           return $this->sendResponse(new ClienteResource($data), 'Cliente creado');
         } catch (\Exception $e) {
-          DB::rollBack();
           $this->rollback($e);
           return $this->sendError('Error al crear el cliente', [], 500);
         }
