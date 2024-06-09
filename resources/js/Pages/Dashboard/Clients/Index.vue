@@ -126,6 +126,11 @@ const submit = () => {
     onSuccess: () => {
       form.reset();
       submittingForm.value = false;
+      toast({
+        title: 'Cliente creado',
+        description: 'El cliente ha sido creado exitosamente.',
+        duration: 5000
+      });
     },
     onError: (errors) => {
       toast({
@@ -160,7 +165,6 @@ watch(
 		</template>
 
 		<div class="px-4 py-12">
-      {{ dataRef.length }}
 			<div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
 				<DataTable
 					:data="dataRef"
