@@ -5,8 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/components/ui/toast/use-toast';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
-import { watch } from 'vue';
+import { Head, useForm } from '@inertiajs/vue3';
 
 defineProps<{
 	canResetPassword?: boolean;

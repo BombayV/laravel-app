@@ -29,7 +29,7 @@ import {
 	VisibilityState
 } from '@tanstack/vue-table';
 import { ChevronDown } from 'lucide-vue-next';
-import { ref } from 'vue';
+import {ref, watch} from 'vue';
 
 const props = defineProps<{
 	data: any[];
@@ -44,7 +44,9 @@ const columnVisibility = ref<VisibilityState>({});
 const rowSelection = ref({});
 
 const table = useVueTable({
-	data: props.data,
+	get data() {
+    return props.data;
+  },
 	columns: props.columns,
 	getCoreRowModel: getCoreRowModel(),
 	getPaginationRowModel: getPaginationRowModel(),
@@ -69,6 +71,7 @@ const table = useVueTable({
 		}
 	}
 });
+
 const setFilterValue = (key: string, value: any) => {
 	table.getColumn(key)?.setFilterValue(value);
 };

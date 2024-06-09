@@ -21,6 +21,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {useToast} from "@/components/ui/toast";
+import { Loader2 } from "lucide-vue-next";
 
 const props = defineProps<{
 	data?: any;
@@ -107,7 +108,7 @@ const CLIENTS_COLUMNS: CustomColumnDef[] = [
   }
 ];
 
-const data = ref(props.data);
+const dataRef = ref(props.data);
 const form = useForm({
   nombre: '',
   apellido: '',
@@ -116,31 +117,35 @@ const form = useForm({
   direccion: '',
   sexo: '',
 });
+const submittingForm = ref(false);
 const filters: string = 'cli_nom';
 
 const submit = () => {
+  submittingForm.value = true;
   form.post(route('clientes.store'), {
-    onSuccess: (none) => {
-      console.log('Form submitted');
-      console.log(none);
+    onSuccess: () => {
       form.reset();
+      submittingForm.value = false;
     },
     onError: (errors) => {
-      console.log(errors);
       toast({
         title: 'Error al crear el cliente',
         description: Object.values(errors)[0] || 'Por favor, revise los campos e intente de nuevo.',
         duration: 5000,
         variant: 'destructive'
       });
+      submittingForm.value = false;
     }
   });
 };
 
 watch(
   () => props.result,
-  (result) => {
-    data.value.push(result);
+  () => {
+    dataRef.value = [
+      ...dataRef.value,
+      props.result
+    ]
   }
 )
 
@@ -155,9 +160,10 @@ watch(
 		</template>
 
 		<div class="px-4 py-12">
+      {{ dataRef.length }}
 			<div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
 				<DataTable
-					:data="data"
+					:data="dataRef"
 					:columns="CLIENTS_COLUMNS as unknown as ColumnDef<any>[]"
 					:filters="filters"
           placeholder="Buscar clientes por nombre o email"
@@ -184,37 +190,37 @@ watch(
                         <Label for="nombre" class="text-right">
                           Nombre
                         </Label>
-                        <Input id="nombre" class="col-span-3" required v-model="form.nombre" autofocus />
+                        <Input id="nombre" class="col-span-3" required v-model="form.nombre" :disabled="submittingForm" />
                       </div>
                       <div class="grid grid-cols-4 items-center gap-4">
                         <Label for="apellido" class="text-right">
                           Apellido
                         </Label>
-                        <Input id="apellido" class="col-span-3" required v-model="form.apellido" />
+                        <Input id="apellido" class="col-span-3" required v-model="form.apellido" :disabled="submittingForm" />
                       </div>
                       <div class="grid grid-cols-4 items-center gap-4">
                         <Label for="email" class="text-right">
                           Email
                         </Label>
-                        <Input id="email" class="col-span-3" required v-model="form.email" />
+                        <Input id="email" class="col-span-3" required v-model="form.email" :disabled="submittingForm" />
                       </div>
                       <div class="grid grid-cols-4 items-center gap-4">
                         <Label for="telefono" class="text-right">
                           Teléfono
                         </Label>
-                        <Input id="telefono" class="col-span-3" required v-model="form.telefono" />
+                        <Input id="telefono" class="col-span-3" required v-model="form.telefono" :disabled="submittingForm" />
                       </div>
                       <div class="grid grid-cols-4 items-center gap-4">
                         <Label for="direccion" class="text-right">
                           Dirección
                         </Label>
-                        <Input id="direccion" class="col-span-3" required v-model="form.direccion" />
+                        <Input id="direccion" class="col-span-3" required v-model="form.direccion" :disabled="submittingForm" />
                       </div>
                       <div class="grid grid-cols-4 items-center gap-4">
                         <Label for="sexo" class="text-right col-span-1">
                           Sexo
                         </Label>
-                        <Select v-model="form.sexo">
+                        <Select v-model="form.sexo" :disabled="submittingForm">
                           <SelectTrigger class="col-span-3">
                             <SelectValue placeholder="Seleccione el sexo" />
                           </SelectTrigger>
@@ -235,7 +241,8 @@ watch(
                       </div>
                     </div>
                     <DialogFooter>
-                      <Button type="submit">
+                      <Button type="submit" :disabled="submittingForm">
+                        <Loader2 v-if="submittingForm" class="w-4 h-4 mr-2 animate-spin" />
                         Crear nuevo cliente
                       </Button>
                     </DialogFooter>
