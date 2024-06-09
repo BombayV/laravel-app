@@ -115,8 +115,8 @@ import Toaster from "@/Components/ui/toast/Toaster.vue";
                                 <span>API</span>
                               </DropdownMenuItem>
                               <DropdownMenuSeparator />
-                              <Link :href="route('logout')" method="post">
-                                <DropdownMenuItem as="a">
+                              <Link :href="route('logout')" method="post" as="button" class="w-full">
+                                <DropdownMenuItem>
                                   <LogOut class="mr-2 h-4 w-4" />
                                   <span>Cerrar Sesión</span>
                                 </DropdownMenuItem>

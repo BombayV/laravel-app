@@ -1,11 +1,13 @@
 <script lang="ts" setup>
-import {ref} from "vue";
+import {computed, ref} from "vue";
 
 const props = defineProps<{
   data: any[];
   columns: ColumnDef<any>[];
+  filters: string;
 }>()
 
+import { ChevronDown } from 'lucide-vue-next';
 import {Input} from "@/Components/ui/input";
 import {
   DropdownMenu,
@@ -13,6 +15,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger
 } from "@/Components/ui/dropdown-menu";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/Components/ui/table";
 import {Button} from "@/Components/ui/button";
 import {
   ColumnDef,
@@ -20,9 +23,10 @@ import {
   getFilteredRowModel, getPaginationRowModel, getSortedRowModel,
   SortingState,
   useVueTable,
-  VisibilityState
+  VisibilityState,
+  FlexRender
 } from "@tanstack/vue-table";
-import {valueUpdater} from "@/lib/utils";
+import {cn, valueUpdater} from "@/lib/utils";
 
 const sorting = ref<SortingState>([])
 const columnFilters = ref<ColumnFiltersState>([])
@@ -47,16 +51,22 @@ const table = useVueTable({
     get rowSelection() { return rowSelection.value },
   },
 })
+const setFilterValue = (key: string, value: any) => {
+  table.getColumn(key)?.setFilterValue(value)
+}
 </script>
 
 <template>
-  <div class="w-full">
+  <div class="w-full flex flex-col gap-y-6">
     <div class="flex items-center justify-between">
-      <Input class="max-w-sm" placeholder="Filtrar por nombre"/>
+      <Input class="max-w-sm" placeholder="Filtrar por nombre"
+             :model-value="table.getColumn(filters)?.getFilterValue()"
+             @update:model-value="setFilterValue(filters, $event)"
+      />
       <DropdownMenu>
         <DropdownMenuTrigger as-child>
           <Button variant="outline" class="ml-auto">
-            Test
+            Opciones <ChevronDown class="ml-2 h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
@@ -69,20 +79,80 @@ const table = useVueTable({
               column.toggleVisibility(!!value)
             }"
           >
-            {{ column.id }}
+            {{ column.columnDef.name }}
           </DropdownMenuCheckboxItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
 
-<!--    <div v-if="column.getCanSort()" :class="cn('flex items-center space-x-2', { 'text-gray-500': !column.getIsSorted() })">-->
-<!--      <span>{{ column.id }}</span>-->
-<!--      <span v-if="column.getCanSort()" @click="column.toggleSort()">-->
-<!--        {{ column.getIsSorted() ? (column.getSortDirection() === 'asc' ? '▲' : '▼') : '↕' }}-->
-<!--      </span>-->
-<!--    </div>-->
-<!--    <div v-else>-->
-<!--      <span>{{ column.id }}</span>-->
-<!--    </div>-->
-<!--  </div>-->
+    <div class="rounded-md border">
+      <Table>
+        <TableHeader>
+          <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
+            <TableHead
+              v-for="header in headerGroup.headers" :key="header.id" :data-pinned="header.column.getIsPinned()"
+              :class="cn(
+                { 'sticky bg-background/95': header.column.getIsPinned() },
+                header.column.getIsPinned() === 'left' ? 'left-0' : 'right-0',
+              )"
+            >
+              <FlexRender v-if="!header.isPlaceholder" :render="header.column.columnDef.header" :props="header.getContext()" />
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <template v-if="table.getRowModel().rows?.length">
+            <TableRow
+              v-for="row in table.getRowModel().rows"
+              :key="row.id"
+              :data-state="row.getIsSelected() && 'selected'"
+            >
+              <TableCell
+                v-for="cell in row.getVisibleCells()" :key="cell.id" :data-pinned="cell.column.getIsPinned()"
+                :class="cn(
+                  { 'sticky bg-background/95': cell.column.getIsPinned() },
+                  cell.column.getIsPinned() === 'left' ? 'left-0' : 'right-0',
+                )"
+              >
+                <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
+              </TableCell>
+            </TableRow>
+          </template>
+
+          <TableRow v-else>
+            <TableCell
+              :colspan="columns.length"
+              class="h-24 text-center"
+            >
+              No results.
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </div>
+    <div class="flex items-center justify-end space-x-2">
+      <div class="flex-1 text-sm text-muted-foreground">
+        {{ table.getFilteredSelectedRowModel().rows.length }} de
+        {{ table.getFilteredRowModel().rows.length }} filas seleccionada(s)
+      </div>
+      <div class="space-x-2">
+        <Button
+          variant="outline"
+          size="sm"
+          :disabled="!table.getCanPreviousPage()"
+          @click="table.previousPage()"
+        >
+          Anterior
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          :disabled="!table.getCanNextPage()"
+          @click="table.nextPage()"
+        >
+          Siguiente
+        </Button>
+      </div>
+    </div>
+  </div>
 </template>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { MoreHorizontal } from 'lucide-vue-next'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/Components/ui/button'
 
 defineProps<{
   payment: {
