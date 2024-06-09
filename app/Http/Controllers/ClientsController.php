@@ -14,7 +14,7 @@ class ClientsController extends Controller
      */
     public function create(Request $request): Response
     {
-        return Inertia::render('Dashboard/Clients', [
+        return Inertia::render('Dashboard/Clients/Index', [
           'status' => session('status'),
         ]);
     }

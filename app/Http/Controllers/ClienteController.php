@@ -24,7 +24,7 @@ class ClienteController extends Controller
     public function index()
     {
         $data = $this->clienteRepositoryInterface->index();
-      return ApiResponseClass::sendResponse(ClienteResource::collection($data),'',200);
+      return $this->sendResponse(ClienteResource::collection($data), 'Clientes recuperados', 200);
     }
 
     /**
@@ -52,10 +52,11 @@ class ClienteController extends Controller
         try {
           $data = $this->clienteRepositoryInterface->store($details);
           DB::commit();
-          return ApiResponseClass::sendResponse(new ClienteResource($data),'Cliente creado',201);
+          return $this->sendResponse(new ClienteResource($data), 'Cliente creado');
         } catch (\Exception $e) {
           DB::rollBack();
-          return Response::class::rollback($e);
+          $this->rollback($e);
+          return $this->sendError('Error al crear el cliente', [], 500);
         }
     }
 
@@ -65,7 +66,7 @@ class ClienteController extends Controller
     public function show($id)
     {
         $cliente = $this->clienteRepositoryInterface->getById($id);
-        return ApiResponseClass::sendResponse(new ClienteResource($cliente),'',200);
+        return $this->sendResponse(new ClienteResource($cliente), 'Cliente recuperado', 200);
     }
 
     /**
@@ -93,10 +94,10 @@ class ClienteController extends Controller
         try {
           $data = $this->clienteRepositoryInterface->update($details, $id);
           DB::commit();
-          return ApiResponseClass::sendResponse(new ClienteResource($data),'Cliente actualizado',200);
+          return $this->sendResponse(new ClienteResource($data), 'Cliente actualizado', 200);
         } catch (\Exception $e) {
-          DB::rollBack();
-          return Response::class::rollback($e);
+          $this->rollback($e);
+          return $this->sendError('Error al actualizar el cliente', [], 500);
         }
     }
 
@@ -109,10 +110,10 @@ class ClienteController extends Controller
         try {
           $this->clienteRepositoryInterface->delete($id);
           DB::commit();
-          return ApiResponseClass::sendResponse('','Cliente eliminado',200);
+          return $this->sendResponse([], 'Cliente eliminado', 200);
         } catch (\Exception $e) {
-          DB::rollBack();
-          return Response::class::rollback($e);
+          $this->rollback($e);
+          return $this->sendError('Error al eliminar el cliente', [], 500);
         }
     }
 }
