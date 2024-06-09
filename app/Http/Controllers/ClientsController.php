@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cliente;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -16,6 +17,7 @@ class ClientsController extends Controller
     {
         return Inertia::render('Dashboard/Clients/Index', [
           'status' => session('status'),
+          'data' => Cliente::all(),
         ]);
     }
 }

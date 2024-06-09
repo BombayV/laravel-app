@@ -24,7 +24,7 @@ class ClienteRepository implements ClienteRepositoryInterface
 
     public function update(array $data, $id)
     {
-        return Cliente::find($id)->update($data);
+        return Cliente::findOrFail($id)->update($data);
     }
 
     public function delete($id)

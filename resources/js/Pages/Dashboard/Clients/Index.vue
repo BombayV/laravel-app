@@ -3,12 +3,15 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import DataTable from "@/components/table/DataTable.vue";
 import type {ClientColumn} from "@/components/table/columns";
-import { data } from "@/components/table/columns";
 import {ColumnDef} from "@tanstack/vue-table";
 import {h} from "vue";
 import {Checkbox} from "@/components/ui/checkbox";
 import {Button} from "@/components/ui/button";
 import {ArrowUpDown} from "lucide-vue-next";
+
+defineProps<{
+  data: any
+}>();
 
 type CustomColumnDef = ColumnDef<ClientColumn> | {
   name: string;

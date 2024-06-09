@@ -46,7 +46,9 @@ class ClienteController extends Controller
           'cli_tel' => $request->cli_tel,
           'cli_ema' => $request->cli_ema,
           'cli_dir' => $request->cli_dir,
-          'cli_sex' => $request->cli_sex
+          'cli_sex' => $request->cli_sex,
+          'created_at' => date('Y-m-d H:i:s'),
+          'updated_at' => date('Y-m-d H:i:s'),
         ];
         DB::beginTransaction();
         try {
@@ -65,7 +67,7 @@ class ClienteController extends Controller
     public function show($id)
     {
         $cliente = $this->clienteRepositoryInterface->getById($id);
-        return $this->sendResponse(new ClienteResource($cliente), 'Cliente recuperado', 200);
+        return $this->sendResponse(new ClienteResource($cliente), 'Cliente recuperado');
     }
 
     /**
@@ -88,12 +90,13 @@ class ClienteController extends Controller
           'cli_ema' => $request->cli_ema,
           'cli_dir' => $request->cli_dir,
           'cli_sex' => $request->cli_sex,
+          'updated_at' => date('Y-m-d H:i:s'),
         ];
         DB::beginTransaction();
         try {
-          $data = $this->clienteRepositoryInterface->update($details, $id);
+          $this->clienteRepositoryInterface->update($details, $id);
           DB::commit();
-          return $this->sendResponse(new ClienteResource($data), 'Cliente actualizado', 200);
+          return $this->sendResponse($details, 'Cliente actualizado');
         } catch (\Exception $e) {
           $this->rollback($e);
           return $this->sendError('Error al actualizar el cliente', [], 500);
@@ -109,7 +112,7 @@ class ClienteController extends Controller
         try {
           $this->clienteRepositoryInterface->delete($id);
           DB::commit();
-          return $this->sendResponse([], 'Cliente eliminado', 200);
+          return $this->sendResponse([], 'Cliente eliminado');
         } catch (\Exception $e) {
           $this->rollback($e);
           return $this->sendError('Error al eliminar el cliente', [], 500);

@@ -22,8 +22,8 @@ class ClienteResource extends JsonResource
             'cli_ema' => $this->cli_ema,
             'cli_dir' => $this->cli_dir,
             'cli_sex' => $this->cli_sex,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'created_at' => $this->created_at ?? null,
+            'updated_at' => $this->updated_at ?? null,
         ];
     }
 }
