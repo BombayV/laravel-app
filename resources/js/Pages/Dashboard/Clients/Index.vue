@@ -1,16 +1,20 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
-import DataTable from "@/Components/table/DataTable.vue";
-import type {ClientColumn} from "@/Components/table/columns";
-import { data } from "@/Components/table/columns";
+import DataTable from "@/components/table/DataTable.vue";
+import type {ClientColumn} from "@/components/table/columns";
+import { data } from "@/components/table/columns";
 import {ColumnDef} from "@tanstack/vue-table";
 import {h} from "vue";
-import {Checkbox} from "@/Components/ui/checkbox";
-import {Button} from "@/Components/ui/button";
+import {Checkbox} from "@/components/ui/checkbox";
+import {Button} from "@/components/ui/button";
 import {ArrowUpDown} from "lucide-vue-next";
 
-const CLIENTS_COLUMNS: ColumnDef<ClientColumn>[] = [
+type CustomColumnDef = ColumnDef<ClientColumn> | {
+  name: string;
+}
+
+const CLIENTS_COLUMNS: CustomColumnDef[] = [
   {
     id: 'select',
     header: ({ table }) => h(Checkbox, {
@@ -75,7 +79,7 @@ const filters: string = 'cli_nom'
 
     <div class="py-12 px-4">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <DataTable :data="data" :columns="CLIENTS_COLUMNS" :filters="filters" />
+        <DataTable :data="data" :columns="CLIENTS_COLUMNS as unknown as ColumnDef<any>[]" :filters="filters" />
       </div>
     </div>
   </AuthenticatedLayout>

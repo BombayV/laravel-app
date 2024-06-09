@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
-import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
+import ApplicationLogo from '@/components/ApplicationLogo.vue';
+import ResponsiveNavLink from '@/components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
 import {
   Cloud,
@@ -29,9 +29,9 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from '@/Components/ui/dropdown-menu'
-import {Button} from "@/Components/ui/button";
-import Toaster from "@/Components/ui/toast/Toaster.vue";
+} from '@/components/ui/dropdown-menu'
+import {Button} from "@/components/ui/button";
+import Toaster from "@/components/ui/toast/Toaster.vue";
 </script>
 
 <template>

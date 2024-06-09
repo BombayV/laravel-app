@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {computed, ref} from "vue";
+import {ref} from "vue";
 
 const props = defineProps<{
   data: any[];
@@ -8,15 +8,15 @@ const props = defineProps<{
 }>()
 
 import { ChevronDown } from 'lucide-vue-next';
-import {Input} from "@/Components/ui/input";
+import {Input} from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger
-} from "@/Components/ui/dropdown-menu";
-import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/Components/ui/table";
-import {Button} from "@/Components/ui/button";
+} from "@/components/ui/dropdown-menu";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
+import {Button} from "@/components/ui/button";
 import {
   ColumnDef,
   ColumnFiltersState, getCoreRowModel,
@@ -60,7 +60,7 @@ const setFilterValue = (key: string, value: any) => {
   <div class="w-full flex flex-col gap-y-6">
     <div class="flex items-center justify-between">
       <Input class="max-w-sm" placeholder="Filtrar por nombre"
-             :model-value="table.getColumn(filters)?.getFilterValue()"
+             :model-value="table.getColumn(filters)?.getFilterValue() as string"
              @update:model-value="setFilterValue(filters, $event)"
       />
       <DropdownMenu>
@@ -79,7 +79,7 @@ const setFilterValue = (key: string, value: any) => {
               column.toggleVisibility(!!value)
             }"
           >
-            {{ column.columnDef.name }}
+            {{ (column.columnDef as any).name }}
           </DropdownMenuCheckboxItem>
         </DropdownMenuContent>
       </DropdownMenu>
