@@ -48,4 +48,42 @@ class ClientsController extends Controller
         'result' => $result,
       ]);
     }
+
+    public function update(Request $request): Response
+    {
+      $request->validate([
+        'id' => 'required|integer',
+        'nombre' => 'required|string|max:30',
+        'apellido' => 'required|string|max:30',
+        'email' => 'required|email|max:50|lowercase',
+        'direccion' => 'required|string|max:100',
+      ]);
+
+        $details = [
+          'cli_nom' => $request->nombre,
+          'cli_ape' => $request->apellido,
+          'cli_ema' => $request->email,
+          'cli_dir' => $request->direccion,
+          'updated_at' => now(),
+        ];
+
+        Cliente::where('cli_id', $request->id)->update($details);
+        return Inertia::render('Dashboard/Clients/Index', [
+          'status' => session('status'),
+        ]);
+    }
+
+    public function destroy(Request $request): Response
+    {
+      $request->validate([
+        'id' => 'required|integer',
+      ]);
+      Cliente::destroy([
+        'cli_id' => $request->id,
+      ]);
+
+      return Inertia::render('Dashboard/Clients/Index', [
+        'status' => session('status'),
+      ]);
+    }
 }

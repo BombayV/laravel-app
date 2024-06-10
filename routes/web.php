@@ -28,6 +28,8 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard/clientes', [ClientsController::class, 'create'])->name('clientes');
     Route::post('/dashboard/clientes', [ClientsController::class, 'store'])->name('clientes.store');
+    Route::put('/dashboard/clientes', [ClientsController::class, 'update'])->name('clientes.update');
+    Route::delete('/dashboard/clientes', [ClientsController::class, 'destroy'])->name('clientes.destroy');
 });
 
 Route::middleware('auth')->group(function () {

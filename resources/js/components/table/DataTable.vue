@@ -79,7 +79,7 @@ const setFilterValue = (key: string, value: any) => {
 
 <template>
 	<div class="flex w-full flex-col gap-y-6">
-		<div class="flex items-center justify-between">
+		<div class="flex items-center justify-between gap-x-6">
 			<Input
 				class="max-w-sm"
 				:placeholder="placeholder || 'Buscar...'"

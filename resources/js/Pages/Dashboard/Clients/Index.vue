@@ -1,27 +1,15 @@
 <script setup lang="ts">
-import type { ClientColumn } from '@/components/table/columns';
+import type {ClientColumn} from '@/components/table/columns';
 import DataTable from '@/components/table/DataTable.vue';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
+import {Button} from '@/components/ui/button';
+import {Checkbox} from '@/components/ui/checkbox';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import {Head, useForm} from '@inertiajs/vue3';
-import { ColumnDef } from '@tanstack/vue-table';
-import { ArrowUpDown } from 'lucide-vue-next';
+import {ColumnDef} from '@tanstack/vue-table';
+import {ArrowUpDown} from 'lucide-vue-next';
 import {h, ref, watch} from 'vue';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-import {useToast} from "@/components/ui/toast";
-import { Loader2 } from "lucide-vue-next";
+import DataTableDropdownClient from "@/Pages/Dashboard/Clients/DataTableDropdownClient.vue";
+import DataTableDialogCliente from "@/Pages/Dashboard/Clients/DataTableDialogClient.vue";
 
 const props = defineProps<{
 	data?: any;
@@ -32,9 +20,7 @@ type CustomColumnDef =
 	| ColumnDef<ClientColumn>
 	| {
 			name: string;
-	  };
-
-const { toast } = useToast();
+};
 const CLIENTS_COLUMNS: CustomColumnDef[] = [
 	{
 		id: 'select',
@@ -76,7 +62,8 @@ const CLIENTS_COLUMNS: CustomColumnDef[] = [
 				row.original.cli_ema.toLowerCase().includes(filterValue.toLowerCase())
 			);
 		},
-		name: 'Nombre'
+		name: 'Nombre',
+    enableHiding: false
 	},
 	{
 		accessorKey: 'cli_ema',
@@ -93,22 +80,35 @@ const CLIENTS_COLUMNS: CustomColumnDef[] = [
 	{
 		accessorKey: 'updated_at',
 		header: () => h('div', { class: 'text-right' }, ['Última actualización']),
-		cell: ({ row }) => h('div', { class: 'text-right' }, [row.original.updated_at]),
+		cell: ({ row }) => h('div', { class: 'text-right' }, [new Date(row.original.updated_at).toLocaleString()]),
 		name: 'Última actualización'
 	},
   {
     id: 'actions',
-    header: () => h('div', { class: 'text-right' }, ['Acciones']),
-    cell: () => h('div', { class: 'text-right' }, [
-      // h(Button, { variant: 'outline' }, ['Editar']),
-      // h(Button, { variant: 'outline' }, ['Eliminar'])
-    ]),
+    cell: ({ row }) => {
+      return h('div', { class: 'relative' }, [
+        h(DataTableDropdownClient, {
+          original: row.original,
+          deleteForm: deleteForm,
+          dataRef: dataRef
+        })
+      ]);
+    },
     enableSorting: false,
     enableHiding: false
   }
 ];
 
-const dataRef = ref(props.data);
+const deleteForm = useForm({
+  id: -1
+});
+const updateForm = useForm({
+  id: -1,
+  nombre: '',
+  apellido: '',
+  email: '',
+  direccion: '',
+});
 const form = useForm({
   nombre: '',
   apellido: '',
@@ -117,43 +117,20 @@ const form = useForm({
   direccion: '',
   sexo: '',
 });
-const submittingForm = ref(false);
+const dataRef = ref(props.data);
 const filters: string = 'cli_nom';
-
-const submit = () => {
-  submittingForm.value = true;
-  form.post(route('clientes.store'), {
-    onSuccess: () => {
-      form.reset();
-      submittingForm.value = false;
-      toast({
-        title: 'Cliente creado',
-        description: 'El cliente ha sido creado exitosamente.',
-        duration: 5000
-      });
-    },
-    onError: (errors) => {
-      toast({
-        title: 'Error al crear el cliente',
-        description: Object.values(errors)[0] || 'Por favor, revise los campos e intente de nuevo.',
-        duration: 5000,
-        variant: 'destructive'
-      });
-      submittingForm.value = false;
-    }
-  });
-};
 
 watch(
   () => props.result,
-  () => {
-    dataRef.value = [
-      ...dataRef.value,
-      props.result
-    ]
+  (value) => {
+    if (value) {
+      dataRef.value = [
+        ...dataRef.value,
+        value
+      ]
+    }
   }
 )
-
 </script>
 
 <template>
@@ -167,92 +144,13 @@ watch(
 		<div class="px-4 py-12">
 			<div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
 				<DataTable
-					:data="dataRef"
-					:columns="CLIENTS_COLUMNS as unknown as ColumnDef<any>[]"
-					:filters="filters"
+					:data="dataRef || []"
+					:columns="CLIENTS_COLUMNS as unknown as ColumnDef<any>[] | undefined"
+					:filters="filters || ''"
           placeholder="Buscar clientes por nombre o email"
 				>
           <template #top>
-            <Dialog>
-              <DialogTrigger>
-                <Button>
-                  Crear Cliente
-                </Button>
-              </DialogTrigger>
-                <DialogContent class="sm:max-w-[425px]">
-                  <form @submit.prevent="submit">
-                    <DialogHeader>
-                      <DialogTitle>
-                        Crear nuevo cliente
-                      </DialogTitle>
-                      <DialogDescription>
-                        Complete los campos para crear un nuevo cliente.
-                      </DialogDescription>
-                    </DialogHeader>
-                    <div class="grid gap-4 py-4">
-                      <div class="grid grid-cols-4 items-center gap-4">
-                        <Label for="nombre" class="text-right">
-                          Nombre
-                        </Label>
-                        <Input id="nombre" class="col-span-3" required v-model="form.nombre" :disabled="submittingForm" />
-                      </div>
-                      <div class="grid grid-cols-4 items-center gap-4">
-                        <Label for="apellido" class="text-right">
-                          Apellido
-                        </Label>
-                        <Input id="apellido" class="col-span-3" required v-model="form.apellido" :disabled="submittingForm" />
-                      </div>
-                      <div class="grid grid-cols-4 items-center gap-4">
-                        <Label for="email" class="text-right">
-                          Email
-                        </Label>
-                        <Input id="email" class="col-span-3" required v-model="form.email" :disabled="submittingForm" />
-                      </div>
-                      <div class="grid grid-cols-4 items-center gap-4">
-                        <Label for="telefono" class="text-right">
-                          Teléfono
-                        </Label>
-                        <Input id="telefono" class="col-span-3" required v-model="form.telefono" :disabled="submittingForm" />
-                      </div>
-                      <div class="grid grid-cols-4 items-center gap-4">
-                        <Label for="direccion" class="text-right">
-                          Dirección
-                        </Label>
-                        <Input id="direccion" class="col-span-3" required v-model="form.direccion" :disabled="submittingForm" />
-                      </div>
-                      <div class="grid grid-cols-4 items-center gap-4">
-                        <Label for="sexo" class="text-right col-span-1">
-                          Sexo
-                        </Label>
-                        <Select v-model="form.sexo" :disabled="submittingForm">
-                          <SelectTrigger class="col-span-3">
-                            <SelectValue placeholder="Seleccione el sexo" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectGroup>
-                              <SelectItem value="m">
-                                Hombre
-                              </SelectItem>
-                              <SelectItem value="f">
-                                Mujer
-                              </SelectItem>
-                              <SelectItem value="o">
-                                Otro
-                              </SelectItem>
-                            </SelectGroup>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-                    <DialogFooter>
-                      <Button type="submit" :disabled="submittingForm">
-                        <Loader2 v-if="submittingForm" class="w-4 h-4 mr-2 animate-spin" />
-                        Crear nuevo cliente
-                      </Button>
-                    </DialogFooter>
-                  </form>
-                </DialogContent>
-            </Dialog>
+            <DataTableDialogCliente :form="form" />
           </template>
         </DataTable>
 			</div>
