@@ -108,11 +108,6 @@ import { ref } from 'vue';
 										</DropdownMenuItem>
 									</DropdownMenuGroup>
 									<DropdownMenuSeparator />
-									<DropdownMenuItem disabled>
-										<Cloud class="mr-2 h-4 w-4" />
-										<span>API</span>
-									</DropdownMenuItem>
-									<DropdownMenuSeparator />
 									<Link :href="route('logout')" method="post" as="button" class="w-full">
 										<DropdownMenuItem>
 											<LogOut class="mr-2 h-4 w-4" />
