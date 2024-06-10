@@ -7,7 +7,6 @@ import {
   AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
 import {DropdownMenuItem} from "@/components/ui/dropdown-menu";
-import {useForm} from "@inertiajs/vue3";
 
 defineProps<{
   dropdownText: string;

@@ -1,3 +1,3 @@
 <template>
-	<img src="logo.png" class="invert">
+	<img src="/logo.png" alt="Hueco logo" class="invert">
 </template>

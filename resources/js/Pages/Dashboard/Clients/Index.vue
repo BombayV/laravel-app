@@ -90,6 +90,7 @@ const CLIENTS_COLUMNS: CustomColumnDef[] = [
         h(DataTableDropdownClient, {
           original: row.original,
           deleteForm: deleteForm,
+          updateForm: updateForm,
           dataRef: dataRef
         })
       ]);

@@ -59,18 +59,18 @@ class ClientsController extends Controller
         'direccion' => 'required|string|max:100',
       ]);
 
-        $details = [
-          'cli_nom' => $request->nombre,
-          'cli_ape' => $request->apellido,
-          'cli_ema' => $request->email,
-          'cli_dir' => $request->direccion,
-          'updated_at' => now(),
-        ];
+      $details = [
+        'cli_nom' => $request->nombre,
+        'cli_ape' => $request->apellido,
+        'cli_ema' => $request->email,
+        'cli_dir' => $request->direccion,
+        'updated_at' => now(),
+      ];
 
-        Cliente::where('cli_id', $request->id)->update($details);
-        return Inertia::render('Dashboard/Clients/Index', [
-          'status' => session('status'),
-        ]);
+      Cliente::findOrfail($request->id)->update($details);
+      return Inertia::render('Dashboard/Clients/Index', [
+        'status' => session('status'),
+      ]);
     }
 
     public function destroy(Request $request): Response
