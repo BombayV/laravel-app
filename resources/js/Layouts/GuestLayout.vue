@@ -16,5 +16,5 @@ import { Link } from '@inertiajs/vue3';
 			<slot />
 		</div>
 	</div>
-	<Toaster :duration="5000" />
+	<Toaster/>
 </template>

@@ -134,5 +134,5 @@ import { ref } from 'vue';
 			</main>
 		</div>
 	</div>
-	<Toaster :duration="5000" />
+	<Toaster />
 </template>

@@ -16,7 +16,7 @@ import {toast} from "@/components/ui/toast";
 import {useForm} from "@inertiajs/vue3";
 
 const props = defineProps<{
-  form: ReturnType<typeof useForm>;
+  form: ReturnType<typeof useForm<{ nombre: string, apellido: string, email: string, telefono: string, direccion: string, sexo: string }>>;
 }>();
 
 const submit = () => {
@@ -75,13 +75,13 @@ const submit = () => {
             <Label for="email" class="text-right">
               Email
             </Label>
-            <Input id="email" class="col-span-3" required v-model="form.email" :disabled="form.processing" />
+            <Input id="email" class="col-span-3" required v-model="form.email" :disabled="form.processing" type="email" />
           </div>
           <div class="grid grid-cols-4 items-center gap-4">
             <Label for="telefono" class="text-right">
               Teléfono
             </Label>
-            <Input id="telefono" class="col-span-3" required v-model="form.telefono" :disabled="form.processing" />
+            <Input id="telefono" class="col-span-3" required v-model="form.telefono" :disabled="form.processing" type="tel" />
           </div>
           <div class="grid grid-cols-4 items-center gap-4">
             <Label for="direccion" class="text-right">

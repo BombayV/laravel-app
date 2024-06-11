@@ -29,7 +29,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/clientes', [ClientsController::class, 'create'])->name('clientes');
     Route::post('/dashboard/clientes', [ClientsController::class, 'store'])->name('clientes.store');
     Route::put('/dashboard/clientes', [ClientsController::class, 'update'])->name('clientes.update');
-    Route::delete('/dashboard/clientes', [ClientsController::class, 'destroy'])->name('clientes.destroy');
+    Route::delete('/dashboard/clientes/{id}', [ClientsController::class, 'destroy'])->name('clientes.destroy');
+    Route::get('/dashboard/clientes/{id}', [ClientsController::class, 'show'])->name('clientes.show');
+    Route::delete('/dashboard/clientes', [ClientsController::class, 'all'])->name('clientes.destroy.all');
 });
 
 Route::middleware('auth')->group(function () {

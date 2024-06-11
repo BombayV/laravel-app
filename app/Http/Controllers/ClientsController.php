@@ -21,6 +21,11 @@ class ClientsController extends Controller
         ]);
     }
 
+    public function show(Request $request): \Illuminate\Http\RedirectResponse
+    {
+      return redirect()->route('clientes');
+    }
+
     public function store(Request $request): Response
     {
       $request->validate([
@@ -81,6 +86,23 @@ class ClientsController extends Controller
       Cliente::destroy([
         'cli_id' => $request->id,
       ]);
+
+      return Inertia::render('Dashboard/Clients/Index', [
+        'status' => session('status'),
+      ]);
+    }
+
+    public function all(Request $request): Response
+    {
+      $request->validate([
+        'ids' => 'required|array',
+      ]);
+
+      for ($i = 0; $i < count($request->ids); $i++) {
+        Cliente::destroy([
+          'cli_id' => $request->ids[$i],
+        ]);
+      }
 
       return Inertia::render('Dashboard/Clients/Index', [
         'status' => session('status'),

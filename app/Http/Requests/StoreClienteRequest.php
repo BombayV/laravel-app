@@ -39,16 +39,6 @@ class StoreClienteRequest extends FormRequest
     {
       return Inertia::render('Dashboard/Clients/Index', [
         'status' => session('status'),
-//        'data' => $validator->errors(),
       ]);
-//      throw new HttpResponseException(
-//        response()->json(
-//        [
-//          'success' => false,
-//          'message' => 'Error de validación',
-//          'data' => $validator->errors(),
-//          'status' => 422
-//        ])
-//      );
     }
 }

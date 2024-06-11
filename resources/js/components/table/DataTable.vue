@@ -37,6 +37,9 @@ const props = defineProps<{
 	filters: string;
   placeholder?: string;
 }>();
+const emit = defineEmits<{
+  (e: 'update:selectedRows', value: any): void;
+}>();
 
 const sorting = ref<SortingState>([]);
 const columnFilters = ref<ColumnFiltersState>([]);
@@ -75,6 +78,13 @@ const table = useVueTable({
 const setFilterValue = (key: string, value: any) => {
 	table.getColumn(key)?.setFilterValue(value);
 };
+
+watch(
+  () => props.data,
+  () => {
+    emit('update:selectedRows', table);
+  }
+);
 </script>
 
 <template>

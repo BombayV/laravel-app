@@ -41,7 +41,7 @@ const deleteSubmit = async () => {
     return;
   }
 
-  props.deleteForm.delete(route('clientes.destroy'), {
+  props.deleteForm.delete(route('clientes.destroy', {id: props.deleteForm.id}), {
     onSuccess: () => {
       toast({
         title: 'Cliente eliminado',
