@@ -11,6 +11,13 @@ import {h, ref, watch} from 'vue';
 import DataTableDropdownClient from "@/Pages/Dashboard/Clients/DataTableDropdownClient.vue";
 import DataTableDialogCliente from "@/Pages/Dashboard/Clients/DataTableDialogClient.vue";
 import {toast} from "@/components/ui/toast";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel,
+  AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger
+} from "@/components/ui/alert-dialog";
 
 const props = defineProps<{
 	data?: any;
@@ -204,11 +211,31 @@ watch(
 				>
           <template #top>
             <div class="flex justify-end gap-x-2">
-              <form @submit.prevent="deleteAll" v-if="selectedRows.rows.length > 0">
-                <Button size="icon" variant="destructive" type="submit">
-                  <Trash class="w-4 h-4" />
-                </Button>
-              </form>
+              <AlertDialog>
+                <AlertDialogTrigger as-child>
+                  <Button v-if="selectedRows.rows.length > 0" size="icon" variant="destructive" type="submit">
+                    <Trash class="w-4 h-4" />
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle class="text-lg font-semibold">Eliminar {{ selectedRows.rows.length }} cliente(s)</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      ¿Estás seguro de que deseas eliminar {{ selectedRows.rows.length }} cliente(s)? Esta acción no se puede deshacer y se eliminarán permanentemente.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                    <AlertDialogAction
+                      variant="destructive"
+                      @click="deleteAll"
+                      :disabled="deleteAllForm.processing"
+                    >
+                      Eliminar
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
               <DataTableDialogCliente :form="form" />
             </div>
           </template>
