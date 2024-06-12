@@ -9,3 +9,7 @@ export type ClientColumn = {
 	updated_at: string;
 	created_at: string;
 };
+
+export type ProductColumn = {
+
+};

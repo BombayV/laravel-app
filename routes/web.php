@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ClientsController;
+use App\Http\Controllers\Dashboard\ClientsController;
+use App\Http\Controllers\Dashboard\ProductsController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -35,7 +36,8 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard/productos', [ClientsController::class, 'create'])->name('productos');
+    Route::get('/dashboard/productos', [ProductsController::class, 'create'])->name('productos');
+    Route::post('/dashboard/productos', [ProductsController::class, 'store'])->name('productos.store');
 });
 
 Route::middleware('auth')->group(function () {

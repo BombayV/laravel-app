@@ -127,6 +127,9 @@ const CLIENTS_COLUMNS: CustomColumnDef[] = [
 const deleteForm = useForm({
   id: -1
 });
+const deleteAllForm = useForm({
+  ids: <number[]>[]
+});
 const updateForm = useForm({
   id: -1,
   nombre: '',
@@ -145,10 +148,6 @@ const form = useForm({
 const dataRef = ref(props.data);
 const filters: string = 'cli_nom';
 
-const deleteAllForm = useForm({
-  ids: <number[]>[]
-});
-
 const deleteAll = () => {
   for (const row of selectedRows.value.rows) {
     deleteAllForm.ids.push(row.original.cli_id);
@@ -166,7 +165,6 @@ const deleteAll = () => {
       deleteAllForm.ids = [];
     },
     onError: () => {
-      console.log(deleteAllForm.errors)
       toast({
         title: 'Error al eliminar',
         description: 'No se pudo eliminar los clientes seleccionados',

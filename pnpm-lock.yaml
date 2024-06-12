@@ -1647,7 +1647,7 @@ snapshots:
       '@floating-ui/utils': 0.2.2
       vue-demi: 0.14.8(vue@3.4.27(typescript@5.4.5))
     transitivePeerDependencies:
-      - '@vue/composition-api'
+      - '@vue/composition-Api'
       - vue
 
   '@ianvs/prettier-plugin-sort-imports@4.2.1(@vue/compiler-sfc@3.4.27)(prettier@3.3.1)':
@@ -1908,7 +1908,7 @@ snapshots:
       '@vueuse/shared': 10.10.0(vue@3.4.27(typescript@5.4.5))
       vue-demi: 0.14.8(vue@3.4.27(typescript@5.4.5))
     transitivePeerDependencies:
-      - '@vue/composition-api'
+      - '@vue/composition-Api'
       - vue
 
   '@vueuse/metadata@10.10.0': {}
@@ -1917,7 +1917,7 @@ snapshots:
     dependencies:
       vue-demi: 0.14.8(vue@3.4.27(typescript@5.4.5))
     transitivePeerDependencies:
-      - '@vue/composition-api'
+      - '@vue/composition-Api'
       - vue
 
   ansi-regex@5.0.1: {}
@@ -2412,7 +2412,7 @@ snapshots:
       nanoid: 5.0.7
       vue: 3.4.27(typescript@5.4.5)
     transitivePeerDependencies:
-      - '@vue/composition-api'
+      - '@vue/composition-Api'
 
   read-cache@1.0.0:
     dependencies:
@@ -2595,7 +2595,7 @@ snapshots:
       radix-vue: 1.8.3(vue@3.4.27(typescript@5.4.5))
       vue: 3.4.27(typescript@5.4.5)
     transitivePeerDependencies:
-      - '@vue/composition-api'
+      - '@vue/composition-Api'
       - typescript
 
   vee-validate@4.13.1(vue@3.4.27(typescript@5.4.5)):
