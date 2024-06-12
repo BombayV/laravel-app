@@ -23,7 +23,7 @@ return new class extends Migration
 
         Schema::create('inventario', function (Blueprint $table) {
             $table->id('inv_id');
-            $table->foreignId('fk_pro_id')->references('pro_id')->on('producto')->onDelete('restrict')->onUpdate('cascade');
+            $table->foreignId('fk_pro_id')->references('pro_id')->on('producto')->onDelete('cascade')->onUpdate('cascade');
             $table->smallInteger('inv_stock');
             $table->smallInteger('fk_est_inv_id');
             $table->foreign('fk_est_inv_id')->references('est_inv_id')->on('estado_inventario')->onDelete('restrict')->onUpdate('cascade');
@@ -31,7 +31,7 @@ return new class extends Migration
 
         Schema::create('registro_inventario', function (Blueprint $table) {
             $table->id('reg_inv_id');
-            $table->foreignId('fk_inv_id')->references('inv_id')->on('inventario')->onDelete('restrict')->onUpdate('cascade');
+            $table->foreignId('fk_inv_id')->references('inv_id')->on('inventario')->onDelete('cascade')->onUpdate('cascade');
             $table->date('reg_inv_fec');
             $table->smallInteger('reg_inv_can');
             $table->smallInteger('fk_reg_inv_tip');
