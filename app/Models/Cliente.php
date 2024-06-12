@@ -1,13 +1,10 @@
 <?php
 
 namespace App\Models;
-
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Cliente extends Model
 {
-    use HasFactory;
 
     protected $table = 'cliente';
 
@@ -18,6 +15,19 @@ class Cliente extends Model
         'cli_tel',
         'cli_ema',
         'cli_dir',
-        'cli_sex'
+        'cli_sex',
+        'created_at',
+        'updated_at',
     ];
+    public $timestamps = true;
+
+    public function pedidos()
+    {
+        return $this->hasMany(Pedido::class, 'fk_cli_id', 'cli_id');
+    }
+
+    public function ventas()
+    {
+        return $this->hasMany(Ventas::class, 'fk_cli_id', 'cli_id');
+    }
 }
