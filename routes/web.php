@@ -38,6 +38,10 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard/productos', [ProductsController::class, 'create'])->name('productos');
     Route::post('/dashboard/productos', [ProductsController::class, 'store'])->name('productos.store');
+    Route::put('/dashboard/productos', [ProductsController::class, 'update'])->name('productos.update');
+    Route::delete('/dashboard/productos/{id}', [ProductsController::class, 'destroy'])->name('productos.destroy');
+    Route::get('/dashboard/productos/{id}', [ProductsController::class, 'show'])->name('productos.show');
+    Route::delete('/dashboard/productos', [ProductsController::class, 'all'])->name('productos.destroy.all');
 });
 
 Route::middleware('auth')->group(function () {

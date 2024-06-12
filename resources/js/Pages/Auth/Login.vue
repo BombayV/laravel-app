@@ -23,14 +23,14 @@ const submit = () => {
 		onFinish: () => {
 			form.reset('password');
 		},
-    onError: () => {
-      toast({
-        title: 'Uh oh! Algo salió mal.',
-        description: 'Por favor, revisa tus credenciales e intenta de nuevo.',
-        variant: 'destructive',
-        duration: 5000
-      });
-    }
+		onError: () => {
+			toast({
+				title: 'Uh oh! Algo salió mal.',
+				description: 'Por favor, revisa tus credenciales e intenta de nuevo.',
+				variant: 'destructive',
+				duration: 5000
+			});
+		}
 	});
 };
 

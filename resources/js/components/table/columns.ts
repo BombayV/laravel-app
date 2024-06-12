@@ -11,54 +11,54 @@ export type ClientColumn = {
 };
 
 export type ProductColumn = {
-  pro_id: number;
-  pro_nom: string;
-  pro_val: number;
-  fk_tip_pro_id: number;
-  fk_est_pro_id: number;
+	pro_id: number;
+	pro_nom: string;
+	pro_val: number;
+	fk_tip_pro_id: number;
+	fk_est_pro_id: number;
 };
 
 export type InventoryColumn = {
-  inv_id: number;
-  pro_nom: string;
-  pro_val: number;
-  pro_id: number;
-  inv_stock: number;
-  est_inv_des: string;
+	inv_id: number;
+	pro_nom: string;
+	pro_val: number;
+	pro_id: number;
+	inv_stock: number;
+	est_inv_des: string;
 };
 
 export type OrderColumn = {
-  ped_id: number;
-  ped_est: string;
-  ped_tot: number;
-  cli_nom: string;
-  cli_ape: string;
-  cli_dir: string;
-  ped_fec: string;
+	ped_id: number;
+	ped_est: string;
+	ped_tot: number;
+	cli_nom: string;
+	cli_ape: string;
+	cli_dir: string;
+	ped_fec: string;
 };
 
 export type OrderDetailColumn = {
-  det_ped_id: number;
-  pro_nom: string;
-  pro_val: number;
-  det_ped_can: number;
-  det_ped_pre: number;
+	det_ped_id: number;
+	pro_nom: string;
+	pro_val: number;
+	det_ped_can: number;
+	det_ped_pre: number;
 };
 
 export type InventoryLogColumn = {
-  reg_inv_id: number;
-  inv_id: number;
-  pro_nom: string;
-  reg_inv_can: number;
-  reg_inv_fec: string;
-  reg_inv_tip_nom: string;
-}
+	reg_inv_id: number;
+	inv_id: number;
+	pro_nom: string;
+	reg_inv_can: number;
+	reg_inv_fec: string;
+	reg_inv_tip_nom: string;
+};
 
 export type SalesColumn = {
-  ven_id: number;
-  cli_nom: string;
-  cli_ape: string;
-  cli_dir: string;
-  ven_tot: number;
-  created_at: string;
+	ven_id: number;
+	cli_nom: string;
+	cli_ape: string;
+	cli_dir: string;
+	ven_tot: number;
+	created_at: string;
 };

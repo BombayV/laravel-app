@@ -29,16 +29,16 @@ import {
 	VisibilityState
 } from '@tanstack/vue-table';
 import { ChevronDown } from 'lucide-vue-next';
-import {ref, watch} from 'vue';
+import { ref, watch } from 'vue';
 
 const props = defineProps<{
 	data: any[];
 	columns: ColumnDef<any>[];
 	filters: string;
-  placeholder?: string;
+	placeholder?: string;
 }>();
 const emit = defineEmits<{
-  (e: 'update:selectedRows', value: any): void;
+	(e: 'update:selectedRows', value: any): void;
 }>();
 
 const sorting = ref<SortingState>([]);
@@ -48,8 +48,8 @@ const rowSelection = ref({});
 
 const table = useVueTable({
 	get data() {
-    return props.data;
-  },
+		return props.data;
+	},
 	columns: props.columns,
 	getCoreRowModel: getCoreRowModel(),
 	getPaginationRowModel: getPaginationRowModel(),
@@ -80,10 +80,10 @@ const setFilterValue = (key: string, value: any) => {
 };
 
 watch(
-  () => props.data,
-  () => {
-    emit('update:selectedRows', table);
-  }
+	() => props.data,
+	() => {
+		emit('update:selectedRows', table);
+	}
 );
 </script>
 
@@ -170,7 +170,9 @@ watch(
 					</template>
 
 					<TableRow v-else>
-						<TableCell :colspan="columns.length" class="h-24 text-center"> No hay resultados. </TableCell>
+						<TableCell :colspan="columns.length" class="h-24 text-center">
+							No hay resultados.
+						</TableCell>
 					</TableRow>
 				</TableBody>
 			</Table>
