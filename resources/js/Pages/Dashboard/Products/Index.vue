@@ -107,7 +107,7 @@ const CLIENTS_COLUMNS: CustomColumnDef[] = [
 				productTypeRef.value[row.original.fk_tip_pro_id - 1].tip_pro_nom
 			]),
 		enableSorting: true,
-		enableHiding: false
+    name: 'Tipo'
 	},
 	{
 		accessorKey: 'pro_val',
@@ -123,7 +123,7 @@ const CLIENTS_COLUMNS: CustomColumnDef[] = [
 		},
 		cell: ({ row }) => h('div', { class: 'ml-4' }, ['$' + row.original.pro_val]),
 		enableSorting: true,
-		enableHiding: false
+    name: 'Valor'
 	},
 	{
 		accessorKey: 'pro_est',
@@ -140,7 +140,8 @@ const CLIENTS_COLUMNS: CustomColumnDef[] = [
 		cell: ({ row }) =>
 			h('div', { class: 'ml-4' }, [
 				productStateRef.value[row.original.fk_est_pro_id - 1]?.est_pro_nom
-			])
+			]),
+    name: 'Estado'
 	},
 	{
 		id: 'actions',
