@@ -8,7 +8,7 @@ import {
 	DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { MoreHorizontal, CalendarDays, Phone, Map } from 'lucide-vue-next';
-import {ClientColumn} from "@/components/table/columns";
+import {ClientColumn, ProductColumn} from "@/components/table/columns";
 import AlertDialogItem from "@/components/table/AlertDialogItem.vue";
 import DrawerItem from "@/components/table/DrawerItem.vue";
 import {useForm} from "@inertiajs/vue3";
@@ -18,13 +18,12 @@ import {Label} from "@/components/ui/label";
 import {Input} from "@/components/ui/input";
 
 const props = defineProps<{
-  original: ClientColumn;
+  original: ProductColumn;
   updateForm: ReturnType<typeof useForm<{
     nombre: string;
-    apellido: string;
-    email: string;
-    direccion: string;
-    id: number;
+    valor: number;
+    estado: string;
+    tipo: number | null;
   }>>;
   deleteForm: ReturnType<typeof useForm<{id: number}>>;
   dataRef: any;
@@ -34,7 +33,7 @@ const deleteSubmit = async () => {
   if (props.deleteForm.id <= -1) {
     toast({
       title: 'Error al eliminar',
-      description: 'No se ha seleccionado un cliente para eliminar.',
+      description: 'No se ha seleccionado un producto para eliminar.',
       duration: 5000,
       variant: 'destructive'
     });
@@ -44,8 +43,8 @@ const deleteSubmit = async () => {
   props.deleteForm.delete(route('clientes.destroy', {id: props.deleteForm.id}), {
     onSuccess: () => {
       toast({
-        title: 'Cliente eliminado',
-        description: 'El cliente ha sido eliminado exitosamente.',
+        title: 'Producto eliminado',
+        description: 'El producto ha sido eliminado exitosamente.',
         duration: 5000
       });
 
@@ -67,7 +66,7 @@ const updateSubmit = async () => {
   if (props.updateForm.id <= -1) {
     toast({
       title: 'Error al actualizar',
-      description: 'No se ha seleccionado un cliente para actualizar.',
+      description: 'No se ha seleccionado un producto para actualizar.',
       duration: 5000,
       variant: 'destructive'
     });
@@ -77,8 +76,8 @@ const updateSubmit = async () => {
   props.updateForm.put(route('clientes.update', {}), {
     onSuccess: () => {
       toast({
-        title: 'Cliente actualizado',
-        description: 'El cliente ha sido actualizado exitosamente.',
+        title: 'Producto actualizado',
+        description: 'El producto ha sido actualizado exitosamente.',
         duration: 5000
       });
 
@@ -90,7 +89,7 @@ const updateSubmit = async () => {
     },
     onError: (errors) => {
       toast({
-        title: 'Error al actualizar el cliente',
+        title: 'Error al actualizar el producto',
         description: Object.values(errors)[0] || 'Por favor, revise los campos e intente de nuevo.',
         duration: 5000,
         variant: 'destructive'
@@ -112,7 +111,7 @@ const openedUpdateForm = () => {
   <DropdownMenu>
     <DropdownMenuTrigger as-child>
       <Button variant="ghost" class="h-8 w-8 p-0">
-        <span class="sr-only">Open menu</span>
+        <span class="sr-only">Abrir menu</span>
         <MoreHorizontal class="h-4 w-4" />
       </Button>
     </DropdownMenuTrigger>
@@ -120,7 +119,7 @@ const openedUpdateForm = () => {
       <DropdownMenuLabel>Acciones</DropdownMenuLabel>
       <!-- Ver cliente -->
       <DrawerItem
-        dropdownText="Ver cliente"
+        dropdownText="Ver producto"
         :title="original.cli_nom + ' ' + original.cli_ape"
         :description="original.cli_ema"
       >
@@ -137,39 +136,6 @@ const openedUpdateForm = () => {
                 </p>
               </div>
             </div>
-            <div class="flex items-center space-x-4 rounded-md border p-4 w-full">
-              <CalendarDays />
-              <div class="flex-1 space-y-1">
-                <p class="text-sm font-medium leading-none">
-                  Sexo
-                </p>
-                <p class="text-sm text-muted-foreground">
-                  {{ original.cli_sex === 'O' ? 'Otro' : original.cli_sex === 'M' ? 'Masculino' : 'Femenino' }}
-                </p>
-              </div>
-            </div>
-            <div class="col-span-2 flex items-center space-x-4 rounded-md border p-4 w-full">
-              <Map />
-              <div class="flex-1 space-y-1">
-                <p class="text-sm font-medium leading-none">
-                  Dirección
-                </p>
-                <p class="text-sm text-muted-foreground">
-                  {{ original.cli_dir }}
-                </p>
-              </div>
-            </div>
-            <div class="col-span-2 flex items-center space-x-4 rounded-md border p-4 w-full">
-              <CalendarDays/>
-              <div class="flex-1 space-y-1">
-                <p class="text-sm font-medium leading-none">
-                  Fecha de creacion
-                </p>
-                <p class="text-sm text-muted-foreground">
-                  {{ new Date(original.created_at).toLocaleDateString() }}
-                </p>
-              </div>
-            </div>
           </div>
         </div>
       </DrawerItem>
@@ -177,9 +143,9 @@ const openedUpdateForm = () => {
       <DropdownMenuSeparator/>
       <!-- Editar cliente -->
       <DialogItem
-        dropdownText="Editar cliente"
-        title="Editar cliente"
-        description="Complete los campos para actualizar el cliente."
+        dropdownText="Editar producto"
+        title="Editar producto"
+        description="Complete los campos para actualizar el producto."
         action="Guardar"
         :disabled="updateForm.processing"
         @submit="updateSubmit"
@@ -215,9 +181,9 @@ const openedUpdateForm = () => {
 
       <!-- Eliminar cliente -->
       <AlertDialogItem
-        dropdownText="Eliminar cliente"
-        title="Eliminar cliente"
-        description="Esta acción no se puede deshacer. Esto eliminará permanentemente al cliente y eliminará sus datos del servidor."
+        dropdownText="Eliminar producto"
+        title="Eliminar producto"
+        description="Esta acción no se puede deshacer. Esto eliminará permanentemente el producto del servidor."
         cancel="Cancelar"
         action="Eliminar"
         @submit="deleteSubmit"

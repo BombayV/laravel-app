@@ -16,22 +16,27 @@ import {toast} from "@/components/ui/toast";
 import {useForm} from "@inertiajs/vue3";
 
 const props = defineProps<{
-  form: ReturnType<typeof useForm<{ nombre: string, apellido: string, email: string, telefono: string, direccion: string, sexo: string }>>;
+  form: ReturnType<typeof useForm<{
+    nombre: string;
+    valor: number;
+    tipo: string;
+  }>>;
+  types: Array<{tip_pro_id: number, tip_pro_nom: string}>;
 }>();
 
 const submit = () => {
-  props.form.post(route('clientes.store'), {
+  props.form.post(route('productos.store'), {
     onSuccess: () => {
       props.form.reset();
       toast({
-        title: 'Cliente creado',
-        description: 'El cliente ha sido creado exitosamente.',
+        title: 'Producto creado',
+        description: 'El producto ha sido creado exitosamente.',
         duration: 5000
       });
     },
     onError: (errors: any) => {
       toast({
-        title: 'Error al crear el cliente',
+        title: 'Error al crear el producto',
         description: Object.values(errors)[0] as string || 'Por favor, revise los campos e intente de nuevo.',
         duration: 5000,
         variant: 'destructive'
@@ -45,17 +50,17 @@ const submit = () => {
   <Dialog>
     <DialogTrigger>
       <Button>
-        Crear Cliente
+        Crear Producto
       </Button>
     </DialogTrigger>
     <DialogContent class="sm:max-w-[425px]">
       <form @submit.prevent="submit">
         <DialogHeader>
           <DialogTitle>
-            Crear nuevo cliente
+            Crear nuevo producto
           </DialogTitle>
           <DialogDescription>
-            Complete los campos para crear un nuevo cliente.
+            Complete los campos para crear un nuevo producto.
           </DialogDescription>
         </DialogHeader>
         <div class="grid gap-4 py-4">
@@ -66,47 +71,23 @@ const submit = () => {
             <Input id="nombre" class="col-span-3" required v-model="form.nombre" :disabled="form.processing" />
           </div>
           <div class="grid grid-cols-4 items-center gap-4">
-            <Label for="apellido" class="text-right">
-              Apellido
+            <Label for="valor" class="text-right">
+              Valor
             </Label>
-            <Input id="apellido" class="col-span-3" required v-model="form.apellido" :disabled="form.processing" />
+            <Input id="valor" class="col-span-3" required type="number" v-model="form.valor" :disabled="form.processing" step="0.01" />
           </div>
           <div class="grid grid-cols-4 items-center gap-4">
-            <Label for="email" class="text-right">
-              Email
+            <Label for="tipo" class="text-right col-span-1">
+              Tipo
             </Label>
-            <Input id="email" class="col-span-3" required v-model="form.email" :disabled="form.processing" type="email" />
-          </div>
-          <div class="grid grid-cols-4 items-center gap-4">
-            <Label for="telefono" class="text-right">
-              Teléfono
-            </Label>
-            <Input id="telefono" class="col-span-3" required v-model="form.telefono" :disabled="form.processing" type="tel" />
-          </div>
-          <div class="grid grid-cols-4 items-center gap-4">
-            <Label for="direccion" class="text-right">
-              Dirección
-            </Label>
-            <Input id="direccion" class="col-span-3" required v-model="form.direccion" :disabled="form.processing" />
-          </div>
-          <div class="grid grid-cols-4 items-center gap-4">
-            <Label for="sexo" class="text-right col-span-1">
-              Sexo
-            </Label>
-            <Select v-model="form.sexo" :disabled="form.processing">
+            <Select v-model="form.tipo" :disabled="form.processing">
               <SelectTrigger class="col-span-3">
-                <SelectValue placeholder="Seleccione el sexo" />
+                <SelectValue placeholder="Seleccione un tipo de producto" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectItem value="m">
-                    Hombre
-                  </SelectItem>
-                  <SelectItem value="f">
-                    Mujer
-                  </SelectItem>
-                  <SelectItem value="o">
-                    Otro
+                  <SelectItem v-for="type in types" :key="type.tip_pro_id" :value="type.tip_pro_id">
+                    {{ type.tip_pro_nom }}
                   </SelectItem>
                 </SelectGroup>
               </SelectContent>
@@ -116,7 +97,7 @@ const submit = () => {
         <DialogFooter>
           <Button type="submit" :disabled="form.processing">
             <Loader2 v-if="form.processing" class="w-4 h-4 mr-2 animate-spin" />
-            Crear nuevo cliente
+            Crear producto
           </Button>
         </DialogFooter>
       </form>

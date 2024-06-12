@@ -116,7 +116,7 @@ const submit = () => {
         <DialogFooter>
           <Button type="submit" :disabled="form.processing">
             <Loader2 v-if="form.processing" class="w-4 h-4 mr-2 animate-spin" />
-            Crear nuevo cliente
+            Crear cliente
           </Button>
         </DialogFooter>
       </form>

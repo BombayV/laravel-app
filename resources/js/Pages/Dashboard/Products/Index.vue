@@ -9,7 +9,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
-import DataTableDialogCliente from "@/Pages/Dashboard/Clients/DataTableDialogClient.vue";
 import {Button} from "@/components/ui/button";
 import DataTable from "@/components/table/DataTable.vue";
 import {ArrowUpDown, Trash} from "lucide-vue-next";
@@ -18,10 +17,12 @@ import {Checkbox} from "@/components/ui/checkbox";
 import DataTableDropdownProduct from "@/Pages/Dashboard/Products/DataTableDropdownProduct.vue";
 import {ProductColumn} from "@/components/table/columns";
 import {toast} from "@/components/ui/toast";
+import DataTableDialogProduct from "@/Pages/Dashboard/Products/DataTableDialogProduct.vue";
 
 const props = defineProps<{
 	data?: any;
   result?: any;
+  product_type?: any;
 }>();
 
 type CustomColumnDef =
@@ -66,7 +67,7 @@ const CLIENTS_COLUMNS: CustomColumnDef[] = [
     enableHiding: false
   },
   {
-    accessorKey: 'cli_nom',
+    accessorKey: 'pro_nom',
     header: ({ column }) => {
       return h(
         Button,
@@ -78,13 +79,42 @@ const CLIENTS_COLUMNS: CustomColumnDef[] = [
       );
     },
     cell: ({ row }) =>
-      h('div', { class: 'ml-4' }, ['Test']),
-    // filterFn: (row, _, filterValue) => {
-    //   return (
-    //
-    //   );
-    // },
+      h('div', { class: 'ml-4' }, [row.original.pro_nom]),
     name: 'Nombre',
+    enableHiding: false
+  },
+  {
+    accessorKey: 'tip_pro_nom',
+    header: ({ column }) => {
+      return h(
+        Button,
+        {
+          variant: 'ghost',
+          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
+        },
+        () => ['Tipo', h(ArrowUpDown, { class: 'w-4 h-4 ml-2' })]
+      );
+    },
+    cell: ({ row }) =>
+      h('div', { class: 'ml-4' }, [props.product_type[row.original.fk_tip_pro_id].tip_pro_nom]),
+    enableSorting: true,
+    enableHiding: false
+  },
+  {
+    accessorKey: 'pro_val',
+    header: ({ column }) => {
+      return h(
+        Button,
+        {
+          variant: 'ghost',
+          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
+        },
+        () => ['Valor', h(ArrowUpDown, { class: 'w-4 h-4 ml-2' })]
+      );
+    },
+    cell: ({ row }) =>
+      h('div', { class: 'ml-4' }, ['$' + row.original.pro_val]),
+    enableSorting: true,
     enableHiding: false
   },
   {
@@ -93,6 +123,7 @@ const CLIENTS_COLUMNS: CustomColumnDef[] = [
       return h('div', { class: 'relative float-end' }, [
         h(DataTableDropdownProduct, {
           original: row.original,
+          tipo: props.product_type[row.original.fk_tip_pro_id].tip_pro_nom,
           deleteForm: deleteForm,
           updateForm: updateForm,
           dataRef: dataRef
@@ -111,13 +142,18 @@ const deleteAllForm = useForm({
   ids: <number[]>[]
 });
 const updateForm = useForm({
-
+  nombre: '',
+  valor: 0,
+  tipo: 0,
+  estado: '',
 });
 const form = useForm({
-
+  nombre: '',
+  valor: 0,
+  tipo: null,
 });
 const dataRef = ref(props.data);
-const filters: string = '';
+const filters: string = 'pro_nom';
 
 const deleteAll = () => {
 
@@ -144,12 +180,14 @@ watch(
 			<h2 class="text-xl font-semibold leading-tight text-gray-800">Productos</h2>
 		</template>
     <div class="px-4 py-12">
+      {{ product_type }}
+      {{data  }}
       <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
         <DataTable
           :data="dataRef || []"
           :columns="CLIENTS_COLUMNS as unknown as ColumnDef<any>[]"
           :filters="filters || ''"
-          placeholder="Buscar productos por nombre o tipo"
+          placeholder="Buscar productos por nombre"
           @update:selectedRows="(table) => {
             selectedRows = table.getSelectedRowModel();
             table.toggleAllRowsSelected(selectedRows.rows.length === dataRef.length);
@@ -182,7 +220,7 @@ watch(
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>
-              <DataTableDialogCliente :form="form" />
+              <DataTableDialogProduct :form="form" :types="product_type" />
             </div>
           </template>
         </DataTable>
