@@ -10,12 +10,18 @@ export type ClientColumn = {
 	created_at: string;
 };
 
+export type ProductTypeColumn = {
+  tip_pro_id: number;
+  tip_pro_nom: string;
+};
+
 export type ProductColumn = {
 	pro_id: number;
 	pro_nom: string;
 	pro_val: number;
 	fk_tip_pro_id: number;
 	fk_est_pro_id: number;
+  tipo_producto?: ProductTypeColumn;
 };
 
 export type InventoryStatusColumn = {
