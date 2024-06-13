@@ -13,7 +13,7 @@ class OrdersController extends Controller
   {
     return Inertia::render('Dashboard/Orders/Index', [
       'status' => session('status'),
-      'orders' => Pedido::all()
+      'orders' => Pedido::with(['cliente', 'EstadoPedido', 'detallePedido.producto', 'detallePedido.producto.tipoProducto'])->get(),
     ]);
   }
 }
