@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Dashboard\ClientsController;
 use App\Http\Controllers\Dashboard\ProductsController;
+use App\Http\Controllers\Dashboard\InventoryController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -27,25 +28,26 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard/clientes', [ClientsController::class, 'create'])->name('clientes');
-    Route::post('/dashboard/clientes', [ClientsController::class, 'store'])->name('clientes.store');
-    Route::put('/dashboard/clientes', [ClientsController::class, 'update'])->name('clientes.update');
-    Route::delete('/dashboard/clientes/{id}', [ClientsController::class, 'destroy'])->name('clientes.destroy');
-    Route::get('/dashboard/clientes/{id}', [ClientsController::class, 'show'])->name('clientes.show');
-    Route::delete('/dashboard/clientes', [ClientsController::class, 'all'])->name('clientes.destroy.all');
-});
+  Route::get('/dashboard/productos', [ProductsController::class, 'create'])->name('productos');
+  Route::post('/dashboard/productos', [ProductsController::class, 'store'])->name('productos.store');
+  Route::put('/dashboard/productos', [ProductsController::class, 'update'])->name('productos.update');
+  Route::delete('/dashboard/productos/{id}', [ProductsController::class, 'destroy'])->name('productos.destroy');
+  Route::get('/dashboard/productos/{id}', [ProductsController::class, 'show'])->name('productos.show');
+  Route::delete('/dashboard/productos', [ProductsController::class, 'all'])->name('productos.destroy.all');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/dashboard/productos', [ProductsController::class, 'create'])->name('productos');
-    Route::post('/dashboard/productos', [ProductsController::class, 'store'])->name('productos.store');
-    Route::put('/dashboard/productos', [ProductsController::class, 'update'])->name('productos.update');
-    Route::delete('/dashboard/productos/{id}', [ProductsController::class, 'destroy'])->name('productos.destroy');
-    Route::get('/dashboard/productos/{id}', [ProductsController::class, 'show'])->name('productos.show');
-    Route::delete('/dashboard/productos', [ProductsController::class, 'all'])->name('productos.destroy.all');
-});
+  Route::get('/dashboard/inventario', [InventoryController::class, 'create'])->name('inventario');
+  Route::post('/dashboard/inventario', [InventoryController::class, 'store'])->name('inventario.store');
+  Route::put('/dashboard/inventario', [InventoryController::class, 'update'])->name('inventario.update');
+  Route::delete('/dashboard/inventario/{id}', [InventoryController::class, 'destroy'])->name('inventario.destroy');
+  Route::get('/dashboard/inventario/{id}', [InventoryController::class, 'show'])->name('inventario.show');
+  Route::delete('/dashboard/inventario', [InventoryController::class, 'all'])->name('inventario.destroy.all');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/dashboard/inventario', [ClientsController::class, 'create'])->name('inventario');
+  Route::get('/dashboard/clientes', [ClientsController::class, 'create'])->name('clientes');
+  Route::post('/dashboard/clientes', [ClientsController::class, 'store'])->name('clientes.store');
+  Route::put('/dashboard/clientes', [ClientsController::class, 'update'])->name('clientes.update');
+  Route::delete('/dashboard/clientes/{id}', [ClientsController::class, 'destroy'])->name('clientes.destroy');
+  Route::get('/dashboard/clientes/{id}', [ClientsController::class, 'show'])->name('clientes.show');
+  Route::delete('/dashboard/clientes', [ClientsController::class, 'all'])->name('clientes.destroy.all');
 });
 
 Route::middleware('auth')->group(function () {
