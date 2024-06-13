@@ -26,6 +26,9 @@ import DataTableDialogInventory from "@/Pages/Dashboard/Inventory/DataTableDialo
 const props = defineProps<{
   data?: any;
   inventory?: any;
+  inventory_count?: any;
+  last_30_days_entries?: any;
+  last_30_days_exits?: any;
 }>();
 
 type CustomColumnDef =
@@ -119,7 +122,6 @@ watch(
       <h2 class="text-xl font-semibold leading-tight text-gray-800">Inventario</h2>
     </template>
     <div class="px-4 py-12">
-      {{ inventory }}
       <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 flex flex-col gap-y-4">
         <div class="grid grid-cols-3 gap-4">
           <div class="flex flex-col gap-y-2 items-center space-x-4 rounded-md border p-4 bg-white">
@@ -132,7 +134,7 @@ watch(
               </p>
             </div>
             <p class="text-5xl font-semibold leading-none">
-              {{ numberFormat(40000) }}
+              {{ numberFormat(inventory_count) }}
             </p>
           </div>
           <div class=" flex flex-col gap-y-2 items-center space-x-4 rounded-md border p-4 bg-white">
@@ -145,7 +147,7 @@ watch(
               </p>
             </div>
             <p class="text-5xl font-semibold leading-none">
-              {{ numberFormat(20000) }}
+              {{ numberFormat(last_30_days_entries) }}
             </p>
           </div>
           <div class="flex flex-col gap-y-2 items-center space-x-4 rounded-md border p-4 bg-white">
@@ -158,7 +160,7 @@ watch(
               </p>
             </div>
             <p class="text-5xl font-semibold leading-none">
-              {{ numberFormat(20000) }}
+              {{ numberFormat(last_30_days_exits) }}
             </p>
           </div>
         </div>
