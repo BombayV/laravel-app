@@ -16,12 +16,12 @@ class Producto extends Model
   ];
   public $timestamps = false;
 
-  public function estadoProducto()
+  public function estadoProducto(): \Illuminate\Database\Eloquent\Relations\BelongsTo
   {
       return $this->belongsTo(EstadoProducto::class, 'fk_est_pro_id', 'est_pro_id');
   }
 
-  public function tipoProducto()
+  public function tipoProducto(): \Illuminate\Database\Eloquent\Relations\BelongsTo
   {
       return $this->belongsTo(TipoProducto::class, 'fk_tip_pro_id', 'tip_pro_id');
   }

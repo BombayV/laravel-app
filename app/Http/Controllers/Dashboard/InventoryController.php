@@ -14,7 +14,7 @@ class InventoryController extends Controller
   {
     return Inertia::render('Dashboard/Inventory/Index', [
       'status' => session('status'),
-      'inventory' => Inventario::all()
+      'inventory' => Inventario::with('producto')->with('estadoInventario')->get(),
     ]);
   }
 }

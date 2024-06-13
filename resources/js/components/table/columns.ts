@@ -18,37 +18,42 @@ export type ProductColumn = {
 	fk_est_pro_id: number;
 };
 
+export type InventoryStatusColumn = {
+  est_inv_id: number;
+  est_inv_nom: string;
+};
+
 export type InventoryColumn = {
 	inv_id: number;
-	pro_nom: string;
-	pro_val: number;
-	pro_id: number;
+	fk_pro_id: number;
 	inv_stock: number;
-	est_inv_des: string;
+	fk_est_inv_id: number;
+  producto: ProductColumn;
+  estado_inventario: InventoryStatusColumn;
 };
 
 export type OrderColumn = {
 	ped_id: number;
 	ped_est: string;
 	ped_tot: number;
-	cli_nom: string;
-	cli_ape: string;
-	cli_dir: string;
+  fk_cli_id: number;
 	ped_fec: string;
+  cliente: ClientColumn;
 };
 
 export type OrderDetailColumn = {
 	det_ped_id: number;
-	pro_nom: string;
-	pro_val: number;
+	fk_ped_id: number;
+  fk_pro_id: number;
 	det_ped_can: number;
 	det_ped_pre: number;
+  producto: ProductColumn;
+  pedido: OrderColumn;
 };
 
 export type InventoryLogColumn = {
 	reg_inv_id: number;
-	inv_id: number;
-	pro_nom: string;
+	fk_inv_id: number;
 	reg_inv_can: number;
 	reg_inv_fec: string;
 	reg_inv_tip_nom: string;
@@ -56,9 +61,8 @@ export type InventoryLogColumn = {
 
 export type SalesColumn = {
 	ven_id: number;
-	cli_nom: string;
-	cli_ape: string;
-	cli_dir: string;
+	fk_cli_id: number;
 	ven_tot: number;
 	created_at: string;
+  cliente: ClientColumn;
 };
