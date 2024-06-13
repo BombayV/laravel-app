@@ -50,7 +50,6 @@ const searchForm = useForm({
 const postForm = useForm({
   clientId: -1,
   productIds: <number[]>[],
-  quantity: 1,
   price: 0
 });
 const dataRef = ref<{
@@ -168,8 +167,10 @@ const setActiveUser = (user: any) => {
   };
 }
 
-const addProduct = (product: any) => {
-  postForm.productIds.push(product.pro_id);
+const increaseQuantity = () => {
+}
+
+const decreaseQuantity = () => {
 }
 
 const removeProduct = (product: any) => {
@@ -230,7 +231,7 @@ const removeProduct = (product: any) => {
                 <Button
                   class="ml-2"
                   size="icon"
-                  @click="addProduct(1)">
+                  @click="increaseQuantity(1)">
                   <Plus class="w-4 h-4" />
                 </Button>
                 <Button
