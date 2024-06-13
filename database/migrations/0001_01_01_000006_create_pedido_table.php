@@ -20,7 +20,7 @@ return new class extends Migration
             $table->id('ped_id');
             $table->foreignId('fk_cli_id')->references('cli_id')->on('cliente')->onDelete('restrict')->onUpdate('cascade');
             $table->date('ped_fec');
-            $table->decimal('ped_tot', 8, 2);
+            $table->decimal('ped_tot', 10, 2);
             $table->timestamps();
             $table->smallInteger('fk_est_ped_id');
             $table->foreign('fk_est_ped_id')->references('est_ped_id')->on('estado_pedido')->onDelete('restrict')->onUpdate('cascade');

@@ -24,7 +24,7 @@ return new class extends Migration
         Schema::create('producto', function (Blueprint $table) {
             $table->id('pro_id');
             $table->string('pro_nom', 30);
-            $table->decimal('pro_val', 4);
+            $table->decimal('pro_val');
             $table->smallInteger('fk_est_pro_id');
             $table->smallInteger('fk_tip_pro_id');
             $table->foreign('fk_est_pro_id')->references('est_pro_id')->on('estado_producto')->onDelete('restrict')->onUpdate('cascade');
