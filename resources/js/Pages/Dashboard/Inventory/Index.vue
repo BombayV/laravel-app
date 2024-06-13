@@ -93,7 +93,9 @@ const CLIENTS_COLUMNS: CustomColumnDef[] = [
         h(DataTableDropdownInventory, {
           original: row.original,
           dataRef,
-          postForm
+          postForm,
+          totalRef: inventoryCount,
+          entryRef: last30DaysEntries
         })
       ]);
     },
