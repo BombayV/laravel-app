@@ -19,6 +19,33 @@ return new class extends Migration
               insert into inventario (fk_pro_id, inv_stock, fk_est_inv_id) values (New.pro_id, 1, 1);
             END'
         );
+        DB::unprepared('
+            CREATE TRIGGER pedido_BEFORE_UPDATE BEFORE UPDATE ON pedido
+            FOR EACH ROW
+            BEGIN
+              IF NEW.fk_est_ped_id = 2 THEN
+                update inventario i
+                    inner join detalle_pedido dp on i.fk_pro_id = dp.fk_pro_id
+                    set i.inv_stock = i.inv_stock - dp.det_ped_can
+                    where dp.fk_ped_id = NEW.ped_id;
+                END IF;
+            END'
+        );
+        DB::unprepared('
+            CREATE TRIGGER inventario_BEFORE_UPDATE BEFORE UPDATE ON inventario
+            FOR EACH ROW
+            BEGIN
+              IF NEW.inv_stock != OLD.inv_stock then
+                insert into
+                  registro_inventario(fk_inv_id, reg_inv_fec, reg_inv_can, fk_reg_inv_tip)
+                        values (
+                        NEW.inv_id,
+                        current_date(),
+                        if(NEW.inv_stock > OLD.inv_stock, NEW.inv_stock - OLD.inv_stock, OLD.inv_stock - NEW.inv_stock),
+                        if(NEW.inv_stock > OLD.inv_stock, 1, 2));
+                End if;
+            END'
+        );
     }
 
     /**
