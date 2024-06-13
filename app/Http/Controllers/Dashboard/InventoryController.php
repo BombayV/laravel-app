@@ -21,4 +21,19 @@ class InventoryController extends Controller
       'last_30_days_exits' => RegistroInventario::where('reg_inv_fec', '>=', now()->subDays(30))->where('fk_reg_inv_tip', 2)->sum('reg_inv_can'),
     ]);
   }
+
+  public function store(Request $request): Response
+  {
+    $request->validate([
+      'id' => 'required|integer',
+      'stock' => 'required|integer',
+    ]);
+
+    // Add the new stock to the current stock
+    Inventario::where('inv_id', $request->id)->increment('inv_stock', $request->stock);
+
+    return Inertia::render('Dashboard/Inventory/Index', [
+      'status' => session('status'),
+    ]);
+  }
 }

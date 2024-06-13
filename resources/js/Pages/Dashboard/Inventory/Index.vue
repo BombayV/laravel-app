@@ -1,30 +1,15 @@
 <script setup lang="ts">
-import { ProductColumn } from '@/components/table/columns';
+import {InventoryColumn} from '@/components/table/columns';
 import DataTable from '@/components/table/DataTable.vue';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger
-} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { toast } from '@/components/ui/toast';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 import { ColumnDef } from '@tanstack/vue-table';
-import { ArrowUpDown, Trash } from 'lucide-vue-next';
-import { h, ref, watch } from 'vue';
-import {cn} from "@/lib/utils";
-import DataTableDialogInventory from "@/Pages/Dashboard/Inventory/DataTableDialogInventory.vue";
+import { ArrowUpDown } from 'lucide-vue-next';
+import { h, ref } from 'vue';
+import DataTableDropdownInventory from "@/Pages/Dashboard/Inventory/DataTableDropdownInventory.vue";
 
 const props = defineProps<{
-  data?: any;
   inventory?: any;
   inventory_count?: any;
   last_30_days_entries?: any;
@@ -32,67 +17,96 @@ const props = defineProps<{
 }>();
 
 type CustomColumnDef =
-  | ColumnDef<ProductColumn>
+  | ColumnDef<InventoryColumn>
   | {
   name: string;
 };
 
-const dataRef = ref(props.data);
-const selectedRows = ref<{
-  rows: any[];
-  flatRows: any[];
-  rowsById: Record<string, any>;
-}>({
-  rows: [],
-  flatRows: [],
-  rowsById: {}
-});
+const inventoryCount = ref(props.inventory_count);
+const last30DaysEntries = ref(props.last_30_days_entries);
+const last30DaysExits = ref(props.last_30_days_exits);
+const dataRef = ref(props.inventory);
 const CLIENTS_COLUMNS: CustomColumnDef[] = [
   {
-    id: 'select',
-    header: ({ table }) =>
-      h(Checkbox, {
-        checked:
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && 'indeterminate'),
-        'onUpdate:checked': (value) => {
-          table.toggleAllPageRowsSelected(!!value);
-          selectedRows.value = table.getSelectedRowModel();
+    id: 'producto.pro_nom',
+    accessorKey: 'producto.pro_nom',
+    header: ({ column }) => {
+      return h(
+        Button,
+        {
+          variant: 'ghost',
+          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
         },
-        ariaLabel: 'Seleccionar todas las filas'
-      }),
-    cell: ({ row, table }) =>
-      h(Checkbox, {
-        checked: row.getIsSelected(),
-        'onUpdate:checked': (value) => {
-          row.toggleSelected(!!value);
-          selectedRows.value = table.getSelectedRowModel();
+        () => ['Nombre', h(ArrowUpDown, { class: 'w-4 h-4 ml-2' })]
+      );
+    },
+    cell: ({ row }) =>
+      h('div', { class: 'ml-4' }, [row.original.producto.pro_nom]),
+    enableSorting: true,
+    name: 'Nombre',
+    filterFn: (row, _, filterValue) => {
+      return (
+        row.original.producto.pro_nom.toLowerCase().includes(filterValue.toLowerCase())
+      );
+    },
+  },
+  {
+    accessorKey: 'producto.tipo_producto.tip_pro_nom',
+    header: ({ column }) => {
+      return h(
+        Button,
+        {
+          variant: 'ghost',
+          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
         },
-        ariaLabel: 'Seleccionar fila'
-      }),
+        () => ['Tipo', h(ArrowUpDown, { class: 'w-4 h-4 ml-2' })]
+      );
+    },
+    cell: ({ row }) =>
+      h('div', { class: 'ml-4' }, [
+        row.original.producto.tipo_producto?.tip_pro_nom
+      ]),
+    name: 'Tipo'
+  },
+  {
+    accessorKey: 'inv_stock',
+    header: ({ column }) => {
+      return h(
+        Button,
+        {
+          variant: 'ghost',
+          onClick: () => {
+            column.toggleSorting(column.getIsSorted() === 'asc');
+          }
+        },
+        () => ['Stock', h(ArrowUpDown, { class: 'w-4 h-4 ml-2' })]
+      );
+    },
+    cell: ({ row }) =>
+      h('div', { class: 'ml-4' }, [row.original.inv_stock]),
+    name: 'Stock'
+  },
+  {
+    id: 'actions',
+    cell: ({ row }) => {
+      return h('div', { class: 'relative float-end' }, [
+        h(DataTableDropdownInventory, {
+          original: row.original,
+          dataRef,
+          postForm
+        })
+      ]);
+    },
     enableSorting: false,
     enableHiding: false
-  },
+  }
 ];
 
 const postForm = useForm({
-});
-const deleteForm = useForm({
-  id: -1
-});
-const deleteAllForm = useForm({
-  ids: <number[]>[]
-});
-const updateForm = useForm({
   id: -1,
+  stock: 0
 });
-const filters: string = 'pro_nom';
-
-const deleteAll = () => {
-  for (const row of selectedRows.value.rows) {
-    deleteAllForm.ids.push();
-  }
-};
+const filters: string = 'producto.pro_nom';
 
 const numberFormat = (num: number) => {
   if (num > 999 && num < 1000000) {
@@ -103,15 +117,6 @@ const numberFormat = (num: number) => {
     return num;
   }
 };
-
-watch(
-  () => props.result,
-  (value) => {
-    if (value) {
-      dataRef.value = [...dataRef.value, value];
-    }
-  }
-);
 </script>
 
 <template>
@@ -134,7 +139,7 @@ watch(
               </p>
             </div>
             <p class="text-5xl font-semibold leading-none">
-              {{ numberFormat(inventory_count) }}
+              {{ numberFormat(inventoryCount) }}
             </p>
           </div>
           <div class=" flex flex-col gap-y-2 items-center space-x-4 rounded-md border p-4 bg-white">
@@ -147,7 +152,7 @@ watch(
               </p>
             </div>
             <p class="text-5xl font-semibold leading-none">
-              {{ numberFormat(last_30_days_entries) }}
+              {{ numberFormat(last30DaysEntries) }}
             </p>
           </div>
           <div class="flex flex-col gap-y-2 items-center space-x-4 rounded-md border p-4 bg-white">
@@ -160,7 +165,7 @@ watch(
               </p>
             </div>
             <p class="text-5xl font-semibold leading-none">
-              {{ numberFormat(last_30_days_exits) }}
+              {{ numberFormat(last30DaysExits) }}
             </p>
           </div>
         </div>
@@ -168,52 +173,8 @@ watch(
           :data="dataRef || []"
           :columns="CLIENTS_COLUMNS as unknown as ColumnDef<any>[]"
           :filters="filters || ''"
-          placeholder=""
-          @update:selectedRows="
-						(table) => {
-							table.toggleAllRowsSelected(selectedRows.rows.length === dataRef.length);
-              selectedRows = table.getSelectedRowModel();
-						}
-					"
+          placeholder="Buscar productos por nombre"
         >
-          <template #top>
-            <div class="flex justify-end gap-x-2">
-              <AlertDialog>
-                <AlertDialogTrigger as-child>
-                  <Button
-                    v-if="selectedRows.rows.length > 0"
-                    size="icon"
-                    variant="destructive"
-                    type="submit"
-                  >
-                    <Trash class="h-4 w-4" />
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle class="text-lg font-semibold"
-                    >Eliminar {{ selectedRows.rows.length }} productos(s)</AlertDialogTitle
-                    >
-                    <AlertDialogDescription>
-                      ¿Estás seguro de que deseas eliminar
-                      {{ selectedRows.rows.length }} productos(s)? Esta acción no se puede deshacer
-                      y se eliminarán permanentemente.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                    <AlertDialogAction
-                      variant="destructive"
-                      @click="deleteAll"
-                      :disabled="deleteAllForm.processing"
-                    >
-                      Eliminar
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            </div>
-          </template>
         </DataTable>
       </div>
     </div>

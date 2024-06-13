@@ -37,10 +37,6 @@ Route::middleware('auth')->group(function () {
 
   Route::get('/dashboard/inventario', [InventoryController::class, 'create'])->name('inventario');
   Route::post('/dashboard/inventario', [InventoryController::class, 'store'])->name('inventario.store');
-  Route::put('/dashboard/inventario', [InventoryController::class, 'update'])->name('inventario.update');
-  Route::delete('/dashboard/inventario/{id}', [InventoryController::class, 'destroy'])->name('inventario.destroy');
-  Route::get('/dashboard/inventario/{id}', [InventoryController::class, 'show'])->name('inventario.show');
-  Route::delete('/dashboard/inventario', [InventoryController::class, 'all'])->name('inventario.destroy.all');
 
   Route::get('/dashboard/clientes', [ClientsController::class, 'create'])->name('clientes');
   Route::post('/dashboard/clientes', [ClientsController::class, 'store'])->name('clientes.store');
