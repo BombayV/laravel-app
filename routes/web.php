@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Dashboard\ClientsController;
 use App\Http\Controllers\Dashboard\ProductsController;
 use App\Http\Controllers\Dashboard\InventoryController;
+use App\Http\Controllers\Dashboard\OrdersController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -44,10 +45,9 @@ Route::middleware('auth')->group(function () {
   Route::delete('/dashboard/clientes/{id}', [ClientsController::class, 'destroy'])->name('clientes.destroy');
   Route::get('/dashboard/clientes/{id}', [ClientsController::class, 'show'])->name('clientes.show');
   Route::delete('/dashboard/clientes', [ClientsController::class, 'all'])->name('clientes.destroy.all');
-});
 
-Route::middleware('auth')->group(function () {
-    Route::get('/dashboard/pedidos', [ClientsController::class, 'create'])->name('pedidos');
+  Route::get('/dashboard/pedidos', [OrdersController::class, 'create'])->name('pedidos');
+  Route::post('/dashboard/pedidos', [OrdersController::class, 'store'])->name('pedidos.store');
 });
 
 Route::middleware('auth')->group(function () {
