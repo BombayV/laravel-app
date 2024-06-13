@@ -1,0 +1,261 @@
+<script lang="ts" setup>
+import {Button} from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from '@/components/ui/dialog';
+import {Input} from '@/components/ui/input';
+import {Label} from '@/components/ui/label';
+import {toast} from '@/components/ui/toast';
+import {useForm} from '@inertiajs/vue3';
+import {Loader2, Plus, Minus, Trash} from 'lucide-vue-next';
+import {ref} from "vue";
+import {ClientColumn} from "@/components/table/columns";
+
+const props = defineProps<{
+  products: any;
+}>();
+
+const submit = () => {
+	postForm.post(route('pedidos.show'), {
+		onSuccess: () => {
+			postForm.reset();
+			toast({
+				title: 'Pedido creado',
+				description: 'El pedido ha sido creado exitosamente.',
+				duration: 5000
+			});
+		},
+		onError: (errors: any) => {
+			toast({
+				title: 'Error al crear el pedido',
+				description:
+					(Object.values(errors)[0] as string) ||
+					'Por favor, revise los campos e intente de nuevo.',
+				duration: 5000,
+				variant: 'destructive'
+			});
+		}
+	});
+};
+
+const searchForm = useForm({
+  search: ''
+});
+const postForm = useForm({
+  clientId: -1,
+  productIds: <number[]>[],
+  quantity: 1,
+  price: 0
+});
+const dataRef = ref<{
+  success: boolean;
+  data: ClientColumn[];
+  message: string;
+}>({
+  success: false,
+  data: [],
+  message: ''
+});
+let timeout = ref<ReturnType<typeof setTimeout> | null>(null);
+const searchUsers = async () => {
+  if (timeout) {
+    clearTimeout(timeout.value as ReturnType<typeof setTimeout>);
+  }
+
+  timeout.value = setTimeout(async () => {
+    if (!searchForm.search) {
+      dataRef.value = {
+        success: false,
+        data: [],
+        message: ''
+      };
+      return;
+    }
+
+    if (postForm.clientId !== -1) {
+      postForm.clientId = -1;
+    }
+
+    const response = await fetch(
+      route('pedidos.show', {
+        id: searchForm.search
+      })
+    );
+    const data = await response.json();
+    if (data.success) {
+      dataRef.value = {
+        success: true,
+        data: data.data,
+        message: ''
+      };
+    } else {
+      dataRef.value = {
+        success: false,
+        data: [],
+        message: data.message
+      };
+    }
+
+    timeout.value = null;
+  }, 500);
+}
+
+const productDataRef = ref<{
+  success: boolean;
+  data: any[];
+  message: string;
+}>({
+  success: false,
+  data: [],
+  message: ''
+});
+const productSearchForm = useForm({
+  search: ''
+});
+const searchTimeout = ref<ReturnType<typeof setTimeout> | null>(null);
+const searchProduct = () => {
+if (searchTimeout) {
+    clearTimeout(searchTimeout.value as ReturnType<typeof setTimeout>);
+  }
+
+  searchTimeout.value = setTimeout(async () => {
+    if (!productSearchForm.search) {
+      productDataRef.value = {
+        success: false,
+        data: [],
+        message: ''
+      };
+      return;
+    }
+
+    const response = await fetch(
+      route('productos.show', {
+        id: productSearchForm.search
+      })
+    );
+    const data = await response.json();
+    if (data.success) {
+      productDataRef.value = {
+        success: true,
+        data: data.data,
+        message: ''
+      };
+    } else {
+      productDataRef.value = {
+        success: false,
+        data: [],
+        message: data.message
+      };
+    }
+
+    searchTimeout.value = null;
+  }, 500);
+}
+
+const setActiveUser = (user: any) => {
+  searchForm.search = `${user.cli_nom} ${user.cli_ape}`;
+  postForm.clientId = user.cli_id;
+  dataRef.value = {
+    success: false,
+    data: [],
+    message: ''
+  };
+}
+
+const addProduct = (product: any) => {
+  postForm.productIds.push(product.pro_id);
+}
+
+const removeProduct = (product: any) => {
+  postForm.productIds = postForm.productIds.filter((id) => id !== product.pro_id);
+}
+</script>
+
+<template>
+	<Dialog>
+		<DialogTrigger>
+			<Button> Crear Pedido </Button>
+		</DialogTrigger>
+		<DialogContent class="sm:max-w-[425px]">
+			<form @submit.prevent="submit">
+				<DialogHeader>
+					<DialogTitle> Crear nuevo pedido </DialogTitle>
+					<DialogDescription> Complete los campos para crear un nuevo pedido. </DialogDescription>
+				</DialogHeader>
+				<div class="grid gap-4 py-4 relative">
+          <div class="grid grid-cols-4 items-center gap-4">
+            <Label for="nombre" class="text-right"> Cliente </Label>
+            <div class="w-full relative col-span-3">
+              <Input
+                id="nombre"
+                required
+                v-model="searchForm.search"
+                placeholder="Buscar cliente"
+                @update:modelValue="searchUsers"
+              />
+              <div
+                v-if="searchForm.search && dataRef.data.length > 0 && !timeout"
+                class="border absolute w-full top-full translate-y-2 rounded bg-white flex flex-col flex-nowrap max-h-40 overflow-y-auto z-50">
+                <button v-for="user in dataRef.data" :key="user.cli_id" class="min-h-10 max-h-10 border-b capitalize overflow-ellipsis overflow-hidden whitespace-nowrap flex items-center text-sm hover:bg-neutral-100 duration-200 transition-colors px-3 w-full"
+                  @click="setActiveUser(user)"
+                >
+                {{ `${user.cli_nom} ${user.cli_ape}` }}
+                </button>
+              </div>
+              <p v-else-if="searchForm.search && dataRef.data.length <= 0 && !timeout && postForm.clientId === -1" class="border px-3 py-2 absolute w-full top-full translate-y-2 rounded bg-white overflow-y-auto">
+                No se encontraron resultados
+              </p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-4 items-center gap-4">
+            <Label for="nombre" class="text-right">Producto</Label>
+
+          </div>
+          <div class="grid grid-cols-4 items-center gap-4">
+            <Label for="nombre" class="text-right">Cantidad</Label>
+            <div class="w-full col-span-3 grid grid-cols-4">
+              <Input
+                id="nombre"
+                disabled
+
+              />
+              <div class="flex items-center gap-x-2 w-full">
+                <Button
+                  class="ml-2"
+                  size="icon"
+                  @click="addProduct(1)">
+                  <Plus class="w-4 h-4" />
+                </Button>
+                <Button
+                  class="ml-2"
+                  size="icon"
+                  @click="removeProduct(1)">
+                  <Minus class="w-4 h-4" />
+                </Button>
+                <Button
+                  class="ml-2"
+                  size="icon"
+                  @click="removeProduct(1)">
+                  <Minus class="w-4 h-4" />
+                </Button>
+              </div>
+            </div>
+          </div>
+				</div>
+				<DialogFooter>
+					<Button type="submit" :disabled="postForm.processing || postForm.clientId === -1">
+						<Loader2 v-if="postForm.processing" class="mr-2 h-4 w-4 animate-spin" />
+						Crear pedido
+					</Button>
+				</DialogFooter>
+			</form>
+		</DialogContent>
+	</Dialog>
+</template>

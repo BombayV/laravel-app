@@ -5,12 +5,20 @@ import { Button } from '@/components/ui/button';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 import { ColumnDef } from '@tanstack/vue-table';
-import { ArrowUpDown } from 'lucide-vue-next';
+import {ArrowUpDown, Trash} from 'lucide-vue-next';
 import { h, ref } from 'vue';
 import DataTableDropdownOrders from "@/Pages/Dashboard/Orders/DataTableDropdownOrders.vue";
+import {
+  AlertDialog, AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle, AlertDialogTrigger
+} from "@/components/ui/alert-dialog";
+import DataTableDialogOrders from "@/Pages/Dashboard/Orders/DataTableDialogOrders.vue";
 
 const props = defineProps<{
-  data?: any;
+  orders?: any;
 }>();
 
 type CustomColumnDef =
@@ -59,10 +67,6 @@ const CLIENTS_COLUMNS: CustomColumnDef[] = [
   }
 ];
 
-const postForm = useForm({
-  id: -1,
-  stock: 0
-});
 const filters: string = 'producto.pro_nom';
 </script>
 
@@ -81,7 +85,9 @@ const filters: string = 'producto.pro_nom';
           :filters="filters || ''"
           placeholder="Buscar pedidos por nombre"
         >
-
+          <template #top>
+            <DataTableDialogOrders :products="props.products" />
+          </template>
         </DataTable>
       </div>
     </div>

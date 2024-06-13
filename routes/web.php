@@ -5,6 +5,7 @@ use App\Http\Controllers\Dashboard\ClientsController;
 use App\Http\Controllers\Dashboard\ProductsController;
 use App\Http\Controllers\Dashboard\InventoryController;
 use App\Http\Controllers\Dashboard\OrdersController;
+use App\Http\Controllers\Dashboard\ClientSearch;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -48,6 +49,7 @@ Route::middleware('auth')->group(function () {
 
   Route::get('/dashboard/pedidos', [OrdersController::class, 'create'])->name('pedidos');
   Route::post('/dashboard/pedidos', [OrdersController::class, 'store'])->name('pedidos.store');
+  Route::get('/dashboard/pedidos/{id}', [ClientSearch::class, 'show'])->name('pedidos.show');
 });
 
 Route::middleware('auth')->group(function () {
