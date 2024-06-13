@@ -67,11 +67,11 @@ const filters: string = 'producto.pro_nom';
 </script>
 
 <template>
-  <Head title="Inventario" />
+  <Head title="Pedidos" />
 
   <AuthenticatedLayout>
     <template #header>
-      <h2 class="text-xl font-semibold leading-tight text-gray-800">Inventario</h2>
+      <h2 class="text-xl font-semibold leading-tight text-gray-800">Pedidos</h2>
     </template>
     <div class="px-4 py-12">
       <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 flex flex-col gap-y-4">
@@ -81,6 +81,7 @@ const filters: string = 'producto.pro_nom';
           :filters="filters || ''"
           placeholder="Buscar pedidos por nombre"
         >
+
         </DataTable>
       </div>
     </div>
