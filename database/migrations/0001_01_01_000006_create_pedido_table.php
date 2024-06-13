@@ -22,7 +22,7 @@ return new class extends Migration
             $table->date('ped_fec');
             $table->decimal('ped_tot', 10, 2);
             $table->timestamps();
-            $table->smallInteger('fk_est_ped_id');
+            $table->smallInteger('fk_est_ped_id')->default(1);
             $table->foreign('fk_est_ped_id')->references('est_ped_id')->on('estado_pedido')->onDelete('restrict')->onUpdate('cascade');
         });
 

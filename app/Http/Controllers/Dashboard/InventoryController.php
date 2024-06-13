@@ -25,8 +25,8 @@ class InventoryController extends Controller
   public function store(Request $request): Response
   {
     $request->validate([
-      'id' => 'required|integer',
-      'stock' => 'required|integer',
+      'id' => 'required|BigInteger',
+      'stock' => 'required|smallInteger',
     ]);
 
     // Add the new stock to the current stock

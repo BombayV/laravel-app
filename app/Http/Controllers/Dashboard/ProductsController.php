@@ -30,9 +30,9 @@ class ProductsController extends Controller
   public function store(Request $request): Response
   {
     $request->validate([
-      'nombre' => 'required',
-      'valor' => 'required',
-      'tipo' => 'required'
+      'nombre' => 'required|string|max:30',
+      'valor' => 'required|numeric|min:0',
+      'tipo' => 'required|integer',
     ]);
 
     $result = Producto::create([
@@ -56,10 +56,10 @@ class ProductsController extends Controller
   public function update(Request $request): Response
   {
     $request->validate([
-      'nombre' => 'required',
-      'valor' => 'required',
-      'tipo' => 'required',
-      'estado' => 'required',
+      'nombre' => 'required|string|max:30',
+      'valor' => 'required|numeric|min:0',
+      'tipo' => 'required|integer|min:1|max:5',
+      'estado' => 'required|integer|min:1|max:3',
     ]);
 
     $result = Producto::where('pro_id', $request->input('id'))->update([
