@@ -21,10 +21,11 @@ import { ColumnDef } from '@tanstack/vue-table';
 import { ArrowUpDown, Trash } from 'lucide-vue-next';
 import { h, ref, watch } from 'vue';
 import {cn} from "@/lib/utils";
+import DataTableDialogInventory from "@/Pages/Dashboard/Inventory/DataTableDialogInventory.vue";
 
 const props = defineProps<{
   data?: any;
-  result?: any;
+  inventory?: any;
 }>();
 
 type CustomColumnDef =
@@ -92,11 +93,11 @@ const deleteAll = () => {
 
 const numberFormat = (num: number) => {
   if (num > 999 && num < 1000000) {
-    return (num / 1000).toFixed(1) + 'K'; // convert to K for number from > 1000 < 1 million
+    return (num / 1000).toFixed(1) + 'K';
   } else if (num > 1000000) {
-    return (num / 1000000).toFixed(1) + 'M'; // convert to M for number from > 1 million
+    return (num / 1000000).toFixed(1) + 'M';
   } else if (num < 900) {
-    return num; // if value < 1000, nothing to do
+    return num;
   }
 };
 
@@ -118,6 +119,7 @@ watch(
       <h2 class="text-xl font-semibold leading-tight text-gray-800">Inventario</h2>
     </template>
     <div class="px-4 py-12">
+      {{ inventory }}
       <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 flex flex-col gap-y-4">
         <div class="grid grid-cols-3 gap-4">
           <div class="flex flex-col gap-y-2 items-center space-x-4 rounded-md border p-4 bg-white">
@@ -208,8 +210,6 @@ watch(
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>
-
-
             </div>
           </template>
         </DataTable>
