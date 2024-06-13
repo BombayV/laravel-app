@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('ventas', function (Blueprint $table) {
             $table->id('ven_id');
             $table->foreignId('fk_cli_id')->references('cli_id')->on('cliente')->onDelete('restrict')->onUpdate('cascade');
-            $table->decimal('ven_tot', 8, 2);
+            $table->decimal('ven_tot', 12, 2);
             $table->timestamps();
         });
 
