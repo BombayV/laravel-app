@@ -34,41 +34,7 @@ type CustomColumnDef =
 			name: string;
 	  };
 
-const selectedRows = ref<{
-	rows: any[];
-	flatRows: any[];
-	rowsById: Record<string, any>;
-}>({
-	rows: [],
-	flatRows: [],
-	rowsById: {}
-});
 const CLIENTS_COLUMNS: CustomColumnDef[] = [
-	{
-		id: 'select',
-		header: ({ table }) =>
-			h(Checkbox, {
-				checked:
-					table.getIsAllPageRowsSelected() ||
-					(table.getIsSomePageRowsSelected() && 'indeterminate'),
-				'onUpdate:checked': (value) => {
-					table.toggleAllPageRowsSelected(!!value);
-					selectedRows.value = table.getSelectedRowModel();
-				},
-				ariaLabel: 'Seleccionar todas las filas'
-			}),
-		cell: ({ row, table }) =>
-			h(Checkbox, {
-				checked: row.getIsSelected(),
-				'onUpdate:checked': (value) => {
-					row.toggleSelected(!!value);
-					selectedRows.value = table.getSelectedRowModel();
-				},
-				ariaLabel: 'Seleccionar fila'
-			}),
-		enableSorting: false,
-		enableHiding: false
-	},
 	{
 		accessorKey: 'cli_nom',
 		header: ({ column }) => {
@@ -118,7 +84,6 @@ const CLIENTS_COLUMNS: CustomColumnDef[] = [
 			return h('div', { class: 'relative' }, [
 				h(DataTableDropdownClient, {
 					original: row.original,
-					deleteForm: deleteForm,
 					updateForm: updateForm,
 					dataRef: dataRef
 				})
@@ -129,9 +94,6 @@ const CLIENTS_COLUMNS: CustomColumnDef[] = [
 	}
 ];
 
-const deleteForm = useForm({
-	id: -1
-});
 const deleteAllForm = useForm({
 	ids: <number[]>[]
 });
@@ -152,33 +114,6 @@ const form = useForm({
 });
 const dataRef = ref(props.data);
 const filters: string = 'cli_nom';
-
-const deleteAll = () => {
-	for (const row of selectedRows.value.rows) {
-		deleteAllForm.ids.push(row.original.cli_id);
-	}
-
-	deleteAllForm.delete(route('clientes.destroy.all'), {
-		preserveScroll: true,
-		onSuccess: () => {
-			toast({
-				title: 'Clientes eliminados',
-				description: `Se han eliminado ${deleteAllForm.ids.length} clientes.`,
-				duration: 5000
-			});
-			dataRef.value = dataRef.value.filter((row: any) => !deleteAllForm.ids.includes(row.cli_id));
-			deleteAllForm.ids = [];
-		},
-		onError: () => {
-			toast({
-				title: 'Error al eliminar',
-				description: 'No se pudo eliminar los clientes seleccionados',
-				variant: 'destructive',
-				duration: 5000
-			});
-		}
-	});
-};
 
 watch(
 	() => props.result,
@@ -204,51 +139,9 @@ watch(
 					:columns="CLIENTS_COLUMNS as unknown as ColumnDef<any>[]"
 					:filters="filters || ''"
 					placeholder="Buscar clientes por nombre o email"
-					@update:selectedRows="
-						(table) => {
-              table.toggleAllRowsSelected(selectedRows.rows.length === dataRef.length);
-							selectedRows = table.getSelectedRowModel();
-						}
-					"
 				>
 					<template #top>
-						<div class="flex justify-end gap-x-2">
-							<AlertDialog>
-								<AlertDialogTrigger as-child>
-									<Button
-										v-if="selectedRows.rows.length > 0"
-										size="icon"
-										variant="destructive"
-										type="submit"
-									>
-										<Trash class="h-4 w-4" />
-									</Button>
-								</AlertDialogTrigger>
-								<AlertDialogContent>
-									<AlertDialogHeader>
-										<AlertDialogTitle class="text-lg font-semibold"
-											>Eliminar {{ selectedRows.rows.length }} cliente(s)</AlertDialogTitle
-										>
-										<AlertDialogDescription>
-											¿Estás seguro de que deseas eliminar
-											{{ selectedRows.rows.length }} cliente(s)? Esta acción no se puede deshacer y
-											se eliminarán permanentemente.
-										</AlertDialogDescription>
-									</AlertDialogHeader>
-									<AlertDialogFooter>
-										<AlertDialogCancel>Cancelar</AlertDialogCancel>
-										<AlertDialogAction
-											variant="destructive"
-											@click="deleteAll"
-											:disabled="deleteAllForm.processing"
-										>
-											Eliminar
-										</AlertDialogAction>
-									</AlertDialogFooter>
-								</AlertDialogContent>
-							</AlertDialog>
-							<DataTableDialogCliente :form="form" />
-						</div>
+            <DataTableDialogCliente :form="form" />
 					</template>
 				</DataTable>
 			</div>

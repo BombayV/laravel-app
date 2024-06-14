@@ -28,44 +28,8 @@ const props = defineProps<{
 			id: number;
 		}>
 	>;
-	deleteForm: ReturnType<typeof useForm<{ id: number }>>;
 	dataRef: any;
 }>();
-
-const deleteSubmit = async () => {
-	if (props.deleteForm.id <= -1) {
-		toast({
-			title: 'Error al eliminar',
-			description: 'No se ha seleccionado un cliente para eliminar.',
-			duration: 5000,
-			variant: 'destructive'
-		});
-		return;
-	}
-
-	props.deleteForm.delete(route('clientes.destroy', { id: props.deleteForm.id }), {
-		onSuccess: () => {
-			toast({
-				title: 'Cliente eliminado',
-				description: 'El cliente ha sido eliminado exitosamente.',
-				duration: 5000
-			});
-
-			props.dataRef.value = props.dataRef.value.filter(
-				(item: any) => item.cli_id !== props.deleteForm.id
-			);
-			props.deleteForm.id = -1;
-		},
-		onError: (errors) => {
-			toast({
-				title: 'Error al eliminar el cliente',
-				description: Object.values(errors)[0] || 'Por favor, revise los campos e intente de nuevo.',
-				duration: 5000,
-				variant: 'destructive'
-			});
-		}
-	});
-};
 
 const updateSubmit = async () => {
 	if (props.updateForm.id <= -1) {
@@ -232,19 +196,6 @@ const openedUpdateForm = () => {
 					</div>
 				</div>
 			</DialogItem>
-
-			<!-- Eliminar cliente -->
-			<AlertDialogItem
-				dropdownText="Eliminar cliente"
-				title="Eliminar cliente"
-				description="Esta acción no se puede deshacer. Esto eliminará permanentemente al cliente y eliminará sus datos del servidor."
-				cancel="Cancelar"
-				action="Eliminar"
-				@submit="deleteSubmit"
-				@opened="() => (props.deleteForm.id = props.original.cli_id)"
-				@closed="() => (props.deleteForm.id = -1)"
-			>
-			</AlertDialogItem>
 		</DropdownMenuContent>
 	</DropdownMenu>
 </template>
