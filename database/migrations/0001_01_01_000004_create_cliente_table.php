@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('cli_ema', 50);
             $table->string('cli_dir', 100);
             $table->string('cli_sex', 1);
+            $table->boolean('cli_est')->default(true);
             $table->timestamps();
         });
     }

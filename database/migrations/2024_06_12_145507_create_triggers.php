@@ -13,14 +13,14 @@ return new class extends Migration
     public function up(): void
     {
         DB::unprepared('
-            CREATE TRIGGER producto_AFTER_INSERT AFTER INSERT ON producto
+            CREATE TRIGGER IF NOT EXISTS producto_AFTER_INSERT AFTER INSERT ON producto
             FOR EACH ROW
             BEGIN
               insert into inventario (fk_pro_id, inv_stock, fk_est_inv_id) values (New.pro_id, 1, 1);
             END'
         );
         DB::unprepared('
-            CREATE TRIGGER pedido_BEFORE_UPDATE BEFORE UPDATE ON pedido
+            CREATE TRIGGER IF NOT EXISTS pedido_BEFORE_UPDATE BEFORE UPDATE ON pedido
             FOR EACH ROW
             BEGIN
               IF NEW.fk_est_ped_id = 2 THEN
@@ -32,7 +32,7 @@ return new class extends Migration
             END'
         );
         DB::unprepared('
-            CREATE TRIGGER inventario_BEFORE_UPDATE BEFORE UPDATE ON inventario
+            CREATE TRIGGER IF NOT EXISTS inventario_BEFORE_UPDATE BEFORE UPDATE ON inventario
             FOR EACH ROW
             BEGIN
               IF NEW.inv_stock != OLD.inv_stock then
@@ -54,5 +54,7 @@ return new class extends Migration
     public function down(): void
     {
         DB::unprepared('DROP TRIGGER IF EXISTS producto_AFTER_INSERT');
+        DB::unprepared('DROP TRIGGER IF EXISTS pedido_BEFORE_UPDATE');
+        DB::unprepared('DROP TRIGGER IF EXISTS inventario_BEFORE_UPDATE');
     }
 };
