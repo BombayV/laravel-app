@@ -84,7 +84,9 @@ const disableSubmit = async () => {
     return;
   }
 
-  disableForm.delete(route('clientes.destroy', {}), {
+  disableForm.delete(route('clientes.destroy', {
+    id: disableForm.id
+  }), {
     onSuccess: () => {
       toast({
         title: 'Cliente deshabilitado',

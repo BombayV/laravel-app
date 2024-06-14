@@ -17,7 +17,7 @@ class ClientsController extends Controller
     {
         return Inertia::render('Dashboard/Clients/Index', [
           'status' => session('status'),
-          'data' => Cliente::all(),
+          'data' => Cliente::where('cli_est', true)->get(),
         ]);
     }
 
@@ -84,7 +84,7 @@ class ClientsController extends Controller
         'id' => 'required|integer',
       ]);
 
-      Cliente::findOrfail($request->id)->update(['cli_sta' => false]);
+      Cliente::where('cli_id', $request->id)->update(['cli_est' => false]);
 
       return Inertia::render('Dashboard/Clients/Index', [
         'status' => session('status'),
