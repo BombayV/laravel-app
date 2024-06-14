@@ -78,7 +78,7 @@ class ProductsController extends Controller
   public function destroy(Request $request): Response
   {
     $request->validate([
-      'id' => 'required'
+      'id' => 'required|integer'
     ]);
 
     Producto::destroy([

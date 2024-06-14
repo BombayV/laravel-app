@@ -35,6 +35,7 @@ return new class extends Migration
             $table->date('reg_inv_fec');
             $table->integer('reg_inv_can');
             $table->smallInteger('fk_reg_inv_tip');
+            $table->bigInteger('fk_usu_id')->nullable();
             $table->foreign('fk_reg_inv_tip')->references('tip_reg_inv_id')->on('tipo_registro_inventario')->onDelete('restrict')->onUpdate('cascade');
         });
     }
