@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import ApplicationLogo from '@/components/ApplicationLogo.vue';
-import ResponsiveNavLink from '@/components/ResponsiveNavLink.vue';
 import { Button } from '@/components/ui/button';
 import {
 	DropdownMenu,
