@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/components/ui/toast/use-toast';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head, Link, useForm } from '@inertiajs/vue3';
 
 defineProps<{
 	canResetPassword?: boolean;
@@ -54,11 +54,11 @@ const { toast } = useToast();
 				/>
 			</div>
 			<div class="grid w-full max-w-sm items-center gap-1.5">
-				<Label for="password">Password</Label>
+				<Label for="password">Contraseña</Label>
 				<Input
 					id="email"
 					type="password"
-					placeholder="Password"
+					placeholder="Contraseña"
 					v-model="form.password"
 					required
 					autocomplete="current-password"
@@ -74,8 +74,16 @@ const { toast } = useToast();
 						Recuerdame
 					</label>
 				</div>
-				<Button type="submit" class="w-full max-w-32"> Log in </Button>
+				<Button type="submit" class="w-full max-w-32">
+          Iniciar sesión
+        </Button>
 			</div>
+      <Link
+        :href="route('register')"
+        class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 mt-4"
+      >
+        Aun no tienes cuenta?
+      </Link>
 		</form>
 	</GuestLayout>
 </template>

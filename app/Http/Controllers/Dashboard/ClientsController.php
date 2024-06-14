@@ -83,26 +83,8 @@ class ClientsController extends Controller
       $request->validate([
         'id' => 'required|integer',
       ]);
-      Cliente::destroy([
-        'cli_id' => $request->id,
-      ]);
 
-      return Inertia::render('Dashboard/Clients/Index', [
-        'status' => session('status'),
-      ]);
-    }
-
-    public function all(Request $request): Response
-    {
-      $request->validate([
-        'ids' => 'required|array',
-      ]);
-
-      for ($i = 0; $i < count($request->ids); $i++) {
-        Cliente::destroy([
-          'cli_id' => $request->ids[$i],
-        ]);
-      }
+      Cliente::findOrfail($request->id)->update(['cli_sta' => false]);
 
       return Inertia::render('Dashboard/Clients/Index', [
         'status' => session('status'),

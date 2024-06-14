@@ -6,6 +6,7 @@ use App\Http\Controllers\Dashboard\ProductsController;
 use App\Http\Controllers\Dashboard\InventoryController;
 use App\Http\Controllers\Dashboard\OrdersController;
 use App\Http\Controllers\Dashboard\ClientSearch;
+use App\Http\Controllers\Dashboard\DashboardController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -19,9 +20,7 @@ Route::get('/', function () {
     ]);
 })->middleware('guest')->name('login');
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard/Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -45,7 +44,6 @@ Route::middleware('auth')->group(function () {
   Route::put('/dashboard/clientes', [ClientsController::class, 'update'])->name('clientes.update');
   Route::delete('/dashboard/clientes/{id}', [ClientsController::class, 'destroy'])->name('clientes.destroy');
   Route::get('/dashboard/clientes/{id}', [ClientsController::class, 'show'])->name('clientes.show');
-  Route::delete('/dashboard/clientes', [ClientsController::class, 'all'])->name('clientes.destroy.all');
 
   Route::get('/dashboard/pedidos', [OrdersController::class, 'create'])->name('pedidos');
   Route::post('/dashboard/pedidos', [OrdersController::class, 'store'])->name('pedidos.store');

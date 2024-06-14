@@ -19,8 +19,6 @@ import { Layers3, DollarSign, MoreHorizontal, Check } from 'lucide-vue-next';
 const props = defineProps<{
 	original: InventoryColumn;
 	dataRef: any;
-  totalRef: any;
-  entryRef: any;
   postForm: ReturnType<typeof useForm<{
     id: number;
     stock: number;
@@ -38,8 +36,6 @@ const postSubmit = () => {
 
       const idx = props.dataRef.value.findIndex((item: any) => item.inv_id === props.postForm.id);
       props.dataRef.value[idx].inv_stock += props.postForm.stock;
-      props.totalRef.value = parseInt(props.totalRef.value) + props.postForm.stock;
-      props.entryRef.value = parseInt(props.entryRef.value) + props.postForm.stock;
     },
     onError: (errors) => {
       toast({

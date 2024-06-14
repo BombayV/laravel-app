@@ -31,6 +31,10 @@ const props = defineProps<{
 	dataRef: any;
 }>();
 
+const disableForm = useForm({
+  id: -1
+});
+
 const updateSubmit = async () => {
 	if (props.updateForm.id <= -1) {
 		toast({
@@ -67,6 +71,38 @@ const updateSubmit = async () => {
 			});
 		}
 	});
+};
+
+const disableSubmit = async () => {
+  if (disableForm.id <= -1) {
+    toast({
+      title: 'Error al deshabilitar',
+      description: 'No se ha seleccionado un cliente para deshabilitar.',
+      duration: 5000,
+      variant: 'destructive'
+    });
+    return;
+  }
+
+  disableForm.delete(route('clientes.destroy', {}), {
+    onSuccess: () => {
+      toast({
+        title: 'Cliente deshabilitado',
+        description: 'El cliente ha sido deshabilitado exitosamente.',
+        duration: 5000
+      });
+
+      props.dataRef.value = props.dataRef.value.filter((item: any) => item.cli_id !== disableForm.id);
+    },
+    onError: (errors) => {
+      toast({
+        title: 'Error al deshabilitar el cliente',
+        description: Object.values(errors)[0] || 'Por favor, revise los campos e intente de nuevo.',
+        duration: 5000,
+        variant: 'destructive'
+      });
+    }
+  });
 };
 
 const openedUpdateForm = () => {
@@ -196,6 +232,19 @@ const openedUpdateForm = () => {
 					</div>
 				</div>
 			</DialogItem>
+
+			<!-- Eliminar cliente -->
+			<AlertDialogItem
+				dropdownText="Bloquear cliente"
+				title="Deshabilitar cliente"
+				description="Esta acción no se puede deshacer. Esto deshabilitará el cliente y no podrá ser utilizado en la aplicación."
+				cancel="Cancelar"
+				action="Deshabilitar"
+				@submit="disableSubmit"
+				@opened="() => (disableForm.id = props.original.cli_id)"
+				@closed="() => (disableForm.id = -1)"
+			>
+			</AlertDialogItem>
 		</DropdownMenuContent>
 	</DropdownMenu>
 </template>

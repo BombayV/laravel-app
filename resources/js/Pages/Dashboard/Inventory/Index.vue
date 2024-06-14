@@ -11,9 +11,6 @@ import DataTableDropdownInventory from "@/Pages/Dashboard/Inventory/DataTableDro
 
 const props = defineProps<{
   inventory?: any;
-  inventory_count?: any;
-  last_30_days_entries?: any;
-  last_30_days_exits?: any;
 }>();
 
 type CustomColumnDef =
@@ -22,9 +19,6 @@ type CustomColumnDef =
   name: string;
 };
 
-const inventoryCount = ref(props.inventory_count);
-const last30DaysEntries = ref(props.last_30_days_entries);
-const last30DaysExits = ref(props.last_30_days_exits);
 const dataRef = ref(props.inventory);
 const CLIENTS_COLUMNS: CustomColumnDef[] = [
   {
@@ -93,9 +87,7 @@ const CLIENTS_COLUMNS: CustomColumnDef[] = [
         h(DataTableDropdownInventory, {
           original: row.original,
           dataRef,
-          postForm,
-          totalRef: inventoryCount,
-          entryRef: last30DaysEntries
+          postForm
         })
       ]);
     },
@@ -109,16 +101,6 @@ const postForm = useForm({
   stock: 0
 });
 const filters: string = 'producto.pro_nom';
-
-const numberFormat = (num: number) => {
-  if (num > 999 && num < 1000000) {
-    return (num / 1000).toFixed(1) + 'K';
-  } else if (num > 1000000) {
-    return (num / 1000000).toFixed(1) + 'M';
-  } else if (num < 900) {
-    return num;
-  }
-};
 </script>
 
 <template>
@@ -130,47 +112,6 @@ const numberFormat = (num: number) => {
     </template>
     <div class="px-4 py-12">
       <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 flex flex-col gap-y-4">
-        <div class="grid grid-cols-3 gap-4">
-          <div class="flex flex-col gap-y-2 items-center space-x-4 rounded-md border p-4 bg-white">
-            <div class="flex-1 space-y-1">
-              <p class="text-2xl font-semibold leading-none text-center">
-                Productos Totales
-              </p>
-              <p class="text-sm text-muted-foreground text-center">
-                Numero de productos creados
-              </p>
-            </div>
-            <p class="text-5xl font-semibold leading-none">
-              {{ numberFormat(inventoryCount) }}
-            </p>
-          </div>
-          <div class=" flex flex-col gap-y-2 items-center space-x-4 rounded-md border p-4 bg-white">
-            <div class="flex-1 space-y-1">
-              <p class="text-2xl font-semibold leading-none text-center">
-                Entradas
-              </p>
-              <p class="text-sm text-muted-foreground text-center">
-                En los ultimos 30 dias
-              </p>
-            </div>
-            <p class="text-5xl font-semibold leading-none">
-              {{ numberFormat(last30DaysEntries) }}
-            </p>
-          </div>
-          <div class="flex flex-col gap-y-2 items-center space-x-4 rounded-md border p-4 bg-white">
-            <div class="flex-1 space-y-1">
-              <p class="text-2xl font-semibold leading-none text-center">
-                Salidas
-              </p>
-              <p class="text-sm text-muted-foreground text-center">
-                En los ultimos 30 dias
-              </p>
-            </div>
-            <p class="text-5xl font-semibold leading-none">
-              {{ numberFormat(last30DaysExits) }}
-            </p>
-          </div>
-        </div>
         <DataTable
           :data="dataRef || []"
           :columns="CLIENTS_COLUMNS as unknown as ColumnDef<any>[]"
