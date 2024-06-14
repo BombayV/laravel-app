@@ -12,12 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('estado_producto', function (Blueprint $table) {
-            $table->smallInteger('est_pro_id')->primary();
+            $table->smallInteger('est_pro_id')->primary()->autoIncrement();
             $table->string('est_pro_nom', 15);
         });
 
         Schema::create('tipo_producto', function (Blueprint $table) {
-            $table->smallInteger('tip_pro_id')->primary();
+            $table->smallInteger('tip_pro_id')->primary()->autoIncrement();
             $table->string('tip_pro_nom', 15);
         });
 
