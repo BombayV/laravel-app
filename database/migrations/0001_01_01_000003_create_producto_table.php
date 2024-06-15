@@ -28,7 +28,7 @@ return new class extends Migration
             $table->smallInteger('fk_est_pro_id');
             $table->smallInteger('fk_tip_pro_id');
             $table->foreign('fk_est_pro_id')->references('est_pro_id')->on('estado_producto')->onDelete('restrict')->onUpdate('cascade');
-            $table->foreign('fk_tip_pro_id')->references('tip_pro_id')->on('tipo_producto')->onDelete('restrict')->onUpdate('cascade');
+            $table->foreign('fk_tip_pro_id')->references('tip_pro_id')->on('tipo_producto')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

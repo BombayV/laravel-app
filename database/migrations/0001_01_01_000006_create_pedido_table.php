@@ -18,7 +18,7 @@ return new class extends Migration
 
         Schema::create('pedido', function (Blueprint $table) {
             $table->id('ped_id');
-            $table->foreignId('fk_cli_id')->references('cli_id')->on('cliente')->onDelete('restrict')->onUpdate('cascade');
+            $table->foreignId('fk_cli_id')->references('cli_id')->on('cliente')->onDelete('cascade')->onUpdate('cascade');
             $table->date('ped_fec');
             $table->decimal('ped_tot', 10, 2);
             $table->timestamps();
