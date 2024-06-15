@@ -81,7 +81,6 @@ class ProductsController extends Controller
 
     return Inertia::render('Dashboard/Products/Index', [
       'status' => session('status'),
-      'result' => $result
     ]);
   }
 

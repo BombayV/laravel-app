@@ -96,16 +96,6 @@ const updateSubmit = async () => {
 		return;
 	}
 
-  if (props.updateForm.nombre === props.original.pro_nom) {
-    toast({
-      title: 'Error al actualizar',
-      description: 'El nombre del producto no ha cambiado.',
-      duration: 5000,
-      variant: 'destructive'
-    });
-    return;
-  }
-
 	props.updateForm.estado =
 		props.updateForm.estado === null ? null : parseInt(props.updateForm.estado as string);
 	props.updateForm.tipo = props.updateForm.tipo === null ? null : parseInt(props.updateForm.tipo as string);
@@ -124,8 +114,12 @@ const updateSubmit = async () => {
 			const index = props.dataRef.value.findIndex(
 				(item: any) => item.pro_id === props.updateForm.id
 			);
+
+      if (index < 0) {
+        return;
+      }
 			props.dataRef.value[index].pro_nom = props.updateForm.nombre;
-			props.dataRef.value[index].pro_val = props.updateForm.valor;
+			props.dataRef.value[index].pro_val = parseFloat(props.updateForm.valor as any).toFixed(2)
 			props.dataRef.value[index].fk_est_pro_id = props.updateForm.estado;
 			props.dataRef.value[index].fk_tip_pro_id = props.updateForm.tipo;
 		},
