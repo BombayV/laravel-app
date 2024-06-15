@@ -17,9 +17,6 @@ import {Loader2, Plus, Minus, Trash} from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import { ClientColumn, ProductColumn } from '@/components/table/columns';
 
-const props = defineProps<{
-  products: any;
-}>();
 
 const submit = () => {
   postForm.total = total.value;
@@ -232,11 +229,10 @@ const removeProduct = (product: any) => {
 				</DialogHeader>
 				<div class="grid gap-4 py-4 relative">
           <div class="grid grid-cols-4 items-center gap-4">
-            <Label for="nombre" class="text-right"> Cliente </Label>
+            <Label for="cliente" class="text-right"> Cliente </Label>
             <div class="w-full relative col-span-3">
               <Input
-                id="nombre"
-                required
+                id="cliente"
                 v-model="searchForm.search"
                 placeholder="Buscar cliente"
                 @update:modelValue="searchUsers"
@@ -257,11 +253,10 @@ const removeProduct = (product: any) => {
           </div>
 
           <div class="grid grid-cols-4 items-center gap-4">
-            <Label for="nombre" class="text-right">Producto</Label>
+            <Label for="producto" class="text-right">Producto</Label>
             <div class="w-full relative col-span-3">
               <Input
-                id="nombre"
-                required
+                id="producto"
                 v-model="productSearchForm.search"
                 placeholder="Buscar producto"
                 @update:modelValue="searchProduct"
@@ -275,7 +270,7 @@ const removeProduct = (product: any) => {
                   {{ `${product.pro_nom}` }}
                 </button>
               </div>
-              <p v-else-if="productSearchForm.search && productDataRef.data.length <= 0 && !searchTimeout && postForm.clientId === -1" class="border px-3 py-2 absolute w-full top-full translate-y-2 rounded bg-white overflow-y-auto z-50">
+              <p v-else-if="productSearchForm.search && productDataRef.data.length <= 0 && !searchTimeout" class="border px-3 py-2 absolute w-full top-full translate-y-2 rounded bg-white overflow-y-auto z-50">
                 No se encontraron resultados
               </p>
             </div>

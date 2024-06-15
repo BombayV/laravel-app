@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import {InventoryColumn} from '@/components/table/columns';
+import {InventoryColumn, OrderColumn} from '@/components/table/columns';
 import DataTable from '@/components/table/DataTable.vue';
 import { Button } from '@/components/ui/button';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 import { ColumnDef } from '@tanstack/vue-table';
 import {ArrowUpDown, Trash} from 'lucide-vue-next';
-import { h, ref } from 'vue';
+import {h, ref, watch} from 'vue';
 import DataTableDropdownOrders from "@/Pages/Dashboard/Orders/DataTableDropdownOrders.vue";
 import {
   AlertDialog, AlertDialogAction,
@@ -19,19 +19,20 @@ import DataTableDialogOrders from "@/Pages/Dashboard/Orders/DataTableDialogOrder
 
 const props = defineProps<{
   orders?: any;
+  result?: any;
 }>();
 
 type CustomColumnDef =
-  | ColumnDef<InventoryColumn>
+  | ColumnDef<OrderColumn>
   | {
   name: string;
 };
 
-const dataRef = ref(props.data);
+const dataRef = ref(props.orders || []);
 const CLIENTS_COLUMNS: CustomColumnDef[] = [
   {
-    id: 'producto.pro_nom',
-    accessorKey: 'producto.pro_nom',
+    id: 'ped_id',
+    accessorKey: 'ped_id',
     header: ({ column }) => {
       return h(
         Button,
@@ -39,18 +40,18 @@ const CLIENTS_COLUMNS: CustomColumnDef[] = [
           variant: 'ghost',
           onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
         },
-        () => ['Nombre', h(ArrowUpDown, { class: 'w-4 h-4 ml-2' })]
+        () => ['ID', h(ArrowUpDown, { class: 'w-4 h-4 ml-2' })]
       );
     },
     cell: ({ row }) =>
-      h('div', { class: 'ml-4' }, [row.original.producto.pro_nom]),
+      h('div', { class: 'ml-4' }, [row.original.ped_id]),
     enableSorting: true,
     name: 'Nombre',
-    filterFn: (row, _, filterValue) => {
-      return (
-        row.original.producto.pro_nom.toLowerCase().includes(filterValue.toLowerCase())
-      );
-    },
+    // filterFn: (row, _, filterValue) => {
+    //   return (
+    //     row.original.producto.pro_nom.toLowerCase().includes(filterValue.toLowerCase())
+    //   );
+    // },
   },
   {
     id: 'actions',
@@ -67,7 +68,17 @@ const CLIENTS_COLUMNS: CustomColumnDef[] = [
   }
 ];
 
-const filters: string = 'producto.pro_nom';
+const filters: string = 'ped_id';
+
+watch(
+  () => props.result,
+  (value) => {
+    if(value){
+      dataRef.value = [...dataRef.value, value];
+    }
+  }
+)
+
 </script>
 
 <template>
@@ -78,7 +89,7 @@ const filters: string = 'producto.pro_nom';
       <h2 class="text-xl font-semibold leading-tight text-gray-800">Pedidos</h2>
     </template>
     <div class="px-4 py-12">
-      {{ orders }}
+      {{ result }}
       <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 flex flex-col gap-y-4">
         <DataTable
           :data="dataRef || []"
@@ -87,7 +98,7 @@ const filters: string = 'producto.pro_nom';
           placeholder="Buscar pedidos por nombre"
         >
           <template #top>
-            <DataTableDialogOrders :products="props.products" />
+            <DataTableDialogOrders/>
           </template>
         </DataTable>
       </div>
