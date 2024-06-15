@@ -69,6 +69,10 @@ import { ref } from 'vue';
 											<ShoppingCart class="mr-2 h-4 w-4" />
 											<span>Productos</span>
 										</DropdownMenuItem>
+                    <DropdownMenuItem as="a" :href="route('tipos-productos')" method="get">
+                      <ShoppingCart class="mr-2 h-4 w-4" />
+                      <span>Tipo de Productos</span>
+                    </DropdownMenuItem>
 										<DropdownMenuItem as="a" :href="route('inventario')" method="get">
 											<Box class="mr-2 h-4 w-4" />
 											<span>Inventario</span>

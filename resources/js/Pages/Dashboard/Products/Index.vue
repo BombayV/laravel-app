@@ -26,8 +26,8 @@ import { h, ref, watch } from 'vue';
 const props = defineProps<{
 	data?: any;
 	result?: any;
-	product_type?: any;
-	product_state?: any;
+  product_type?: any;
+  product_state?: any;
 }>();
 
 type CustomColumnDef =
@@ -36,9 +36,9 @@ type CustomColumnDef =
 			name: string;
 	  };
 
-const dataRef = ref(props.data);
 const productTypeRef = ref(props.product_type);
 const productStateRef = ref(props.product_state);
+const dataRef = ref(props.data);
 const selectedRows = ref<{
 	rows: any[];
 	flatRows: any[];
@@ -104,7 +104,7 @@ const CLIENTS_COLUMNS: CustomColumnDef[] = [
 		},
 		cell: ({ row }) =>
 			h('div', { class: 'ml-4' }, [
-				productTypeRef.value[row.original.fk_tip_pro_id - 1].tip_pro_nom
+        row.original.tipo_producto!.tip_pro_nom
 			]),
 		enableSorting: true,
     name: 'Tipo'
@@ -139,7 +139,7 @@ const CLIENTS_COLUMNS: CustomColumnDef[] = [
 		},
 		cell: ({ row }) =>
 			h('div', { class: 'ml-4' }, [
-				productStateRef.value[row.original.fk_est_pro_id - 1]?.est_pro_nom
+        row.original.estado_producto!.est_pro_nom
 			]),
     name: 'Estado'
 	},
@@ -149,8 +149,8 @@ const CLIENTS_COLUMNS: CustomColumnDef[] = [
 			return h('div', { class: 'relative float-end' }, [
 				h(DataTableDropdownProduct, {
 					original: row.original,
-					tipo: productTypeRef.value[row.original.fk_tip_pro_id - 1]?.tip_pro_nom,
-					estado: productStateRef.value[row.original.fk_est_pro_id - 1]?.est_pro_nom,
+					tipo: row.original.tipo_producto!.tip_pro_nom,
+					estado: row.original.estado_producto!.est_pro_nom,
 					product_type: productTypeRef.value,
 					product_state: productStateRef.value,
 					deleteForm: deleteForm,
@@ -228,6 +228,7 @@ watch(
 		<template #header>
 			<h2 class="text-xl font-semibold leading-tight text-gray-800">Productos</h2>
 		</template>
+
 		<div class="px-4 py-12">
 			<div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
 				<DataTable
@@ -278,7 +279,7 @@ watch(
 									</AlertDialogFooter>
 								</AlertDialogContent>
 							</AlertDialog>
-							<DataTableDialogProduct :form="form" :types="productTypeRef" />
+							<DataTableDialogProduct :form="form" :types="productTypeRef" v-if="productTypeRef.length > 0" />
 						</div>
 					</template>
 				</DataTable>

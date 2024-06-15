@@ -15,6 +15,11 @@ export type ProductTypeColumn = {
   tip_pro_nom: string;
 };
 
+export type ProductStatusColumn = {
+  est_pro_id: number;
+  est_pro_nom: string;
+};
+
 export type ProductColumn = {
 	pro_id: number;
 	pro_nom: string;
@@ -22,6 +27,7 @@ export type ProductColumn = {
 	fk_tip_pro_id: number;
 	fk_est_pro_id: number;
   tipo_producto?: ProductTypeColumn;
+  estado_producto?: ProductStatusColumn;
 };
 
 export type InventoryStatusColumn = {

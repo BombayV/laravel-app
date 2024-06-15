@@ -5,6 +5,7 @@ use App\Http\Controllers\Dashboard\ClientsController;
 use App\Http\Controllers\Dashboard\ProductsController;
 use App\Http\Controllers\Dashboard\InventoryController;
 use App\Http\Controllers\Dashboard\OrdersController;
+use App\Http\Controllers\Dashboard\ProductsTypesController;
 use App\Http\Controllers\Dashboard\ClientSearch;
 use App\Http\Controllers\Dashboard\DashboardController;
 use Illuminate\Foundation\Application;
@@ -35,6 +36,13 @@ Route::middleware('auth')->group(function () {
   Route::delete('/dashboard/productos/{id}', [ProductsController::class, 'destroy'])->name('productos.destroy');
   Route::get('/dashboard/productos/{id}', [ProductsController::class, 'show'])->name('productos.show');
   Route::delete('/dashboard/productos', [ProductsController::class, 'all'])->name('productos.destroy.all');
+
+  Route::get('/dashboard/tipos-productos', [ProductsTypesController::class, 'create'])->name('tipos-productos');
+  Route::post('/dashboard/tipos-productos', [ProductsTypesController::class, 'store'])->name('tipos-productos.store');
+  Route::put('/dashboard/tipos-productos', [ProductsTypesController::class, 'update'])->name('tipos-productos.update');
+  Route::delete('/dashboard/tipos-productos/{id}', [ProductsTypesController::class, 'destroy'])->name('tipos-productos.destroy');
+  Route::get('/dashboard/tipos-productos/{id}', [ProductsTypesController::class, 'show'])->name('tipos-productos.show');
+
 
   Route::get('/dashboard/inventario', [InventoryController::class, 'create'])->name('inventario');
   Route::post('/dashboard/inventario', [InventoryController::class, 'store'])->name('inventario.store');

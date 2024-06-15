@@ -16,7 +16,7 @@ class ProductsController extends Controller
   {
     return Inertia::render('Dashboard/Products/Index', [
       'status' => session('status'),
-      'data' => Producto::all(),
+      'data' => Producto::with('tipoProducto', 'estadoProducto')->get(),
       'product_type' => TipoProducto::all(),
       'product_state' => EstadoProducto::all()
     ]);
@@ -40,6 +40,8 @@ class ProductsController extends Controller
       'pro_val' => $request->input('valor'),
       'fk_tip_pro_id' => $request->input('tipo')
     ]);
+    $type = TipoProducto::find($result->fk_tip_pro_id);
+    $state = EstadoProducto::find(Producto::find($result->pro_id)->fk_est_pro_id);
 
     return Inertia::render('Dashboard/Products/Index', [
       'status' => session('status'),
@@ -48,7 +50,15 @@ class ProductsController extends Controller
         'pro_nom' => $result->pro_nom,
         'pro_val' => $result->pro_val,
         'fk_tip_pro_id' => $result->fk_tip_pro_id,
-        'fk_est_pro_id' => 1
+        'fk_est_pro_id' => 1,
+        'tipo_producto' => [
+          'tip_pro_id' => $type->tip_pro_id,
+          'tip_pro_nom' => $type->tip_pro_nom
+        ],
+        'estado_producto' => [
+          'est_pro_id' => $state->est_pro_id,
+          'est_pro_nom' => $state->est_pro_nom
+        ]
       ]
     ]);
   }

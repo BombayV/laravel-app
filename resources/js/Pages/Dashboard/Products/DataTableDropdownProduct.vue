@@ -96,9 +96,19 @@ const updateSubmit = async () => {
 		return;
 	}
 
+  if (props.updateForm.nombre === props.original.pro_nom) {
+    toast({
+      title: 'Error al actualizar',
+      description: 'El nombre del producto no ha cambiado.',
+      duration: 5000,
+      variant: 'destructive'
+    });
+    return;
+  }
+
 	props.updateForm.estado =
-		props.updateForm.estado === null ? null : parseInt(props.updateForm.estado);
-	props.updateForm.tipo = props.updateForm.tipo === null ? null : parseInt(props.updateForm.tipo);
+		props.updateForm.estado === null ? null : parseInt(props.updateForm.estado as string);
+	props.updateForm.tipo = props.updateForm.tipo === null ? null : parseInt(props.updateForm.tipo as string);
 
 	props.updateForm.put(route('productos.update', {}), {
 		onSuccess: () => {
@@ -108,8 +118,8 @@ const updateSubmit = async () => {
 				duration: 5000
 			});
 
-      props.updateForm.estado = props.updateForm.estado.toString();
-      props.updateForm.tipo = props.updateForm.tipo.toString();
+      props.updateForm.estado = (props.updateForm.estado as number).toString();
+      props.updateForm.tipo = (props.updateForm.tipo as number).toString();
 
 			const index = props.dataRef.value.findIndex(
 				(item: any) => item.pro_id === props.updateForm.id
