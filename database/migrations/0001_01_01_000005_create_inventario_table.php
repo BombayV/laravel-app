@@ -25,7 +25,7 @@ return new class extends Migration
             $table->id('inv_id');
             $table->foreignId('fk_pro_id')->references('pro_id')->on('producto')->onDelete('cascade')->onUpdate('cascade');
             $table->integer('inv_stock');
-            $table->smallInteger('fk_est_inv_id');
+            $table->smallInteger('fk_est_inv_id')->default(1);
             $table->foreign('fk_est_inv_id')->references('est_inv_id')->on('estado_inventario')->onDelete('restrict')->onUpdate('cascade');
         });
 
