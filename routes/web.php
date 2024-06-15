@@ -7,6 +7,7 @@ use App\Http\Controllers\Dashboard\InventoryController;
 use App\Http\Controllers\Dashboard\OrdersController;
 use App\Http\Controllers\Dashboard\ProductsTypesController;
 use App\Http\Controllers\Dashboard\ClientSearch;
+use App\Http\Controllers\Dashboard\ProductsSearchController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -55,7 +56,9 @@ Route::middleware('auth')->group(function () {
 
   Route::get('/dashboard/pedidos', [OrdersController::class, 'create'])->name('pedidos');
   Route::post('/dashboard/pedidos', [OrdersController::class, 'store'])->name('pedidos.store');
-  Route::get('/dashboard/pedidos/{id}', [ClientSearch::class, 'show'])->name('pedidos.show');
+
+  Route::get('/dashboard/buscar-cliente/{id}', [ClientSearch::class, 'show'])->name('buscar-cliente');
+  Route::get('/dashboard/buscar-producto/{id}', [ProductsSearchController::class, 'show'])->name('buscar-producto');
 });
 
 Route::middleware('auth')->group(function () {

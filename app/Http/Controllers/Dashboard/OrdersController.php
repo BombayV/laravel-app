@@ -16,4 +16,9 @@ class OrdersController extends Controller
       'orders' => Pedido::with(['cliente', 'EstadoPedido', 'detallePedido.producto', 'detallePedido.producto.tipoProducto'])->get(),
     ]);
   }
+
+  public function store()
+  {
+
+  }
 }

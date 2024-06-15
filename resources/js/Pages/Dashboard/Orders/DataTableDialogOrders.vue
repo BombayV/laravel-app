@@ -15,7 +15,7 @@ import {toast} from '@/components/ui/toast';
 import {useForm} from '@inertiajs/vue3';
 import {Loader2, Plus, Minus, Trash} from 'lucide-vue-next';
 import {ref} from "vue";
-import {ClientColumn} from "@/components/table/columns";
+import { ClientColumn, ProductColumn } from '@/components/table/columns';
 
 const props = defineProps<{
   products: any;
@@ -44,13 +44,17 @@ const submit = () => {
 	});
 };
 
-const searchForm = useForm({
-  search: ''
-});
 const postForm = useForm({
   clientId: -1,
-  productIds: <number[]>[],
-  price: 0
+  productIds: <{
+    pro_id: number;
+    pro_nom: string;
+  }[]>[],
+  total: 0,
+});
+
+const searchForm = useForm({
+  search: ''
 });
 const dataRef = ref<{
   success: boolean;
@@ -82,7 +86,7 @@ const searchUsers = async () => {
     }
 
     const response = await fetch(
-      route('pedidos.show', {
+      route('buscar-cliente', {
         id: searchForm.search
       })
     );
@@ -107,7 +111,7 @@ const searchUsers = async () => {
 
 const productDataRef = ref<{
   success: boolean;
-  data: any[];
+  data: ProductColumn[];
   message: string;
 }>({
   success: false,
@@ -134,8 +138,47 @@ if (searchTimeout) {
     }
 
     const response = await fetch(
-      route('productos.show', {
+      route('buscar-producto', {
         id: productSearchForm.search
+      })
+    );
+    const data = await response.json();
+    if (data.success) {
+      productDataRef.value = {
+        success: true,
+        data: data.data,
+        message: ''
+      };
+    } else {
+      productDataRef.value = {
+        success: false,
+        data: [],
+        message: data.message
+      };
+    }
+
+    searchTimeout.value = null;
+  }, 500);
+}
+
+const searchProductByName = () => {
+  if (searchTimeout) {
+    clearTimeout(searchTimeout.value as ReturnType<typeof setTimeout>);
+  }
+
+  searchTimeout.value = setTimeout(async () => {
+    if (!productSearchForm.search) {
+      productDataRef.value = {
+        success: false,
+        data: [],
+        message: ''
+      };
+      return;
+    }
+
+    const response = await fetch(
+      route('pedidos.show', {
+        name: productSearchForm.search
       })
     );
     const data = await response.json();
@@ -161,6 +204,19 @@ const setActiveUser = (user: any) => {
   searchForm.search = `${user.cli_nom} ${user.cli_ape}`;
   postForm.clientId = user.cli_id;
   dataRef.value = {
+    success: false,
+    data: [],
+    message: ''
+  };
+}
+
+const addProduct = (product: any) => {
+  postForm.productIds.push({
+    pro_id: product.pro_id,
+    pro_nom: product.pro_nom
+  });
+  productSearchForm.search = '';
+  productDataRef.value = {
     success: false,
     data: [],
     message: ''
@@ -209,7 +265,7 @@ const removeProduct = (product: any) => {
                 {{ `${user.cli_nom} ${user.cli_ape}` }}
                 </button>
               </div>
-              <p v-else-if="searchForm.search && dataRef.data.length <= 0 && !timeout && postForm.clientId === -1" class="border px-3 py-2 absolute w-full top-full translate-y-2 rounded bg-white overflow-y-auto">
+              <p v-else-if="searchForm.search && dataRef.data.length <= 0 && !timeout && postForm.clientId === -1" class="border px-3 py-2 absolute w-full top-full translate-y-2 rounded bg-white overflow-y-auto z-50">
                 No se encontraron resultados
               </p>
             </div>
@@ -217,35 +273,59 @@ const removeProduct = (product: any) => {
 
           <div class="grid grid-cols-4 items-center gap-4">
             <Label for="nombre" class="text-right">Producto</Label>
-
-          </div>
-          <div class="grid grid-cols-4 items-center gap-4">
-            <Label for="nombre" class="text-right">Cantidad</Label>
-            <div class="w-full col-span-3 grid grid-cols-4">
+            <div class="w-full relative col-span-3">
               <Input
                 id="nombre"
-                disabled
-
+                required
+                v-model="productSearchForm.search"
+                placeholder="Buscar producto"
+                @update:modelValue="searchProduct"
               />
-              <div class="flex items-center gap-x-2 w-full">
-                <Button
-                  class="ml-2"
-                  size="icon"
-                  @click="increaseQuantity(1)">
-                  <Plus class="w-4 h-4" />
-                </Button>
-                <Button
-                  class="ml-2"
-                  size="icon"
-                  @click="removeProduct(1)">
-                  <Minus class="w-4 h-4" />
-                </Button>
-                <Button
-                  class="ml-2"
-                  size="icon"
-                  @click="removeProduct(1)">
-                  <Minus class="w-4 h-4" />
-                </Button>
+              <div
+                v-if="productSearchForm.search && productDataRef.data.length > 0 && !searchTimeout"
+                class="border absolute w-full top-full translate-y-2 rounded bg-white flex flex-col flex-nowrap max-h-40 overflow-y-auto z-50">
+                <button v-for="product in productDataRef.data" :key="product.pro_id" class="min-h-10 max-h-10 border-b capitalize overflow-ellipsis overflow-hidden whitespace-nowrap flex items-center text-sm hover:bg-neutral-100 duration-200 transition-colors px-3 w-full"
+                        @click="addProduct(product)"
+                >
+                  {{ `${product.pro_nom}` }}
+                </button>
+              </div>
+              <p v-else-if="productSearchForm.search && productDataRef.data.length <= 0 && !searchTimeout && postForm.clientId === -1" class="border px-3 py-2 absolute w-full top-full translate-y-2 rounded bg-white overflow-y-auto">
+                No se encontraron resultados
+              </p>
+            </div>
+          </div>
+          <div class="grid grid-cols-4 items-start gap-4">
+            <Label for="nombre" class="text-right mt-4">Cantidad</Label>
+            <div class="w-full col-span-3 relative flex flex-col justify-start gap-y-1">
+              <div v-for="product in 5" :key="product.pro_id" class="flex items-center space-x-4 rounded-md border p-4">
+                <div class="flex-1 space-y-1">
+                  <p class="text-sm font-medium leading-none">Producto</p>
+                </div>
+                <Input
+                  id="nombre"
+                  disabled
+                />
+                <div class="flex items-center gap-x-2 w-full">
+                  <Button
+                    class="ml-2"
+                    size="icon"
+                    @click="increaseQuantity(1)">
+                    <Plus class="w-4 h-4" />
+                  </Button>
+                  <Button
+                    class="ml-2"
+                    size="icon"
+                    @click="removeProduct(1)">
+                    <Minus class="w-4 h-4" />
+                  </Button>
+                  <Button
+                    class="ml-2"
+                    size="icon"
+                    @click="removeProduct(1)">
+                    <Minus class="w-4 h-4" />
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
