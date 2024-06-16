@@ -32,7 +32,7 @@ const props = defineProps<{
 }>();
 
 const disableForm = useForm({
-  id: -1
+	id: -1
 });
 
 const updateSubmit = async () => {
@@ -74,37 +74,43 @@ const updateSubmit = async () => {
 };
 
 const disableSubmit = async () => {
-  if (disableForm.id <= -1) {
-    toast({
-      title: 'Error al deshabilitar',
-      description: 'No se ha seleccionado un cliente para deshabilitar.',
-      duration: 5000,
-      variant: 'destructive'
-    });
-    return;
-  }
+	if (disableForm.id <= -1) {
+		toast({
+			title: 'Error al deshabilitar',
+			description: 'No se ha seleccionado un cliente para deshabilitar.',
+			duration: 5000,
+			variant: 'destructive'
+		});
+		return;
+	}
 
-  disableForm.delete(route('clientes.destroy', {
-    id: disableForm.id
-  }), {
-    onSuccess: () => {
-      toast({
-        title: 'Cliente deshabilitado',
-        description: 'El cliente ha sido deshabilitado exitosamente.',
-        duration: 5000
-      });
+	disableForm.delete(
+		route('clientes.destroy', {
+			id: disableForm.id
+		}),
+		{
+			onSuccess: () => {
+				toast({
+					title: 'Cliente deshabilitado',
+					description: 'El cliente ha sido deshabilitado exitosamente.',
+					duration: 5000
+				});
 
-      props.dataRef.value = props.dataRef.value.filter((item: any) => item.cli_id !== disableForm.id);
-    },
-    onError: (errors) => {
-      toast({
-        title: 'Error al deshabilitar el cliente',
-        description: Object.values(errors)[0] || 'Por favor, revise los campos e intente de nuevo.',
-        duration: 5000,
-        variant: 'destructive'
-      });
-    }
-  });
+				props.dataRef.value = props.dataRef.value.filter(
+					(item: any) => item.cli_id !== disableForm.id
+				);
+			},
+			onError: (errors) => {
+				toast({
+					title: 'Error al deshabilitar el cliente',
+					description:
+						Object.values(errors)[0] || 'Por favor, revise los campos e intente de nuevo.',
+					duration: 5000,
+					variant: 'destructive'
+				});
+			}
+		}
+	);
 };
 
 const openedUpdateForm = () => {

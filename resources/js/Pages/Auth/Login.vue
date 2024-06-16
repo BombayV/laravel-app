@@ -74,16 +74,14 @@ const { toast } = useToast();
 						Recuerdame
 					</label>
 				</div>
-				<Button type="submit" class="w-full max-w-32">
-          Iniciar sesión
-        </Button>
+				<Button type="submit" class="w-full max-w-32"> Iniciar sesión </Button>
 			</div>
-      <Link
-        :href="route('register')"
-        class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 mt-4"
-      >
-        Aun no tienes cuenta?
-      </Link>
+			<Link
+				:href="route('register')"
+				class="mt-4 rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+			>
+				Aun no tienes cuenta?
+			</Link>
 		</form>
 	</GuestLayout>
 </template>

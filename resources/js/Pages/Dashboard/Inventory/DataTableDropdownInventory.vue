@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {InventoryColumn} from '@/components/table/columns';
+import { InventoryColumn } from '@/components/table/columns';
 import DialogItem from '@/components/table/DialogItem.vue';
 import DrawerItem from '@/components/table/DrawerItem.vue';
 import { Button } from '@/components/ui/button';
@@ -14,42 +14,44 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from '@/components/ui/toast';
 import { useForm } from '@inertiajs/vue3';
-import { Layers3, DollarSign, MoreHorizontal, Check } from 'lucide-vue-next';
+import { Check, DollarSign, Layers3, MoreHorizontal } from 'lucide-vue-next';
 
 const props = defineProps<{
 	original: InventoryColumn;
 	dataRef: any;
-  postForm: ReturnType<typeof useForm<{
-    id: number;
-    stock: number;
-  }>>;
+	postForm: ReturnType<
+		typeof useForm<{
+			id: number;
+			stock: number;
+		}>
+	>;
 }>();
 
 const postSubmit = () => {
-  props.postForm.post(route('inventario.store'), {
-    onSuccess: () => {
-      toast({
-        title: 'Stock agregado',
-        description: 'El stock ha sido agregado exitosamente.',
-        duration: 5000
-      });
+	props.postForm.post(route('inventario.store'), {
+		onSuccess: () => {
+			toast({
+				title: 'Stock agregado',
+				description: 'El stock ha sido agregado exitosamente.',
+				duration: 5000
+			});
 
-      const idx = props.dataRef.value.findIndex((item: any) => item.inv_id === props.postForm.id);
-      props.dataRef.value[idx].inv_stock += props.postForm.stock;
-    },
-    onError: (errors) => {
-      toast({
-        title: 'Error al agregar stock',
-        description: 'Ha ocurrido un error al agregar stock.',
-        duration: 5000,
-        variant: 'destructive'
-      });
-    }
-  });
-}
+			const idx = props.dataRef.value.findIndex((item: any) => item.inv_id === props.postForm.id);
+			props.dataRef.value[idx].inv_stock += props.postForm.stock;
+		},
+		onError: (errors) => {
+			toast({
+				title: 'Error al agregar stock',
+				description: 'Ha ocurrido un error al agregar stock.',
+				duration: 5000,
+				variant: 'destructive'
+			});
+		}
+	});
+};
 
 const openedUpdateForm = () => {
-  props.postForm.id = props.original.inv_id;
+	props.postForm.id = props.original.inv_id;
 };
 </script>
 
@@ -80,30 +82,26 @@ const openedUpdateForm = () => {
 								</p>
 							</div>
 						</div>
-            <div class="flex w-full items-center space-x-4 rounded-md border p-4">
-              <DollarSign />
-              <div class="flex-1 space-y-1">
-                <p class="text-sm font-medium leading-none">Valor</p>
-                <p class="text-sm text-muted-foreground">
-                  ${{ original.producto.pro_val }}
-                </p>
-              </div>
-            </div>
-            <div class="flex w-full items-center space-x-4 rounded-md border p-4 col-span-2">
-              <Check />
-              <div class="flex-1 space-y-1">
-                <p class="text-sm font-medium leading-none">Estado</p>
-                <p class="text-sm text-muted-foreground">
-                  ${{ original.producto.pro_val }}
-                </p>
-              </div>
-            </div>
+						<div class="flex w-full items-center space-x-4 rounded-md border p-4">
+							<DollarSign />
+							<div class="flex-1 space-y-1">
+								<p class="text-sm font-medium leading-none">Valor</p>
+								<p class="text-sm text-muted-foreground">${{ original.producto.pro_val }}</p>
+							</div>
+						</div>
+						<div class="col-span-2 flex w-full items-center space-x-4 rounded-md border p-4">
+							<Check />
+							<div class="flex-1 space-y-1">
+								<p class="text-sm font-medium leading-none">Estado</p>
+								<p class="text-sm text-muted-foreground">${{ original.producto.pro_val }}</p>
+							</div>
+						</div>
 					</div>
 				</div>
 			</DrawerItem>
 
 			<DropdownMenuSeparator />
-      <!-- Agregar inv -->
+			<!-- Agregar inv -->
 			<DialogItem
 				dropdownText="Agregar stock"
 				:title="`Agregar stock a ${original.producto.pro_nom}`"
@@ -122,12 +120,12 @@ const openedUpdateForm = () => {
 							required
 							v-model="postForm.stock"
 							:disabled="postForm.processing"
-              type="number"
-              min="0"
-              max="99999"
+							type="number"
+							min="0"
+							max="99999"
 						/>
 					</div>
-        </div>
+				</div>
 			</DialogItem>
 		</DropdownMenuContent>
 	</DropdownMenu>

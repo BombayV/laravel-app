@@ -26,8 +26,8 @@ import { h, ref, watch } from 'vue';
 const props = defineProps<{
 	data?: any;
 	result?: any;
-  product_type?: any;
-  product_state?: any;
+	product_type?: any;
+	product_state?: any;
 }>();
 
 type CustomColumnDef =
@@ -102,12 +102,9 @@ const CLIENTS_COLUMNS: CustomColumnDef[] = [
 				() => ['Tipo', h(ArrowUpDown, { class: 'w-4 h-4 ml-2' })]
 			);
 		},
-		cell: ({ row }) =>
-			h('div', { class: 'ml-4' }, [
-        row.original.tipo_producto!.tip_pro_nom
-			]),
+		cell: ({ row }) => h('div', { class: 'ml-4' }, [row.original.tipo_producto!.tip_pro_nom]),
 		enableSorting: true,
-    name: 'Tipo'
+		name: 'Tipo'
 	},
 	{
 		accessorKey: 'pro_val',
@@ -123,7 +120,7 @@ const CLIENTS_COLUMNS: CustomColumnDef[] = [
 		},
 		cell: ({ row }) => h('div', { class: 'ml-4' }, ['$' + row.original.pro_val]),
 		enableSorting: true,
-    name: 'Valor'
+		name: 'Valor'
 	},
 	{
 		accessorKey: 'pro_est',
@@ -137,11 +134,8 @@ const CLIENTS_COLUMNS: CustomColumnDef[] = [
 				() => ['Estado', h(ArrowUpDown, { class: 'w-4 h-4 ml-2' })]
 			);
 		},
-		cell: ({ row }) =>
-			h('div', { class: 'ml-4' }, [
-        row.original.estado_producto!.est_pro_nom
-			]),
-    name: 'Estado'
+		cell: ({ row }) => h('div', { class: 'ml-4' }, [row.original.estado_producto!.est_pro_nom]),
+		name: 'Estado'
 	},
 	{
 		id: 'actions',
@@ -185,30 +179,30 @@ const form = useForm({
 const filters: string = 'pro_nom';
 
 const deleteAll = () => {
-  for (const row of selectedRows.value.rows) {
-    deleteAllForm.ids.push(row.original.pro_id);
-  }
+	for (const row of selectedRows.value.rows) {
+		deleteAllForm.ids.push(row.original.pro_id);
+	}
 
-  deleteAllForm.delete(route('productos.destroy.all'), {
-    preserveScroll: true,
-    onSuccess: () => {
-      toast({
-        title: 'Productos eliminados',
-        description: `Se han eliminado ${deleteAllForm.ids.length} productos.`,
-        duration: 5000
-      })
-      dataRef.value = dataRef.value.filter((row: any) => !deleteAllForm.ids.includes(row.pro_id));
-      deleteAllForm.ids = [];
-    },
-    onError: () => {
-      toast({
-        title: 'Error al eliminar los productos',
-        description: 'Por favor, revise los campos e intente de nuevo.',
-        duration: 5000,
-        variant: 'destructive'
-      });
-    }
-  });
+	deleteAllForm.delete(route('productos.destroy.all'), {
+		preserveScroll: true,
+		onSuccess: () => {
+			toast({
+				title: 'Productos eliminados',
+				description: `Se han eliminado ${deleteAllForm.ids.length} productos.`,
+				duration: 5000
+			});
+			dataRef.value = dataRef.value.filter((row: any) => !deleteAllForm.ids.includes(row.pro_id));
+			deleteAllForm.ids = [];
+		},
+		onError: () => {
+			toast({
+				title: 'Error al eliminar los productos',
+				description: 'Por favor, revise los campos e intente de nuevo.',
+				duration: 5000,
+				variant: 'destructive'
+			});
+		}
+	});
 };
 
 watch(
@@ -239,7 +233,7 @@ watch(
 					@update:selectedRows="
 						(table) => {
 							table.toggleAllRowsSelected(selectedRows.rows.length === dataRef.length);
-              selectedRows = table.getSelectedRowModel();
+							selectedRows = table.getSelectedRowModel();
 						}
 					"
 				>
@@ -279,7 +273,11 @@ watch(
 									</AlertDialogFooter>
 								</AlertDialogContent>
 							</AlertDialog>
-							<DataTableDialogProduct :form="form" :types="productTypeRef" v-if="productTypeRef.length > 0" />
+							<DataTableDialogProduct
+								:form="form"
+								:types="productTypeRef"
+								v-if="productTypeRef.length > 0"
+							/>
 						</div>
 					</template>
 				</DataTable>

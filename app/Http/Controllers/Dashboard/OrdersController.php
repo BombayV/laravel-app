@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\EstadoPedido;
 use App\Models\Pedido;
 use App\Models\Producto;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class OrdersController extends Controller
 {
@@ -45,6 +48,35 @@ class OrdersController extends Controller
     return Inertia::render('Dashboard/Orders/Index', [
       'status' => session('status'),
       'result' => $result,
+    ]);
+  }
+
+  public function update(Request $request): Response
+  {
+    $request->validate([
+      'id' => 'required|integer',
+    ]);
+
+    $order = Pedido::find($request->input('id'));
+
+    if ($order->fk_est_ped_id == 4) {
+      throw new \Exception('No se puede actualizar el estado de un pedido cancelado');
+    }
+
+    $newState = $order->fk_est_ped_id + 1;
+    $order->update([
+      'fk_est_ped_id' => $newState,
+    ]);
+
+    $state = EstadoPedido::find($order->fk_est_ped_id);
+
+    return Inertia::render('Dashboard/Orders/Index', [
+      'status' => session('status'),
+      'updateState' => [
+        'id' => $order->ped_id,
+        'state' => $state->est_ped_id,
+        'stateName' => $state->est_ped_nom,
+      ]
     ]);
   }
 }

@@ -72,7 +72,7 @@ class ProductsController extends Controller
       'estado' => 'required|integer|min:1|max:3',
     ]);
 
-    $result = Producto::where('pro_id', $request->input('id'))->update([
+     Producto::where('pro_id', $request->input('id'))->update([
       'pro_nom' => $request->input('nombre'),
       'pro_val' => $request->input('valor'),
       'fk_tip_pro_id' => $request->input('tipo'),

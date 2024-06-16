@@ -11,13 +11,13 @@ export type ClientColumn = {
 };
 
 export type ProductTypeColumn = {
-  tip_pro_id: number;
-  tip_pro_nom: string;
+	tip_pro_id: number;
+	tip_pro_nom: string;
 };
 
 export type ProductStatusColumn = {
-  est_pro_id: number;
-  est_pro_nom: string;
+	est_pro_id: number;
+	est_pro_nom: string;
 };
 
 export type ProductColumn = {
@@ -26,13 +26,13 @@ export type ProductColumn = {
 	pro_val: number;
 	fk_tip_pro_id: number;
 	fk_est_pro_id: number;
-  tipo_producto?: ProductTypeColumn;
-  estado_producto?: ProductStatusColumn;
+	tipo_producto?: ProductTypeColumn;
+	estado_producto?: ProductStatusColumn;
 };
 
 export type InventoryStatusColumn = {
-  est_inv_id: number;
-  est_inv_nom: string;
+	est_inv_id: number;
+	est_inv_nom: string;
 };
 
 export type InventoryColumn = {
@@ -40,27 +40,35 @@ export type InventoryColumn = {
 	fk_pro_id: number;
 	inv_stock: number;
 	fk_est_inv_id: number;
-  producto: ProductColumn;
-  estado_inventario: InventoryStatusColumn;
+	producto: ProductColumn;
+	estado_inventario: InventoryStatusColumn;
+};
+
+export type OrderStatusColumn = {
+	est_ped_id: number;
+	est_ped_nom: string;
 };
 
 export type OrderColumn = {
 	ped_id: number;
 	ped_est: string;
-	ped_tot: number;
-  fk_cli_id: number;
 	ped_fec: string;
-  cliente: ClientColumn;
+	ped_tot: number;
+	fk_est_ped_id: number;
+	created_at: string;
+	updated_at: string;
+	cliente: ClientColumn;
+	estado_pedido: OrderStatusColumn;
+	detalle_pedido: OrderDetailColumn[];
 };
 
 export type OrderDetailColumn = {
 	det_ped_id: number;
 	fk_ped_id: number;
-  fk_pro_id: number;
+	fk_pro_id: number;
 	det_ped_can: number;
 	det_ped_pre: number;
-  producto: ProductColumn;
-  pedido: OrderColumn;
+	producto: ProductColumn;
 };
 
 export type InventoryLogColumn = {
@@ -76,5 +84,13 @@ export type SalesColumn = {
 	fk_cli_id: number;
 	ven_tot: number;
 	created_at: string;
-  cliente: ClientColumn;
+	cliente: ClientColumn;
+};
+
+export type OrderProduct = {
+	fk_est_inv_id: number;
+	fk_pro_id: number;
+	inv_stock: number;
+	inv_id: number;
+	producto: ProductColumn;
 };

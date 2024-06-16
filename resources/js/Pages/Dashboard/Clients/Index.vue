@@ -141,7 +141,7 @@ watch(
 					placeholder="Buscar clientes por nombre o email"
 				>
 					<template #top>
-            <DataTableDialogCliente :form="form" />
+						<DataTableDialogCliente :form="form" />
 					</template>
 				</DataTable>
 			</div>

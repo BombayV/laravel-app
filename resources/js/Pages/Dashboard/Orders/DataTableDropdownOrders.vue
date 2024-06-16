@@ -1,93 +1,217 @@
 <script setup lang="ts">
-import {InventoryColumn} from '@/components/table/columns';
+import AlertDialogItem from '@/components/table/AlertDialogItem.vue';
+import { InventoryColumn, OrderColumn } from '@/components/table/columns';
 import DialogItem from '@/components/table/DialogItem.vue';
 import DrawerItem from '@/components/table/DrawerItem.vue';
 import { Button } from '@/components/ui/button';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from '@/components/ui/toast';
 import { useForm } from '@inertiajs/vue3';
-import { Layers3, DollarSign, MoreHorizontal, Check } from 'lucide-vue-next';
+import {
+	CalendarCog,
+	CalendarDays,
+	Check,
+	DollarSign,
+	Map,
+	MoreHorizontal,
+	Phone
+} from 'lucide-vue-next';
 
 const props = defineProps<{
-  original: InventoryColumn;
-  dataRef: any;
+	original: OrderColumn;
+	dataRef: any;
 }>();
 
-const postSubmit = () => {
+const updateStateForm = useForm({
+	id: -1
+});
 
-}
+const updateState = () => {
+	if (updateStateForm.id === -1) {
+		toast({
+			title: 'Error',
+			description: 'No se ha seleccionado un pedido para actualizar',
+			variant: 'destructive'
+		});
+		return;
+	}
 
-const openedUpdateForm = () => {
-
+	updateStateForm.put(route('pedidos.update', {}), {
+		preserveScroll: true,
+		onSuccess: () => {
+			toast({
+				title: 'Pedido actualizado',
+				description: 'El pedido ha sido actualizado correctamente'
+			});
+		},
+		onError: () => {
+			toast({
+				title: 'Error',
+				description: 'Ha ocurrido un error al actualizar el pedido',
+				variant: 'destructive'
+			});
+		}
+	});
 };
 </script>
 
 <template>
-  <DropdownMenu>
-    <DropdownMenuTrigger as-child>
-      <Button variant="ghost" class="h-8 w-8 p-0">
-        <span class="sr-only">Abrir menu</span>
-        <MoreHorizontal class="h-4 w-4" />
-      </Button>
-    </DropdownMenuTrigger>
-    <DropdownMenuContent align="end">
-      <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-      <!-- Ver inventario -->
-      <DrawerItem
-        dropdownText="Ver inventario"
-        :title="'t'"
-        :description="'b'"
-      >
-        <div class="relative w-full p-4 pb-0">
-          <div class="grid w-full grid-cols-2 gap-2">
-            <div class="flex w-full items-center space-x-4 rounded-md border p-4">
-              <Layers3 />
-              <div class="flex-1 space-y-1">
-                <p class="text-sm font-medium leading-none">Stock</p>
-                <p class="text-sm text-muted-foreground">
-                  10
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </DrawerItem>
+	<DropdownMenu>
+		<DropdownMenuTrigger as-child>
+			<Button variant="ghost" class="h-8 w-8 p-0">
+				<span class="sr-only">Abrir menu</span>
+				<MoreHorizontal class="h-4 w-4" />
+			</Button>
+		</DropdownMenuTrigger>
+		<DropdownMenuContent align="end">
+			<DropdownMenuLabel>Acciones</DropdownMenuLabel>
+			<!-- Ver inventario -->
+			<DrawerItem
+				dropdownText="Ver cliente"
+				:title="original.cliente.cli_nom + ' ' + original.cliente.cli_ape"
+				:description="original.cliente.cli_ema"
+			>
+				<div class="relative w-full p-4 pb-0">
+					<div class="grid w-full grid-cols-2 gap-2">
+						<div class="flex w-full items-center space-x-4 rounded-md border p-4">
+							<Phone />
+							<div class="flex-1 space-y-1">
+								<p class="text-sm font-medium leading-none">Telefono</p>
+								<p class="text-sm text-muted-foreground">
+									{{ original.cliente.cli_tel }}
+								</p>
+							</div>
+						</div>
+						<div class="flex w-full items-center space-x-4 rounded-md border p-4">
+							<CalendarDays />
+							<div class="flex-1 space-y-1">
+								<p class="text-sm font-medium leading-none">Sexo</p>
+								<p class="text-sm text-muted-foreground">
+									{{
+										original.cliente.cli_sex === 'O'
+											? 'Otro'
+											: original.cliente.cli_sex === 'M'
+												? 'Masculino'
+												: 'Femenino'
+									}}
+								</p>
+							</div>
+						</div>
+						<div class="col-span-2 flex w-full items-center space-x-4 rounded-md border p-4">
+							<Map />
+							<div class="flex-1 space-y-1">
+								<p class="text-sm font-medium leading-none">Dirección</p>
+								<p class="text-sm text-muted-foreground">
+									{{ original.cliente.cli_dir }}
+								</p>
+							</div>
+						</div>
+						<div class="col-span-2 flex w-full items-center space-x-4 rounded-md border p-4">
+							<CalendarDays />
+							<div class="flex-1 space-y-1">
+								<p class="text-sm font-medium leading-none">Fecha de creacion</p>
+								<p class="text-sm text-muted-foreground">
+									{{ new Date(original.created_at).toLocaleDateString() }}
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</DrawerItem>
 
-      <DropdownMenuSeparator />
-      <!-- Agregar inv -->
-<!--      <DialogItem-->
-<!--        dropdownText="Agregar stock"-->
-<!--        :title="`Agregar stock a ${original.producto.pro_nom}`"-->
-<!--        description="Complete los campos para agregar stock a este producto."-->
-<!--        action="Agregar"-->
-<!--        :disabled="postForm.processing"-->
-<!--        @submit="postSubmit"-->
-<!--        @opened="() => openedUpdateForm()"-->
-<!--      >-->
-<!--        <div class="grid gap-4 py-4">-->
-<!--          <div class="grid grid-cols-4 items-center gap-4">-->
-<!--            <Label for="stock" class="text-right">Stock</Label>-->
-<!--            <Input-->
-<!--              id="stock"-->
-<!--              class="col-span-3"-->
-<!--              required-->
-<!--              v-model="postForm.stock"-->
-<!--              :disabled="postForm.processing"-->
-<!--              type="number"-->
-<!--              min="0"-->
-<!--              max="99999"-->
-<!--            />-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </DialogItem>-->
-    </DropdownMenuContent>
-  </DropdownMenu>
+			<DrawerItem
+				dropdownText="Ver pedido"
+				:title="`Pedido de ${original.cliente.cli_nom + ' ' + original.cliente.cli_ape}`"
+				:description="original.cliente.cli_ema"
+			>
+				<div class="relative w-full p-4 pb-0">
+					<div class="grid w-full grid-cols-2 gap-2">
+						<div class="flex w-full items-center space-x-4 rounded-md border p-4">
+							<Check />
+							<div class="flex-1 space-y-1">
+								<p class="text-sm font-medium leading-none">Estado</p>
+								<p class="text-sm capitalize text-muted-foreground">
+									{{ original.estado_pedido.est_ped_nom }}
+								</p>
+							</div>
+						</div>
+						<div class="flex w-full items-center space-x-4 rounded-md border p-4">
+							<DollarSign />
+							<div class="flex-1 space-y-1">
+								<p class="text-sm font-medium leading-none">Total</p>
+								<p class="text-sm text-muted-foreground">${{ original.ped_tot }}</p>
+							</div>
+						</div>
+						<div class="col-span-2 flex w-full items-center space-x-4 rounded-md border p-4">
+							<CalendarCog />
+							<div class="flex-1 space-y-1">
+								<p class="text-sm font-medium leading-none">Fecha de modificacion</p>
+								<p class="text-sm text-muted-foreground">
+									{{ new Date(original.updated_at).toLocaleDateString() }}
+								</p>
+							</div>
+						</div>
+						<div class="col-span-2 flex w-full items-center space-x-4 rounded-md border p-4">
+							<CalendarDays />
+							<div class="flex-1 space-y-1">
+								<p class="text-sm font-medium leading-none">Fecha de creacion</p>
+								<p class="text-sm text-muted-foreground">
+									{{ new Date(original.created_at).toLocaleDateString() }}
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</DrawerItem>
+
+			<DrawerItem
+				v-if="original.detalle_pedido.length > 0"
+				dropdownText="Ver detalles"
+				title="Detalles del pedido"
+				:description="`Cantidad de productos: ${original.detalle_pedido.length}`"
+			>
+				<div class="relative w-full p-4 pb-0">
+					<div class="grid w-full grid-cols-2 gap-2">
+						<div
+							v-for="detalle in original.detalle_pedido"
+							:key="detalle.fk_pro_id"
+							class="flex w-full items-center space-x-4 rounded-md border p-4 last-of-type:odd:col-span-2"
+						>
+							<span class="text-xl font-semibold"> {{ detalle.det_ped_can }}x </span>
+							<div class="flex-1 space-y-1">
+								<p class="text-sm font-medium leading-none">
+									{{ detalle.producto.pro_nom }}
+								</p>
+								<p class="text-sm capitalize text-muted-foreground">
+									{{ detalle.producto.tipo_producto!.tip_pro_nom }}
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</DrawerItem>
+
+			<DropdownMenuSeparator />
+			<!-- Agregar inv -->
+			<AlertDialogItem
+				dropdownText="Actualizar pedido"
+				title="Actualizar pedido"
+				description="¿Estás seguro de que deseas actualizar este pedido? No se podrá volver atrás."
+				cancel="Cancelar"
+				action="Avanzar"
+				@submit="updateState"
+				@opened="() => (updateStateForm.id = original.ped_id)"
+				@closed="() => (updateStateForm.id = -1)"
+			>
+			</AlertDialogItem>
+		</DropdownMenuContent>
+	</DropdownMenu>
 </template>

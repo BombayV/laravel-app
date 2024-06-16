@@ -56,6 +56,7 @@ Route::middleware('auth')->group(function () {
 
   Route::get('/dashboard/pedidos', [OrdersController::class, 'create'])->name('pedidos');
   Route::post('/dashboard/pedidos', [OrdersController::class, 'store'])->name('pedidos.store');
+  Route::put('/dashboard/pedidos', [OrdersController::class, 'update'])->name('pedidos.update');
 
   Route::get('/dashboard/buscar-cliente/{id}', [ClientSearch::class, 'show'])->name('buscar-cliente');
   Route::get('/dashboard/buscar-producto/{id}', [ProductsSearchController::class, 'show'])->name('buscar-producto');

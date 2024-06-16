@@ -31,94 +31,96 @@ const props = defineProps<{
 }>();
 
 const updateForm = useForm({
-  id: -1,
-  nombre: '',
+	id: -1,
+	nombre: ''
 });
 
 const deleteForm = useForm({
-  id: -1,
+	id: -1
 });
 
 const deleteSubmit = async () => {
-  if (deleteForm.id === -1) {
-    toast({
-      title: 'Error al eliminar tipo de producto',
-      description: 'No se seleccionó un tipo de producto válido.',
-      duration: 5000,
-      variant: 'destructive'
-    });
-    return;
-  }
+	if (deleteForm.id === -1) {
+		toast({
+			title: 'Error al eliminar tipo de producto',
+			description: 'No se seleccionó un tipo de producto válido.',
+			duration: 5000,
+			variant: 'destructive'
+		});
+		return;
+	}
 
-  deleteForm.delete(route('tipos-productos.destroy', deleteForm.id), {
-    preserveScroll: true,
-    onSuccess: () => {
-      toast({
-        title: 'Tipo de producto eliminado',
-        description: 'El tipo de producto ha sido eliminado exitosamente.',
-        duration: 5000,
-      });
+	deleteForm.delete(route('tipos-productos.destroy', deleteForm.id), {
+		preserveScroll: true,
+		onSuccess: () => {
+			toast({
+				title: 'Tipo de producto eliminado',
+				description: 'El tipo de producto ha sido eliminado exitosamente.',
+				duration: 5000
+			});
 
-      props.dataRef.value = props.dataRef.value.filter((item: any) => item.tip_pro_id !== deleteForm.id);
-    },
-    onError: () => {
-      toast({
-        title: 'Error al eliminar tipo de producto',
-        description: 'Ha ocurrido un error al intentar eliminar el tipo de producto.',
-        duration: 5000,
-        variant: 'destructive'
-      });
-    }
-  });
+			props.dataRef.value = props.dataRef.value.filter(
+				(item: any) => item.tip_pro_id !== deleteForm.id
+			);
+		},
+		onError: () => {
+			toast({
+				title: 'Error al eliminar tipo de producto',
+				description: 'Ha ocurrido un error al intentar eliminar el tipo de producto.',
+				duration: 5000,
+				variant: 'destructive'
+			});
+		}
+	});
 };
 
 const updateSubmit = async () => {
-  if (updateForm.id === -1) {
-    toast({
-      title: 'Error al actualizar tipo de producto',
-      description: 'No se seleccionó un tipo de producto válido.',
-      duration: 5000,
-      variant: 'destructive'
-    });
-    return;
-  }
+	if (updateForm.id === -1) {
+		toast({
+			title: 'Error al actualizar tipo de producto',
+			description: 'No se seleccionó un tipo de producto válido.',
+			duration: 5000,
+			variant: 'destructive'
+		});
+		return;
+	}
 
-  if (updateForm.nombre === props.original.tip_pro_nom) {
-    toast({
-      title: 'Error al actualizar tipo de producto',
-      description: 'El nombre del tipo de producto no ha cambiado.',
-      duration: 5000,
-      variant: 'destructive'
-    });
-    return;
-  }
+	if (updateForm.nombre === props.original.tip_pro_nom) {
+		toast({
+			title: 'Error al actualizar tipo de producto',
+			description: 'El nombre del tipo de producto no ha cambiado.',
+			duration: 5000,
+			variant: 'destructive'
+		});
+		return;
+	}
 
-  updateForm.put(route('tipos-productos.update', { id: updateForm.id }), {
-    preserveScroll: true,
-    onSuccess: () => {
-      toast({
-        title: 'Tipo de producto actualizado',
-        description: 'El tipo de producto ha sido actualizado exitosamente.',
-        duration: 5000,
-      });
+	updateForm.put(route('tipos-productos.update', { id: updateForm.id }), {
+		preserveScroll: true,
+		onSuccess: () => {
+			toast({
+				title: 'Tipo de producto actualizado',
+				description: 'El tipo de producto ha sido actualizado exitosamente.',
+				duration: 5000
+			});
 
-      const idx = props.dataRef.value.findIndex((item: any) => item.tip_pro_id === updateForm.id);
-      props.dataRef.value[idx].tip_pro_nom = updateForm.nombre;
-    },
-    onError: () => {
-      toast({
-        title: 'Error al actualizar tipo de producto',
-        description: 'Ha ocurrido un error al intentar actualizar el tipo de producto.',
-        duration: 5000,
-        variant: 'destructive'
-      });
-    }
-  });
+			const idx = props.dataRef.value.findIndex((item: any) => item.tip_pro_id === updateForm.id);
+			props.dataRef.value[idx].tip_pro_nom = updateForm.nombre;
+		},
+		onError: () => {
+			toast({
+				title: 'Error al actualizar tipo de producto',
+				description: 'Ha ocurrido un error al intentar actualizar el tipo de producto.',
+				duration: 5000,
+				variant: 'destructive'
+			});
+		}
+	});
 };
 
 const openedUpdateForm = () => {
-  updateForm.id = props.original.tip_pro_id;
-  updateForm.nombre = props.original.tip_pro_nom;
+	updateForm.id = props.original.tip_pro_id;
+	updateForm.nombre = props.original.tip_pro_nom;
 };
 </script>
 
@@ -133,8 +135,11 @@ const openedUpdateForm = () => {
 		<DropdownMenuContent align="end">
 			<DropdownMenuLabel>Acciones</DropdownMenuLabel>
 			<!-- Ver cliente -->
-			<DrawerItem dropdownText="Ver tipo"
-                  :title="original.tip_pro_nom" description="Detalles del tipo de producto.">
+			<DrawerItem
+				dropdownText="Ver tipo"
+				:title="original.tip_pro_nom"
+				description="Detalles del tipo de producto."
+			>
 			</DrawerItem>
 
 			<DropdownMenuSeparator />
@@ -159,7 +164,7 @@ const openedUpdateForm = () => {
 							:disabled="updateForm.processing"
 						/>
 					</div>
-        </div>
+				</div>
 			</DialogItem>
 
 			<!-- Eliminar cliente -->

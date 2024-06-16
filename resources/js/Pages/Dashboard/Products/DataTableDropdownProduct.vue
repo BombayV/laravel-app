@@ -98,7 +98,8 @@ const updateSubmit = async () => {
 
 	props.updateForm.estado =
 		props.updateForm.estado === null ? null : parseInt(props.updateForm.estado as string);
-	props.updateForm.tipo = props.updateForm.tipo === null ? null : parseInt(props.updateForm.tipo as string);
+	props.updateForm.tipo =
+		props.updateForm.tipo === null ? null : parseInt(props.updateForm.tipo as string);
 
 	props.updateForm.put(route('productos.update', {}), {
 		onSuccess: () => {
@@ -108,18 +109,18 @@ const updateSubmit = async () => {
 				duration: 5000
 			});
 
-      props.updateForm.estado = (props.updateForm.estado as number).toString();
-      props.updateForm.tipo = (props.updateForm.tipo as number).toString();
+			props.updateForm.estado = (props.updateForm.estado as number).toString();
+			props.updateForm.tipo = (props.updateForm.tipo as number).toString();
 
 			const index = props.dataRef.value.findIndex(
 				(item: any) => item.pro_id === props.updateForm.id
 			);
 
-      if (index < 0) {
-        return;
-      }
+			if (index < 0) {
+				return;
+			}
 			props.dataRef.value[index].pro_nom = props.updateForm.nombre;
-			props.dataRef.value[index].pro_val = parseFloat(props.updateForm.valor as any).toFixed(2)
+			props.dataRef.value[index].pro_val = parseFloat(props.updateForm.valor as any).toFixed(2);
 			props.dataRef.value[index].fk_est_pro_id = props.updateForm.estado;
 			props.dataRef.value[index].fk_tip_pro_id = props.updateForm.tipo;
 		},

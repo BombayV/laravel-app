@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import GuestLayout from '@/Layouts/GuestLayout.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
+import GuestLayout from '@/Layouts/GuestLayout.vue';
+import { Head, Link, useForm } from '@inertiajs/vue3';
 
 const form = useForm({
 	name: '',
@@ -27,9 +27,7 @@ const submit = () => {
 
 		<form @submit.prevent="submit" class="flex flex-col gap-2">
 			<div>
-				<Label for="name" value="Name">
-          Nombre
-        </Label>
+				<Label for="name" value="Name"> Nombre </Label>
 
 				<Input
 					id="name"
@@ -43,9 +41,7 @@ const submit = () => {
 			</div>
 
 			<div>
-				<Label for="email" value="Email">
-          Email
-        </Label>
+				<Label for="email" value="Email"> Email </Label>
 
 				<Input
 					id="email"
@@ -55,13 +51,10 @@ const submit = () => {
 					required
 					autocomplete="username"
 				/>
-
 			</div>
 
 			<div>
-				<Label for="password" value="Password">
-          Contraseña
-        </Label>
+				<Label for="password" value="Password"> Contraseña </Label>
 
 				<Input
 					id="password"
@@ -74,9 +67,7 @@ const submit = () => {
 			</div>
 
 			<div>
-				<Label for="password_confirmation" value="Confirm Password">
-          Confirmar contraseña
-        </Label>
+				<Label for="password_confirmation" value="Confirm Password"> Confirmar contraseña </Label>
 
 				<Input
 					id="password_confirmation"
@@ -88,7 +79,7 @@ const submit = () => {
 				/>
 			</div>
 
-			<div class="flex items-center justify-end mt-2">
+			<div class="mt-2 flex items-center justify-end">
 				<Link
 					:href="route('login')"
 					class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
@@ -96,11 +87,7 @@ const submit = () => {
 					Registrado?
 				</Link>
 
-				<Button
-					class="ms-4"
-					:class="{ 'opacity-25': form.processing }"
-					:disabled="form.processing"
-				>
+				<Button class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
 					Registrar
 				</Button>
 			</div>

@@ -24,43 +24,43 @@ import { useForm } from '@inertiajs/vue3';
 import { Loader2 } from 'lucide-vue-next';
 
 const form = useForm({
-  nombre: '',
+	nombre: ''
 });
 const submit = () => {
-  form.post(route('tipos-productos.store'), {
-    preserveScroll: true,
-    onSuccess: () => {
-      form.reset();
-      toast({
-        title: 'Tipo de producto creado',
-        description: 'El tipo de producto ha sido creado exitosamente.',
-        duration: 5000,
-      })
-    },
-    onError: () => {
-      toast({
-        title: 'Error al crear el tipo de producto',
-        description: 'Ha ocurrido un error al intentar crear el tipo de producto.',
-        duration: 5000,
-        variant: 'destructive'
-      })
-    }
-  });
+	form.post(route('tipos-productos.store'), {
+		preserveScroll: true,
+		onSuccess: () => {
+			form.reset();
+			toast({
+				title: 'Tipo de producto creado',
+				description: 'El tipo de producto ha sido creado exitosamente.',
+				duration: 5000
+			});
+		},
+		onError: () => {
+			toast({
+				title: 'Error al crear el tipo de producto',
+				description: 'Ha ocurrido un error al intentar crear el tipo de producto.',
+				duration: 5000,
+				variant: 'destructive'
+			});
+		}
+	});
 };
 </script>
 
 <template>
 	<Dialog>
 		<DialogTrigger>
-			<Button>
-        Crear Tipo
-      </Button>
+			<Button> Crear Tipo </Button>
 		</DialogTrigger>
 		<DialogContent class="sm:max-w-[425px]">
 			<form @submit.prevent="submit">
 				<DialogHeader>
-          <DialogTitle> Crear nuevo tipo </DialogTitle>
-          <DialogDescription> Complete los campos para crear un nuevo tipo de producto. </DialogDescription>
+					<DialogTitle> Crear nuevo tipo </DialogTitle>
+					<DialogDescription>
+						Complete los campos para crear un nuevo tipo de producto.
+					</DialogDescription>
 				</DialogHeader>
 				<div class="grid gap-4 py-4">
 					<div class="grid grid-cols-4 items-center gap-4">
@@ -73,7 +73,7 @@ const submit = () => {
 							:disabled="form.processing"
 						/>
 					</div>
-        </div>
+				</div>
 				<DialogFooter>
 					<Button type="submit" :disabled="form.processing">
 						<Loader2 v-if="form.processing" class="mr-2 h-4 w-4 animate-spin" />
