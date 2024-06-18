@@ -1,24 +1,13 @@
 <script setup lang="ts">
-import { InventoryColumn, OrderColumn } from '@/components/table/columns';
+import { OrderColumn } from '@/components/table/columns';
 import DataTable from '@/components/table/DataTable.vue';
-import {
-	AlertDialog,
-	AlertDialogAction,
-	AlertDialogCancel,
-	AlertDialogContent,
-	AlertDialogDescription,
-	AlertDialogFooter,
-	AlertDialogHeader,
-	AlertDialogTitle,
-	AlertDialogTrigger
-} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import DataTableDialogOrders from '@/Pages/Dashboard/Orders/DataTableDialogOrders.vue';
 import DataTableDropdownOrders from '@/Pages/Dashboard/Orders/DataTableDropdownOrders.vue';
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head } from '@inertiajs/vue3';
 import { ColumnDef } from '@tanstack/vue-table';
-import { ArrowUpDown, Trash } from 'lucide-vue-next';
+import { ArrowUpDown } from 'lucide-vue-next';
 import { h, ref, watch } from 'vue';
 
 const props = defineProps<{
@@ -138,7 +127,6 @@ watch(
 	() => props.updateState,
 	(value) => {
 		if (value) {
-      console.log(value)
       const index = dataRef.value.findIndex((order: any) => order.ped_id === value.id);
       if (index < 0) {
         return;

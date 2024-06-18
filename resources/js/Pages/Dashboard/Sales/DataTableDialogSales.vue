@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ClientColumn, OrderColumn, OrderProduct, ProductColumn } from '@/components/table/columns';
+import { OrderColumn } from '@/components/table/columns';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -14,7 +14,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from '@/components/ui/toast';
 import { useForm } from '@inertiajs/vue3';
-import { Loader2, LoaderCircle, Minus, Plus, Trash } from 'lucide-vue-next';
+import { Loader2, LoaderCircle } from 'lucide-vue-next';
 import { ref } from 'vue';
 
 const submit = () => {

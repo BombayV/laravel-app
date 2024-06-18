@@ -9,9 +9,9 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { Check, DollarSign, MoreHorizontal } from 'lucide-vue-next';
+import { MoreHorizontal } from 'lucide-vue-next';
 
-const props = defineProps<{
+defineProps<{
 	original: SalesColumn;
 	dataRef: any;
 }>();

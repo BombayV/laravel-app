@@ -1,26 +1,13 @@
 <script setup lang="ts">
 import type { ClientColumn } from '@/components/table/columns';
 import DataTable from '@/components/table/DataTable.vue';
-import {
-	AlertDialog,
-	AlertDialogAction,
-	AlertDialogCancel,
-	AlertDialogContent,
-	AlertDialogDescription,
-	AlertDialogFooter,
-	AlertDialogHeader,
-	AlertDialogTitle,
-	AlertDialogTrigger
-} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { toast } from '@/components/ui/toast';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import DataTableDialogCliente from '@/Pages/Dashboard/Clients/DataTableDialogClient.vue';
 import DataTableDropdownClient from '@/Pages/Dashboard/Clients/DataTableDropdownClient.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 import { ColumnDef } from '@tanstack/vue-table';
-import { ArrowUpDown, Trash } from 'lucide-vue-next';
+import { ArrowUpDown } from 'lucide-vue-next';
 import { h, ref, watch } from 'vue';
 
 const props = defineProps<{
@@ -94,9 +81,6 @@ const CLIENTS_COLUMNS: CustomColumnDef[] = [
 	}
 ];
 
-const deleteAllForm = useForm({
-	ids: <number[]>[]
-});
 const updateForm = useForm({
 	id: -1,
 	nombre: '',

@@ -71,14 +71,6 @@ export type OrderDetailColumn = {
 	producto: ProductColumn;
 };
 
-export type InventoryLogColumn = {
-	reg_inv_id: number;
-	fk_inv_id: number;
-	reg_inv_can: number;
-	reg_inv_fec: string;
-	reg_inv_tip_nom: string;
-};
-
 export type SalesColumn = {
 	ven_id: number;
 	fk_cli_id: number;

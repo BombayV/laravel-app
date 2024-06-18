@@ -7,12 +7,8 @@ import {
 	DropdownMenuGroup,
 	DropdownMenuItem,
 	DropdownMenuLabel,
-	DropdownMenuPortal,
 	DropdownMenuSeparator,
 	DropdownMenuShortcut,
-	DropdownMenuSub,
-	DropdownMenuSubContent,
-	DropdownMenuSubTrigger,
 	DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import Toaster from '@/components/ui/toast/Toaster.vue';
@@ -21,7 +17,6 @@ import {
 	BadgeDollarSign,
 	Box,
 	ClipboardPlus,
-	Cloud,
 	LogOut,
 	PackageCheck,
 	ReceiptText,
@@ -30,7 +25,6 @@ import {
 	User,
 	UserSearch
 } from 'lucide-vue-next';
-import { ref } from 'vue';
 </script>
 
 <template>

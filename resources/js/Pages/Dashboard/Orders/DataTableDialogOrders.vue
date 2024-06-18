@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ClientColumn, OrderProduct, ProductColumn } from '@/components/table/columns';
+import { ClientColumn, OrderProduct } from '@/components/table/columns';
 import { Button } from '@/components/ui/button';
 import {
 	Dialog,

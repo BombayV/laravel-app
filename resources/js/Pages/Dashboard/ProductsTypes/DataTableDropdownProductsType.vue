@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AlertDialogItem from '@/components/table/AlertDialogItem.vue';
-import { ClientColumn, ProductColumn, ProductTypeColumn } from '@/components/table/columns';
+import { ProductTypeColumn } from '@/components/table/columns';
 import DialogItem from '@/components/table/DialogItem.vue';
 import DrawerItem from '@/components/table/DrawerItem.vue';
 import { Button } from '@/components/ui/button';
@@ -13,17 +13,9 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-	Select,
-	SelectContent,
-	SelectGroup,
-	SelectItem,
-	SelectTrigger,
-	SelectValue
-} from '@/components/ui/select';
 import { toast } from '@/components/ui/toast';
 import { useForm } from '@inertiajs/vue3';
-import { Check, DollarSign, MoreHorizontal } from 'lucide-vue-next';
+import { MoreHorizontal } from 'lucide-vue-next';
 
 const props = defineProps<{
 	original: ProductTypeColumn;

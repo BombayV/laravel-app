@@ -17,6 +17,7 @@ const form = useForm({
 	password: '',
 	remember: false
 });
+const { toast } = useToast();
 
 const submit = () => {
 	form.post(route('login'), {
@@ -33,8 +34,6 @@ const submit = () => {
 		}
 	});
 };
-
-const { toast } = useToast();
 </script>
 
 <template>

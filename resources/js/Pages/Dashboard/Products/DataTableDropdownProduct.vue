@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AlertDialogItem from '@/components/table/AlertDialogItem.vue';
-import { ClientColumn, ProductColumn } from '@/components/table/columns';
+import { ProductColumn } from '@/components/table/columns';
 import DialogItem from '@/components/table/DialogItem.vue';
 import DrawerItem from '@/components/table/DrawerItem.vue';
 import { Button } from '@/components/ui/button';

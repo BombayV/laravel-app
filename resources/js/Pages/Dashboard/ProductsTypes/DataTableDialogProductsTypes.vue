@@ -11,14 +11,6 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-	Select,
-	SelectContent,
-	SelectGroup,
-	SelectItem,
-	SelectTrigger,
-	SelectValue
-} from '@/components/ui/select';
 import { toast } from '@/components/ui/toast';
 import { useForm } from '@inertiajs/vue3';
 import { Loader2 } from 'lucide-vue-next';

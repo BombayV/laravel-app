@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import AlertDialogItem from '@/components/table/AlertDialogItem.vue';
-import { InventoryColumn, OrderColumn } from '@/components/table/columns';
-import DialogItem from '@/components/table/DialogItem.vue';
+import { OrderColumn } from '@/components/table/columns';
 import DrawerItem from '@/components/table/DrawerItem.vue';
 import { Button } from '@/components/ui/button';
 import {
@@ -11,8 +10,6 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { toast } from '@/components/ui/toast';
 import { useForm } from '@inertiajs/vue3';
 import {
@@ -25,7 +22,7 @@ import {
 	Phone
 } from 'lucide-vue-next';
 
-const props = defineProps<{
+defineProps<{
 	original: OrderColumn;
 	dataRef: any;
 }>();

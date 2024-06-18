@@ -1,14 +1,13 @@
 <script setup lang="ts">
-import { InventoryColumn, ProductTypeColumn } from '@/components/table/columns';
+import { ProductTypeColumn } from '@/components/table/columns';
 import DataTable from '@/components/table/DataTable.vue';
 import { Button } from '@/components/ui/button';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import DataTableDropdownOrders from '@/Pages/Dashboard/Orders/DataTableDropdownOrders.vue';
 import DataTableDialogProductsTypes from '@/Pages/Dashboard/ProductsTypes/DataTableDialogProductsTypes.vue';
 import DataTableDropdownProductsType from '@/Pages/Dashboard/ProductsTypes/DataTableDropdownProductsType.vue';
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head } from '@inertiajs/vue3';
 import { ColumnDef } from '@tanstack/vue-table';
-import { ArrowUpDown, Trash } from 'lucide-vue-next';
+import { ArrowUpDown } from 'lucide-vue-next';
 import { h, ref, watch } from 'vue';
 
 const props = defineProps<{
