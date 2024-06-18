@@ -199,9 +199,10 @@ const updateState = () => {
 				</div>
 			</DrawerItem>
 
-			<DropdownMenuSeparator />
+			<DropdownMenuSeparator v-if="original.fk_est_ped_id === 1 || original.fk_est_ped_id === 3" />
 			<!-- Agregar inv -->
 			<AlertDialogItem
+        v-if="original.fk_est_ped_id === 1"
 				dropdownText="Actualizar pedido"
 				title="Actualizar pedido"
 				description="¿Estás seguro de que deseas actualizar este pedido? No se podrá volver atrás."
@@ -212,6 +213,18 @@ const updateState = () => {
 				@closed="() => (updateStateForm.id = -1)"
 			>
 			</AlertDialogItem>
+      <AlertDialogItem
+        v-if="original.fk_est_ped_id === 3"
+        dropdownText="Cancelar pedido"
+        title="Cancelar pedido"
+        description="¿Estás seguro de que deseas cancelar este pedido? No se podrá volver atrás."
+        cancel="Cancelar"
+        action="Confirmar"
+        @submit="updateState"
+        @opened="() => (updateStateForm.id = original.ped_id)"
+        @closed="() => (updateStateForm.id = -1)"
+      >
+      </AlertDialogItem>
 		</DropdownMenuContent>
 	</DropdownMenu>
 </template>

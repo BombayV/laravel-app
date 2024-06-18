@@ -72,7 +72,7 @@ watch(
 </script>
 
 <template>
-	<Head title="Pedidos" />
+	<Head title="Tipo de Productos" />
 
 	<AuthenticatedLayout>
 		<template #header>

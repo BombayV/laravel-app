@@ -9,6 +9,8 @@ use App\Http\Controllers\Dashboard\ProductsTypesController;
 use App\Http\Controllers\Dashboard\ClientSearch;
 use App\Http\Controllers\Dashboard\ProductsSearchController;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\SalesController;
+use App\Http\Controllers\Dashboard\SalesSearchController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -58,12 +60,12 @@ Route::middleware('auth')->group(function () {
   Route::post('/dashboard/pedidos', [OrdersController::class, 'store'])->name('pedidos.store');
   Route::put('/dashboard/pedidos', [OrdersController::class, 'update'])->name('pedidos.update');
 
+  Route::get('/dashboard/ventas', [SalesController::class, 'create'])->name('ventas');
+  Route::post('/dashboard/ventas', [SalesController::class, 'store'])->name('ventas.store');
+
   Route::get('/dashboard/buscar-cliente/{id}', [ClientSearch::class, 'show'])->name('buscar-cliente');
   Route::get('/dashboard/buscar-producto/{id}', [ProductsSearchController::class, 'show'])->name('buscar-producto');
-});
-
-Route::middleware('auth')->group(function () {
-    Route::get('/dashboard/ventas', [ClientsController::class, 'create'])->name('ventas');
+  Route::get('/dashboard/buscar-venta/{id}', [SalesSearchController::class, 'show'])->name('buscar-venta');
 });
 
 Route::middleware('auth')->group(function () {
