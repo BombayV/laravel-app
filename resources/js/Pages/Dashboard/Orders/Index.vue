@@ -127,14 +127,14 @@ watch(
 	() => props.updateState,
 	(value) => {
 		if (value) {
-      const index = dataRef.value.findIndex((order: any) => order.ped_id === value.id);
-      if (index < 0) {
-        return;
-      }
+			const index = dataRef.value.findIndex((order: any) => order.ped_id === value.id);
+			if (index < 0) {
+				return;
+			}
 
-      dataRef.value[index].fk_est_ped_id = value.state;
-      dataRef.value[index].estado_pedido.est_ped_id = value.state;
-      dataRef.value[index].estado_pedido.est_ped_nom = value.stateName;
+			dataRef.value[index].fk_est_ped_id = value.state;
+			dataRef.value[index].estado_pedido.est_ped_id = value.state;
+			dataRef.value[index].estado_pedido.est_ped_nom = value.stateName;
 		}
 	}
 );

@@ -42,7 +42,9 @@ const postSubmit = () => {
 		onError: (errors) => {
 			toast({
 				title: 'Error al agregar stock',
-				description: (Object.values(errors)[0] as string) || 'Por favor, revise los campos e intente de nuevo.',
+				description:
+					(Object.values(errors)[0] as string) ||
+					'Por favor, revise los campos e intente de nuevo.',
 				duration: 5000,
 				variant: 'destructive'
 			});

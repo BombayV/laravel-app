@@ -11,6 +11,15 @@ import {
 	DropdownMenuShortcut,
 	DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
+import {
+	NavigationMenu,
+	NavigationMenuContent,
+	NavigationMenuItem,
+	NavigationMenuLink,
+	NavigationMenuList,
+	NavigationMenuTrigger
+} from '@/components/ui/navigation-menu';
+import ListItem from '@/components/ui/navigation-menu/ListItem.vue';
 import Toaster from '@/components/ui/toast/Toaster.vue';
 import { Link } from '@inertiajs/vue3';
 import {
@@ -39,12 +48,71 @@ import {
 							<div class="flex shrink-0 items-center">
 								<Link :href="route('dashboard')" class="flex items-center gap-x-6">
 									<ApplicationLogo class="block h-14 w-auto fill-current text-gray-800" />
-									<h1 class="text-2xl font-semibold leading-tight text-gray-800">Hueco UTE</h1>
+									<h1 class="hidden text-2xl font-semibold leading-tight text-gray-800 md:block">
+										Hueco UTE
+									</h1>
 								</Link>
 							</div>
 						</div>
 
-						<div class="flex items-center">
+						<div class="flex items-center gap-x-2">
+							<NavigationMenu>
+								<NavigationMenuList>
+									<NavigationMenuItem>
+										<NavigationMenuTrigger> Menu </NavigationMenuTrigger>
+										<NavigationMenuContent>
+											<ul
+												class="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[minmax(0,.75fr)_minmax(0,1fr)]"
+											>
+												<ListItem :href="route('clientes')" title="Clientes">
+													Maneja los clientes existentes y crea nuevos.
+												</ListItem>
+												<ListItem :href="route('productos')" title="Productos">
+													Crea y maneja los productos que se venden.
+												</ListItem>
+												<ListItem :href="route('tipos-productos')" title="Tipo de Productos">
+													Modifica los tipos de productos existentes.
+												</ListItem>
+											</ul>
+										</NavigationMenuContent>
+									</NavigationMenuItem>
+
+									<NavigationMenuItem>
+										<NavigationMenuTrigger> Inventario </NavigationMenuTrigger>
+										<NavigationMenuContent>
+											<ul
+												class="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[minmax(0,.75fr)_minmax(0,1fr)]"
+											>
+												<ListItem :href="route('inventario')" title="Inventario">
+													Agrega stock a los productos.
+												</ListItem>
+												<ListItem :href="route('pedidos')" title="Pedidos">
+													Revisa los pedidos que se han creado.
+												</ListItem>
+												<ListItem :href="route('ventas')" title="Ventas">
+													Crea nuevas ventas segun los pedidos.
+												</ListItem>
+											</ul>
+										</NavigationMenuContent>
+									</NavigationMenuItem>
+
+									<NavigationMenuItem>
+										<NavigationMenuTrigger> Informes </NavigationMenuTrigger>
+										<NavigationMenuContent>
+											<ul
+												class="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[minmax(0,.75fr)_minmax(0,1fr)]"
+											>
+												<ListItem :href="route('facturas')" title="Facturas">
+													Extrae facturas de ventas, pedidos y productos.
+												</ListItem>
+												<ListItem :href="route('reportes')" title="Reportes">
+													Revisa reportes variados de la empresa.
+												</ListItem>
+											</ul>
+										</NavigationMenuContent>
+									</NavigationMenuItem>
+								</NavigationMenuList>
+							</NavigationMenu>
 							<DropdownMenu>
 								<DropdownMenuTrigger as-child>
 									<Button variant="outline">
@@ -53,58 +121,6 @@ import {
 								</DropdownMenuTrigger>
 								<DropdownMenuContent class="mr-4 mt-1.5 w-56 sm:mr-8 xl:mr-6 2xl:mr-0">
 									<DropdownMenuLabel>Mi Cuenta</DropdownMenuLabel>
-									<DropdownMenuSeparator />
-									<DropdownMenuGroup>
-										<DropdownMenuItem as="a" :href="route('clientes')" method="get">
-											<UserSearch class="mr-2 h-4 w-4" />
-											<span>Clientes</span>
-										</DropdownMenuItem>
-										<DropdownMenuItem as="a" :href="route('productos')" method="get">
-											<ShoppingCart class="mr-2 h-4 w-4" />
-											<span>Productos</span>
-										</DropdownMenuItem>
-										<DropdownMenuItem as="a" :href="route('tipos-productos')" method="get">
-											<ShoppingCart class="mr-2 h-4 w-4" />
-											<span>Tipo de Productos</span>
-										</DropdownMenuItem>
-										<DropdownMenuItem as="a" :href="route('inventario')" method="get">
-											<Box class="mr-2 h-4 w-4" />
-											<span>Inventario</span>
-										</DropdownMenuItem>
-									</DropdownMenuGroup>
-									<DropdownMenuSeparator />
-									<DropdownMenuGroup>
-										<DropdownMenuItem as="a" :href="route('pedidos')" method="get">
-											<PackageCheck class="mr-2 h-4 w-4" />
-											<span>Pedidos</span>
-										</DropdownMenuItem>
-										<DropdownMenuItem as="a" :href="route('ventas')" method="get">
-											<BadgeDollarSign class="mr-2 h-4 w-4" />
-											<span>Ventas</span>
-										</DropdownMenuItem>
-										<DropdownMenuItem as="a" :href="route('facturas')" method="get">
-											<ReceiptText class="mr-2 h-4 w-4" />
-											<span>Facturas</span>
-										</DropdownMenuItem>
-										<DropdownMenuItem as="a" :href="route('reportes')" method="get">
-											<ClipboardPlus class="mr-2 h-4 w-4" />
-											<span>Reportes</span>
-										</DropdownMenuItem>
-									</DropdownMenuGroup>
-									<DropdownMenuSeparator />
-									<DropdownMenuGroup>
-										<DropdownMenuItem>
-											<User class="mr-2 h-4 w-4" />
-											<span>Perfil</span>
-											<DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-										</DropdownMenuItem>
-										<DropdownMenuItem>
-											<Settings class="mr-2 h-4 w-4" />
-											<span>Ajustes</span>
-											<DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-										</DropdownMenuItem>
-									</DropdownMenuGroup>
-									<DropdownMenuSeparator />
 									<Link :href="route('logout')" method="post" as="button" class="w-full">
 										<DropdownMenuItem>
 											<LogOut class="mr-2 h-4 w-4" />

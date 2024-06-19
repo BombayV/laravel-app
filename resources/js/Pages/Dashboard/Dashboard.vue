@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import InfoCard from '@/components/InfoCard.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import { ref } from 'vue';
-import InfoCard from '@/components/InfoCard.vue';
 
 const props = defineProps<{
 	inventory_count?: any;
@@ -29,9 +29,21 @@ const last30DaysExits = ref(props.last_30_days_exits);
 					<div class="p-6 text-gray-900">You're logged in!</div>
 				</div>
 				<div class="grid grid-cols-3 gap-4">
-          <InfoCard title="Productos Totales" subtitle="Numero de productos creados" :mainValue="inventoryCount.value" />
-          <InfoCard title="Entradas" subtitle="En los ultimos 30 dias" :mainValue="last30DaysEntries.value" />
-          <InfoCard title="Salidas" subtitle="En los ultimos 30 dias" :mainValue="last30DaysExits.value" />
+					<InfoCard
+						title="Productos Totales"
+						subtitle="Numero de productos creados"
+						:mainValue="parseInt(inventoryCount)"
+					/>
+					<InfoCard
+						title="Entradas"
+						subtitle="En los ultimos 30 dias"
+						:mainValue="parseInt(last30DaysEntries)"
+					/>
+					<InfoCard
+						title="Salidas"
+						subtitle="En los ultimos 30 dias"
+						:mainValue="parseInt(last30DaysExits)"
+					/>
 				</div>
 			</div>
 		</div>
