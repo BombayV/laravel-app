@@ -26,7 +26,10 @@ const last30DaysExits = ref(props.last_30_days_exits);
 		<div class="py-12">
 			<div class="mx-auto flex max-w-7xl flex-col gap-y-4 sm:px-6 lg:px-8">
 				<div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-					<div class="p-6 text-gray-900">You're logged in!</div>
+					<div class="p-6 text-gray-900">
+            <h3 class="text-lg font-semibold leading-tight">Bienvenido de vuelta, {{ $page.props.auth.user.name }}</h3>
+            <p class="text-sm text-gray-600">Este es tu panel de control, aqui podras ver un resumen de todo inventario.</p>
+          </div>
 				</div>
 				<div class="grid grid-cols-3 gap-4">
 					<InfoCard

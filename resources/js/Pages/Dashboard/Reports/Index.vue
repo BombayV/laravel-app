@@ -9,6 +9,7 @@ const props = defineProps<{
 	stats: {
 		clients: any[];
 		orders: any[];
+    invLog: any[];
 		products: number;
 		productTypes: number;
 	};
@@ -30,6 +31,33 @@ onMounted(() => {
 		acc[date] = acc[date] ? acc[date] + 1 : 1;
 		return acc;
 	}, {});
+  const invLog: {
+    entered: any[];
+    exited: any[];
+  } = {
+    entered: [],
+    exited: []
+  };
+
+  for (const order of props.stats.invLog) {
+    if (order.fk_reg_inv_tip === 2) {
+      invLog.exited.push(order as any);
+    } else {
+      invLog.entered.push(order);
+    }
+  }
+
+  const exitedOrderCountPerDay = invLog.exited.reduce((acc, order) => {
+    const date = new Date(order.reg_inv_fec).toLocaleDateString();
+    acc[date] = acc[date] ? acc[date] + 1 : 1;
+    return acc;
+  }, {});
+
+  const enteredOrderCountPerDay = invLog.entered.reduce((acc, order) => {
+    const date = new Date(order.reg_inv_fec).toLocaleDateString();
+    acc[date] = acc[date] ? acc[date] + 1 : 1;
+    return acc;
+  }, {});
 
 	new Chart(chart.value!, {
 		type: 'line',
@@ -56,7 +84,23 @@ onMounted(() => {
 					borderColor: 'rgba(255, 99, 132, 1)',
 					borderWidth: 1,
 					tension: 0.1
-				}
+				},
+        {
+          label: 'Pedidos salidos',
+          data: exitedOrderCountPerDay,
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1,
+          tension: 0.1
+        },
+        {
+          label: 'Pedidos entrados',
+          data: enteredOrderCountPerDay,
+          backgroundColor: 'rgba(153, 102, 255, 0.2)',
+          borderColor: 'rgba(153, 102, 255, 1)',
+          borderWidth: 1,
+          tension: 0.1
+        }
 			]
 		},
 		options: {
