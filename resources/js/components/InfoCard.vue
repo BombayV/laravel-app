@@ -22,7 +22,7 @@ const numberFormat = (num: number) => {
       <p class="text-center text-2xl font-semibold leading-none">{{ title }}</p>
       <p class="text-center text-sm text-muted-foreground">{{ subtitle }}</p>
     </div>
-    <p class="text-5xl font-semibold leading-none">
+    <p class="text-5xl font-semibold leading-none pr-2">
       {{ numberFormat(mainValue) }}
     </p>
   </div>

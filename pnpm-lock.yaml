@@ -17,6 +17,9 @@ importers:
       '@vueuse/core':
         specifier: ^10.10.0
         version: 10.10.0(vue@3.4.27(typescript@5.4.5))
+      chart.js:
+        specifier: ^4.4.3
+        version: 4.4.3
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
@@ -387,6 +390,9 @@ packages:
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
 
+  '@kurkle/color@0.3.2':
+    resolution: {integrity: sha512-fuscdXJ9G1qb7W8VdHi+IwRqij3lBkosAm4ydQtEmbY58OzHXqQhvlxqEkoz0yssNVn38bcpRWgA9PP+OGoisw==}
+
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
     engines: {node: '>= 8'}
@@ -663,6 +669,10 @@ packages:
   chalk@2.4.2:
     resolution: {integrity: sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ==}
     engines: {node: '>=4'}
+
+  chart.js@4.4.3:
+    resolution: {integrity: sha512-qK1gkGSRYcJzqrrzdR6a+I0vQ4/R+SoODXyAjscQ/4mzuNzySaMCd+hyVxitSY1+L2fjPD1Gbn+ibNqRmwQeLw==}
+    engines: {pnpm: '>=8'}
 
   chokidar@3.6.0:
     resolution: {integrity: sha512-7VT13fmjotKpGipCW9JEQAusEPE+Ei8nl6/g4FBAmIm0GOOLMua9NDDo/DWp0ZAxCr3cPq5ZpBqmPAQgDda2Pw==}
@@ -1647,7 +1657,7 @@ snapshots:
       '@floating-ui/utils': 0.2.2
       vue-demi: 0.14.8(vue@3.4.27(typescript@5.4.5))
     transitivePeerDependencies:
-      - '@vue/composition-Api'
+      - '@vue/composition-api'
       - vue
 
   '@ianvs/prettier-plugin-sort-imports@4.2.1(@vue/compiler-sfc@3.4.27)(prettier@3.3.1)':
@@ -1715,6 +1725,8 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.4.15
+
+  '@kurkle/color@0.3.2': {}
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
@@ -1908,7 +1920,7 @@ snapshots:
       '@vueuse/shared': 10.10.0(vue@3.4.27(typescript@5.4.5))
       vue-demi: 0.14.8(vue@3.4.27(typescript@5.4.5))
     transitivePeerDependencies:
-      - '@vue/composition-Api'
+      - '@vue/composition-api'
       - vue
 
   '@vueuse/metadata@10.10.0': {}
@@ -1917,7 +1929,7 @@ snapshots:
     dependencies:
       vue-demi: 0.14.8(vue@3.4.27(typescript@5.4.5))
     transitivePeerDependencies:
-      - '@vue/composition-Api'
+      - '@vue/composition-api'
       - vue
 
   ansi-regex@5.0.1: {}
@@ -2003,6 +2015,10 @@ snapshots:
       ansi-styles: 3.2.1
       escape-string-regexp: 1.0.5
       supports-color: 5.5.0
+
+  chart.js@4.4.3:
+    dependencies:
+      '@kurkle/color': 0.3.2
 
   chokidar@3.6.0:
     dependencies:
@@ -2412,7 +2428,7 @@ snapshots:
       nanoid: 5.0.7
       vue: 3.4.27(typescript@5.4.5)
     transitivePeerDependencies:
-      - '@vue/composition-Api'
+      - '@vue/composition-api'
 
   read-cache@1.0.0:
     dependencies:
@@ -2595,7 +2611,7 @@ snapshots:
       radix-vue: 1.8.3(vue@3.4.27(typescript@5.4.5))
       vue: 3.4.27(typescript@5.4.5)
     transitivePeerDependencies:
-      - '@vue/composition-Api'
+      - '@vue/composition-api'
       - typescript
 
   vee-validate@4.13.1(vue@3.4.27(typescript@5.4.5)):
