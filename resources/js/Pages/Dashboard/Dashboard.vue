@@ -2,6 +2,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import InfoCard from '@/components/InfoCard.vue';
 
 const props = defineProps<{
 	inventory_count?: any;
@@ -12,16 +13,6 @@ const props = defineProps<{
 const inventoryCount = ref(props.inventory_count);
 const last30DaysEntries = ref(props.last_30_days_entries);
 const last30DaysExits = ref(props.last_30_days_exits);
-
-const numberFormat = (num: number) => {
-	if (num > 999 && num < 1000000) {
-		return (num / 1000).toFixed(1) + 'K';
-	} else if (num > 1000000) {
-		return (num / 1000000).toFixed(1) + 'M';
-	} else if (num < 900) {
-		return num;
-	}
-};
 </script>
 
 <template>
@@ -38,33 +29,9 @@ const numberFormat = (num: number) => {
 					<div class="p-6 text-gray-900">You're logged in!</div>
 				</div>
 				<div class="grid grid-cols-3 gap-4">
-					<div class="flex flex-col items-center gap-y-2 space-x-4 rounded-md border bg-white p-4">
-						<div class="flex-1 space-y-1">
-							<p class="text-center text-2xl font-semibold leading-none">Productos Totales</p>
-							<p class="text-center text-sm text-muted-foreground">Numero de productos creados</p>
-						</div>
-						<p class="text-5xl font-semibold leading-none">
-							{{ numberFormat(inventoryCount) }}
-						</p>
-					</div>
-					<div class="flex flex-col items-center gap-y-2 space-x-4 rounded-md border bg-white p-4">
-						<div class="flex-1 space-y-1">
-							<p class="text-center text-2xl font-semibold leading-none">Entradas</p>
-							<p class="text-center text-sm text-muted-foreground">En los ultimos 30 dias</p>
-						</div>
-						<p class="text-5xl font-semibold leading-none">
-							{{ numberFormat(last30DaysEntries) }}
-						</p>
-					</div>
-					<div class="flex flex-col items-center gap-y-2 space-x-4 rounded-md border bg-white p-4">
-						<div class="flex-1 space-y-1">
-							<p class="text-center text-2xl font-semibold leading-none">Salidas</p>
-							<p class="text-center text-sm text-muted-foreground">En los ultimos 30 dias</p>
-						</div>
-						<p class="text-5xl font-semibold leading-none">
-							{{ numberFormat(last30DaysExits) }}
-						</p>
-					</div>
+          <InfoCard title="Productos Totales" subtitle="Numero de productos creados" :mainValue="inventoryCount.value" />
+          <InfoCard title="Entradas" subtitle="En los ultimos 30 dias" :mainValue="last30DaysEntries.value" />
+          <InfoCard title="Salidas" subtitle="En los ultimos 30 dias" :mainValue="last30DaysExits.value" />
 				</div>
 			</div>
 		</div>
