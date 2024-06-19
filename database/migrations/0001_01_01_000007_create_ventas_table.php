@@ -18,6 +18,11 @@ return new class extends Migration
             $table->decimal('ven_tot', 12, 2);
             $table->timestamps();
         });
+
+        Schema::table('iva', function (Blueprint $table) {
+            $table->tinyInteger('iva_por')->primary()->autoIncrement();
+            $table->decimal('iva_val', 10, 2)->change();
+        });
     }
 
     /**
@@ -26,5 +31,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('ventas');
+        Schema::dropIfExists('iva');
     }
 };

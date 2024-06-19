@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 
+use App\Models\Iva;
 use App\Models\Pedido;
 use App\Models\Ventas;
 use Illuminate\Http\Request;
@@ -31,13 +32,17 @@ class SalesController extends Controller
       'fk_est_ped_id' => $pedido->fk_est_ped_id + 1
     ]);
 
-    // Create a new sale
+    $iva = Iva::first();
 
+    // Create a new sale
+    $venta = Ventas::create([
+      'fk_cli_id' => $pedido->fk_cli_id,
+      'fk_ped_id' => $pedido->ped_id,
+      'ven_tot' => $pedido->ped_tot + ($pedido->ped_tot * $iva->iva_val / 100)
+    ]);
     return Inertia::render('Dashboard/Sales/Index', [
       'status' => session('status'),
-      'result' => [
-
-      ]
+      'result' => $venta::with(['pedido', 'cliente', 'detalle_pedido.producto', 'producto.tipo_producto'])->where('ven_id', $venta->ven_id)->get()
     ]);
   }
 }

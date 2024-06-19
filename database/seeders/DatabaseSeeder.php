@@ -44,6 +44,9 @@ class DatabaseSeeder extends Seeder
             ['tip_reg_inv_id' => 1, 'tip_reg_inv_des' => 'Entrada'],
             ['tip_reg_inv_id' => 2, 'tip_reg_inv_des' => 'Salida']
         ]);
+        DB::table('iva')->insert(
+          ['iva_val' => 15]
+        );
 
     }
 }
