@@ -74,9 +74,10 @@ export type OrderDetailColumn = {
 export type SalesColumn = {
 	ven_id: number;
 	fk_cli_id: number;
+  fk_ped_id: number;
 	ven_tot: number;
 	created_at: string;
-	cliente: ClientColumn;
+  updated_at: string;
 };
 
 export type OrderProduct = {

@@ -4,7 +4,6 @@ import DataTable from '@/components/table/DataTable.vue';
 import { Button } from '@/components/ui/button';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import DataTableDialogSales from '@/Pages/Dashboard/Sales/DataTableDialogSales.vue';
-import DataTableDropdownSales from '@/Pages/Dashboard/Sales/DataTableDropdownSales.vue';
 import { Head } from '@inertiajs/vue3';
 import { ColumnDef } from '@tanstack/vue-table';
 import { ArrowUpDown } from 'lucide-vue-next';
@@ -33,29 +32,71 @@ const CLIENTS_COLUMNS: CustomColumnDef[] = [
 					variant: 'ghost',
 					onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
 				},
-				() => ['Nombre', h(ArrowUpDown, { class: 'w-4 h-4 ml-2' })]
+				() => ['ID', h(ArrowUpDown, { class: 'w-4 h-4 ml-2' })]
 			);
 		},
 		cell: ({ row }) => h('div', { class: 'ml-4' }, [row.original.ven_id]),
 		enableSorting: true,
-		name: 'Nombre'
-		// filterFn: (row, _, filterValue) => {
-		//   return row.original.ven_id.includes(filterValue.toLowerCase());
-		// }
+		name: 'ID',
+    filterFn: (row, _, filterValue) => {
+      return (
+        row.original.ven_id.toString().toLowerCase().includes(filterValue.toLowerCase()) ||
+        row.original.fk_ped_id.toString().toLowerCase().includes(filterValue.toLowerCase()) ||
+        new Date(row.original.created_at).toLocaleDateString().toLowerCase().includes(filterValue.toLowerCase())
+      );
+    },
 	},
-	{
-		id: 'actions',
-		cell: ({ row }) => {
-			return h('div', { class: 'relative float-end' }, [
-				h(DataTableDropdownSales, {
-					original: row.original,
-					dataRef
-				})
-			]);
-		},
-		enableSorting: false,
-		enableHiding: false
-	}
+  {
+    id: 'fk_ped_id',
+    accessorKey: 'fk_ped_id',
+    header: ({ column }) => {
+      return h(
+        Button,
+        {
+          variant: 'ghost',
+          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
+        },
+        () => ['Pedido', h(ArrowUpDown, { class: 'w-4 h-4 ml-2' })]
+      );
+    },
+    cell: ({ row }) => h('div', { class: 'ml-4' }, [row.original.fk_ped_id]),
+    enableSorting: true,
+    name: 'Pedido',
+  },
+  {
+    id: 'ven_tot',
+    accessorKey: 'ven_tot',
+    header: ({ column }) => {
+      return h(
+        Button,
+        {
+          variant: 'ghost',
+          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
+        },
+        () => ['Total', h(ArrowUpDown, { class: 'w-4 h-4 ml-2' })]
+      );
+    },
+    cell: ({ row }) => h('div', { class: 'ml-4' }, ['$' + row.original.ven_tot]),
+    enableSorting: true,
+    name: 'Total',
+  },
+  {
+    id: 'created_at',
+    accessorKey: 'created_at',
+    header: ({ column }) => {
+      return h(
+        Button,
+        {
+          variant: 'ghost',
+          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
+        },
+        () => ['Fecha', h(ArrowUpDown, { class: 'w-4 h-4 ml-2' })]
+      );
+    },
+    cell: ({ row }) => h('div', { class: 'ml-4' }, [new Date(row.original.created_at).toLocaleDateString()]),
+    enableSorting: true,
+    name: 'Fecha',
+  },
 ];
 
 const filters: string = 'ven_id';
