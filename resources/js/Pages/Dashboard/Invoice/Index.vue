@@ -25,12 +25,6 @@ defineProps<{
 		</template>
 		<div class="px-4 py-12">
 			<div class="mx-auto flex max-w-7xl flex-col gap-y-4 sm:px-6 lg:px-8">
-        {{ clientes }}
-        <a
-          :href="route('facturas.generate')"
-          >
-          Test
-        </a>
         <Card>
           <CardHeader class="relative flex justify-center">
             <CardTitle>Facturas</CardTitle>
