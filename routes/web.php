@@ -62,6 +62,7 @@ Route::middleware('auth')->group(function () {
   Route::get('/dashboard/reportes', [ReportsController::class, 'create'])->name('reportes');
 
   Route::get('/dashboard/facturas', [InvoiceController::class, 'create'])->name('facturas');
+  Route::post('/dashboard/facturas', [InvoiceController::class, 'generate'])->name('facturas.generate');
 
   Route::get('/dashboard/buscar-cliente/{id}', [ClientSearch::class, 'show'])->name('buscar-cliente');
   Route::get('/dashboard/buscar-producto/{id}', [ProductsSearchController::class, 'show'])->name('buscar-producto');
