@@ -31,6 +31,7 @@ onMounted(() => {
 		acc[date] = acc[date] ? acc[date] + 1 : 1;
 		return acc;
 	}, {});
+
   const invLog: {
     entered: any[];
     exited: any[];
@@ -59,19 +60,33 @@ onMounted(() => {
     return acc;
   }, {});
 
+  const last30Days = Array.from({ length: 30 }, (_, i) => {
+    const date = new Date(oldestDate);
+    date.setDate(date.getDate() + i);
+    return date.toLocaleDateString();
+  });
+
+  let clientsArray: number[] = [];
+  let ordersArray: number[] = [];
+  let exitedArray: number[] = [];
+  let enteredArray: number[] = [];
+  for (const date of last30Days) {
+    clientsArray.push(clientCountPerDay[date] || 0);
+    ordersArray.push(orderCountPerDay[date] || 0);
+    exitedArray.push(exitedOrderCountPerDay[date] || 0);
+    enteredArray.push(enteredOrderCountPerDay[date] || 0);
+  }
+
+  console.log(orderCountPerDay)
+
 	new Chart(chart.value!, {
 		type: 'line',
 		data: {
-			labels: Array.from({ length: 15 }, (_, i) => {
-				// Every 2 days
-				const date = new Date(oldestDate);
-				date.setDate(date.getDate() + i * 2);
-				return date.toLocaleDateString();
-			}),
+			labels: last30Days,
 			datasets: [
 				{
 					label: 'Clientes',
-					data: clientCountPerDay,
+					data: clientsArray,
 					backgroundColor: 'rgba(54, 162, 235, 0.2)',
 					borderColor: 'rgba(54, 162, 235, 1)',
 					borderWidth: 1,
@@ -79,7 +94,7 @@ onMounted(() => {
 				},
 				{
 					label: 'Pedidos',
-					data: orderCountPerDay,
+					data: ordersArray,
 					backgroundColor: 'rgba(255, 99, 132, 0.2)',
 					borderColor: 'rgba(255, 99, 132, 1)',
 					borderWidth: 1,
@@ -87,7 +102,7 @@ onMounted(() => {
 				},
         {
           label: 'Pedidos salidos',
-          data: exitedOrderCountPerDay,
+          data: exitedArray,
           backgroundColor: 'rgba(75, 192, 192, 0.2)',
           borderColor: 'rgba(75, 192, 192, 1)',
           borderWidth: 1,
@@ -95,7 +110,7 @@ onMounted(() => {
         },
         {
           label: 'Pedidos entrados',
-          data: enteredOrderCountPerDay,
+          data: enteredArray,
           backgroundColor: 'rgba(153, 102, 255, 0.2)',
           borderColor: 'rgba(153, 102, 255, 1)',
           borderWidth: 1,
@@ -107,7 +122,14 @@ onMounted(() => {
 			scales: {
 				y: {
 					beginAtZero: true
-				}
+				},
+        x: {
+          display: true,
+          title: {
+            display: true,
+            text: 'Fecha'
+          }
+        }
 			}
 		}
 	});
