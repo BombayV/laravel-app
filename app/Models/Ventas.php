@@ -10,6 +10,7 @@ class Ventas extends Model
   protected $primaryKey = 'ven_id';
   protected $fillable = [
     'fk_cli_id',
+    'fk_ped_id',
     'ven_tot',
     'created_at',
     'updated_at',
@@ -21,8 +22,8 @@ class Ventas extends Model
       return $this->belongsTo(Cliente::class, 'fk_cli_id', 'cli_id');
   }
 
-  public function detalleVenta()
+  public function pedido()
   {
-      return $this->hasMany(DetalleVenta::class, 'fk_ven_id', 'ven_id');
+    return $this->belongsTo(Pedido::class, 'fk_ped_id', 'ped_id');
   }
 }

@@ -25,4 +25,9 @@ class Producto extends Model
   {
       return $this->belongsTo(TipoProducto::class, 'fk_tip_pro_id', 'tip_pro_id');
   }
+
+  public function inventario(): \Illuminate\Database\Eloquent\Relations\HasOne
+  {
+    return $this->hasOne(Inventario::class, 'fk_pro_id', 'pro_id');
+  }
 }

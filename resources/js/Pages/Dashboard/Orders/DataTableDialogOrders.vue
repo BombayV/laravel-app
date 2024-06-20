@@ -210,7 +210,7 @@ const setActiveUser = (user: any) => {
 };
 
 const addProduct = (invItem: any) => {
-	const product = invItem.producto;
+	const product = invItem;
 	const productExists = postForm.productIds.find((p) => p.pro_id === product.pro_id);
 	if (productExists) {
 		productExists.count++;
@@ -330,11 +330,11 @@ const removeProduct = (product: any) => {
 								<button
 									type="button"
 									v-for="invProd in productDataRef.data"
-									:key="invProd.producto.pro_id"
+									:key="invProd.pro_id"
 									class="flex max-h-10 min-h-10 w-full items-center overflow-hidden overflow-ellipsis whitespace-nowrap border-b px-3 text-sm capitalize transition-colors duration-200 hover:bg-neutral-100"
 									@click="addProduct(invProd)"
 								>
-									{{ `${invProd.producto.pro_nom}` }}
+									{{ `${invProd.pro_nom}` }}
 								</button>
 							</div>
 							<p

@@ -33,8 +33,8 @@ class Pedido extends Model
         return $this->hasMany(DetallePedido::class, 'fk_ped_id', 'ped_id');
     }
 
-    public function detalleVenta()
-    {
-        return $this->hasOne(DetalleVenta::class, 'fk_ped_id', 'ped_id');
-    }
+  public function Ventas()
+  {
+    return $this->hasOne(Ventas::class, 'fk_ped_id', 'ped_id');
+  }
 }

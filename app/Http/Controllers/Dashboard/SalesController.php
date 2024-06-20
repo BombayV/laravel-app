@@ -42,7 +42,7 @@ class SalesController extends Controller
     ]);
     return Inertia::render('Dashboard/Sales/Index', [
       'status' => session('status'),
-      'result' => $venta::with(['pedido', 'cliente', 'detalle_pedido.producto', 'producto.tipo_producto'])->where('ven_id', $venta->ven_id)->get()
+      'result' => $venta::with(['pedido', 'cliente', 'pedido.detallePedido.producto.tipo_producto'])->where('ven_id', $venta->ven_id)->get()
     ]);
   }
 }

@@ -19,10 +19,12 @@ class ProductsSearchController extends Controller
     }
 
     $name = $id;
-    $result = Inventario::with(['producto', 'producto.tipoProducto'])->whereHas('producto', function ($query) use ($name) {
-      $query->where('pro_nom', 'like', '%' . $name . '%');
-    })->get();
 
-    return $this->sendResponse($result, 'Clientes encontrados');
+    $result = Producto::where('pro_nom', 'like', "%$name%")
+      ->whereHas('inventario', function ($query) {
+        $query->where('inv_stock', '>', 0);
+      })
+      ->get();
+    return $this->sendResponse($result, 'Productos encontrados');
   }
 }
