@@ -6,6 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
+    html {
+      color: #333;
+    }
+
     body {
       font-family: 'Arial', sans-serif;
       margin: 0;
@@ -19,16 +23,14 @@
     }
 
     .sub_header {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       font-weight: 400;
       color: #666;
     }
 
-    .subtitle {
-      font-family: 'Arial', sans-serif;
+    .sub_title {
       margin-top: 2rem;
       font-size: 1.4rem;
-      font-weight: 600;
       color: #333;
     }
 
@@ -53,31 +55,43 @@
       padding: 0.5rem;
       border-bottom: 1px solid #f2f2f2;
       text-align: center;
+      text-transform: capitalize;
     }
   </style>
 </head>
 <body>
   <div>
-    <h1 class="title">Factura de Cliente</h1>
-    <p class="sub_header">{{ $client->cli_nom }} {{ $client->cli_ape }}</p>
+    <h1 class="title">HuecoUTE - Factura de {{ $client->cli_nom }} {{ $client->cli_ape }}</h1>
+    <p class="sub_header">
+      {{ $client->cli_ema }}
+      -
+      {{ $client->cli_tel }}
+      -
+      {{ $client->cli_dir }}
+    </p>
 
-    <p class="subtitle">Pedidos</p>
-    <table>
-      <tr>
-        <th>ID</th>
-        <th>Total</th>
-        <th>Estado</th>
-        <th>Fecha</th>
-      </tr>
-      @foreach ($orders as $order)
+    <p class="sub_title">Pedidos</p>
+
+    @if (count($orders) == 0)
+      <p>No hay pedidos</p>
+    @else
+      <table>
         <tr>
-          <td>{{ $order->ped_id }}</td>
-          <td>${{ $order->ped_tot }}</td>
-          <td>{{ $order->fk_est_ped_id }}</td>
-          <td>{{ $order->created_at }}</td>
+          <th>ID</th>
+          <th>Total</th>
+          <th>Estado</th>
+          <th>Fecha</th>
         </tr>
-      @endforeach
-    </table>
+        @foreach ($orders as $order)
+          <tr>
+            <td>{{ $order->ped_id }}</td>
+            <td>${{ $order->ped_tot }}</td>
+            <td>{{ $order->EstadoPedido->est_ped_nom }}</td>
+            <td>{{ $order->created_at }}</td>
+          </tr>
+        @endforeach
+      </table>
+    @endif
   </div>
 </body>
 </html>
