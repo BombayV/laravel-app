@@ -9,6 +9,17 @@ use Illuminate\Http\Request;
 
 class InventoryController extends Controller
 {
+  /*
+    Documentation by Dante
+    json example
+    update:
+    Url: http://localhost:8000/api/inventario/{id}
+    {
+      "stock": "integer"
+    }
+    show:
+    Url: http://localhost:8000/api/inventario/{id}
+    */
   public function index(Request $request): JsonResponse
   {
     try {

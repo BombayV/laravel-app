@@ -16,7 +16,7 @@ return new class extends Migration
             CREATE TRIGGER IF NOT EXISTS producto_AFTER_INSERT AFTER INSERT ON producto
             FOR EACH ROW
             BEGIN
-              insert into inventario (fk_pro_id, inv_stock, fk_est_inv_id) values (New.pro_id, 1, 1);
+              insert into inventario (fk_pro_id, inv_stock, fk_est_inv_id) values (New.pro_id, 0, 1);
             END'
         );
         DB::unprepared('
@@ -41,6 +41,20 @@ return new class extends Migration
                 End if;
             END'
         );
+        DB::unprepared('
+          CREATE TRIGGER pedido_BEFORE_UPDATE BEFORE UPDATE ON pedido
+          FOR EACH ROW
+          BEGIN
+            IF NEW.fk_est_ped_id = 4 THEN
+              update inventario i
+                inner join detalle_pedido dp on
+                  i.fk_pro_id = dp.fk_pro_id
+              set
+                i.inv_stock = i.inv_stock + dp.det_ped_can
+              where dp.fk_ped_id = NEW.ped_id;
+            END IF;
+          END
+        ');
     }
 
     /**
@@ -51,5 +65,6 @@ return new class extends Migration
         DB::unprepared('DROP TRIGGER IF EXISTS producto_AFTER_INSERT');
         DB::unprepared('DROP TRIGGER IF EXISTS pedido_BEFORE_UPDATE');
         DB::unprepared('DROP TRIGGER IF EXISTS inventario_BEFORE_UPDATE');
+        DB::unprepared('DROP TRIGGER IF EXISTS detalle_pedido_BEFORE_INSERT');
     }
 };

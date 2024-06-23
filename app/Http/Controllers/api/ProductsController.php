@@ -12,6 +12,29 @@ use Illuminate\Http\Request;
 class ProductsController extends Controller
 {
 
+  /*
+    Documentation by Dante
+    json example
+    show:
+    Url: http://localhost:8000/api/productos/{id}
+
+    store:
+    Url: http://localhost:8000/api/productos
+    {
+      "nombre": "string",
+      "valor": "numeric",
+      "tipo": "integer"
+    }
+    update:
+    Url: http://localhost:8000/api/productos/{id}
+    {
+      "nombre": "string",
+      "valor": "numeric",
+      "tipo": "integer"
+    }
+    destroy:
+    Url: http://localhost:8000/api/productos/{id}
+  */
   public function index(Request $request): JsonResponse
   {
     try {

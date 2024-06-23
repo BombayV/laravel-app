@@ -12,6 +12,35 @@ use Inertia\Response;
 
 class ClientsController extends Controller
 {
+    // Documentation by Dante
+    /*
+    json example
+    store:
+    Url: http://localhost:8000/api/clientes
+    {
+      "nombre": "string",
+      "apellido": "string",
+      "telefono": "string",
+      "email": "string",
+      "direccion": "string",
+      "sexo": "string"
+    }
+    update:
+    Url: http://localhost:8000/api/clientes/{id}
+    {
+      "nombre": "string",
+      "apellido": "string",
+      "telefono": "string",
+      "email": "string",
+      "direccion": "string",
+      "sexo": "string",
+      "estado": "boolean"
+    }
+    show:
+    Url: http://localhost:8000/api/clientes/{id}
+    Destroy:
+    Url: http://localhost:8000/api/clientes/{id}
+    */
     public function index(Request $request): JsonResponse
     {
       return $this->sendResponse(Cliente::all(), 'Clientes recuperados correctamente');
@@ -64,6 +93,7 @@ class ClientsController extends Controller
           'email' => 'required|email|max:50|lowercase',
           'direccion' => 'required|string|max:100',
           'sexo' => 'required|string|max:1|in:m,f,o',
+          'estado' => 'required|boolean'
         ]);
 
         $details = [
@@ -72,7 +102,8 @@ class ClientsController extends Controller
           'cli_tel' => $request->telefono,
           'cli_ema' => $request->email,
           'cli_dir' => $request->direccion,
-          'cli_sex' => $request->sexo
+          'cli_sex' => $request->sexo,
+          'cli_est' => $request->estado
         ];
 
         $cliente = Cliente::findOrFail($id);
@@ -86,9 +117,8 @@ class ClientsController extends Controller
     public function destroy($id): JsonResponse
     {
       try{
-        $cliente = Cliente::findOrFail($id);
-        $cliente->delete();
-        return $this->sendResponse($cliente, 'Cliente eliminado correctamente');
+        Cliente::findOrFail($id)->update(['cli_est' => 0]);
+        return $this->sendResponse([], 'Cliente deshabilitado correctamente');
       } catch (\Exception $e){
         return $this->sendError('Error al eliminar el cliente', $e->getMessage(), 400);
       }
