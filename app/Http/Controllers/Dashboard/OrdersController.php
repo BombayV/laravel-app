@@ -59,24 +59,39 @@ class OrdersController extends Controller
 
     $order = Pedido::find($request->input('id'));
 
-    if ($order->fk_est_ped_id == 4) {
-      throw new \Exception('No se puede actualizar el estado de un pedido cancelado');
+    if ($request->deleteOrder) {
+      $order->update([
+        'fk_est_ped_id' => 4,
+      ]);
+      $state = EstadoPedido::find(4);
+      return Inertia::render('Dashboard/Orders/Index', [
+        'status' => session('status'),
+        'updateState' => [
+          'id' => $order->ped_id,
+          'state' => $state->est_ped_id,
+          'stateName' => $state->est_ped_nom,
+        ]
+      ]);
+    } else {
+      if ($order->fk_est_ped_id == 4) {
+        throw new \Exception('No se puede actualizar el estado de un pedido cancelado');
+      }
+
+      $newState = $order->fk_est_ped_id + 1;
+      $order->update([
+        'fk_est_ped_id' => $newState,
+      ]);
+
+      $state = EstadoPedido::find($order->fk_est_ped_id);
+
+      return Inertia::render('Dashboard/Orders/Index', [
+        'status' => session('status'),
+        'updateState' => [
+          'id' => $order->ped_id,
+          'state' => $state->est_ped_id,
+          'stateName' => $state->est_ped_nom,
+        ]
+      ]);
     }
-
-    $newState = $order->fk_est_ped_id + 1;
-    $order->update([
-      'fk_est_ped_id' => $newState,
-    ]);
-
-    $state = EstadoPedido::find($order->fk_est_ped_id);
-
-    return Inertia::render('Dashboard/Orders/Index', [
-      'status' => session('status'),
-      'updateState' => [
-        'id' => $order->ped_id,
-        'state' => $state->est_ped_id,
-        'stateName' => $state->est_ped_nom,
-      ]
-    ]);
   }
 }

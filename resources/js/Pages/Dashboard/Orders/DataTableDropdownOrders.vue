@@ -28,10 +28,11 @@ defineProps<{
 }>();
 
 const updateStateForm = useForm({
-	id: -1
+	id: -1,
+  deleteOrder: false,
 });
 
-const updateState = () => {
+const updateState = (deleteOrder: boolean = false) => {
 	if (updateStateForm.id === -1) {
 		toast({
 			title: 'Error',
@@ -41,13 +42,18 @@ const updateState = () => {
 		return;
 	}
 
+  if (deleteOrder) {
+    updateStateForm.deleteOrder = true;
+  }
+
 	updateStateForm.put(route('pedidos.update', {}), {
 		preserveScroll: true,
 		onSuccess: () => {
 			toast({
 				title: 'Pedido actualizado',
-				description: 'El pedido ha sido actualizado correctamente'
+				description: deleteOrder ? 'El pedido ha sido cancelado' : 'El pedido ha sido actualizado',
 			});
+      updateStateForm.deleteOrder = false;
 		},
 		onError: () => {
 			toast({
@@ -55,6 +61,7 @@ const updateState = () => {
 				description: 'Ha ocurrido un error al actualizar el pedido',
 				variant: 'destructive'
 			});
+      updateStateForm.deleteOrder = false;
 		}
 	});
 };
@@ -196,7 +203,7 @@ const updateState = () => {
 				</div>
 			</DrawerItem>
 
-			<DropdownMenuSeparator v-if="original.fk_est_ped_id === 1 || original.fk_est_ped_id === 3" />
+			<DropdownMenuSeparator v-if="original.fk_est_ped_id === 1 || original.fk_est_ped_id === 2" />
 			<!-- Agregar inv -->
 			<AlertDialogItem
 				v-if="original.fk_est_ped_id === 1"
@@ -211,13 +218,13 @@ const updateState = () => {
 			>
 			</AlertDialogItem>
 			<AlertDialogItem
-				v-if="original.fk_est_ped_id === 3"
+        v-if="original.fk_est_ped_id < 3"
 				dropdownText="Cancelar pedido"
 				title="Cancelar pedido"
 				description="¿Estás seguro de que deseas cancelar este pedido? No se podrá volver atrás."
 				cancel="Cancelar"
 				action="Confirmar"
-				@submit="updateState"
+				@submit="() => updateState(true)"
 				@opened="() => (updateStateForm.id = original.ped_id)"
 				@closed="() => (updateStateForm.id = -1)"
 			>
