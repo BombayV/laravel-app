@@ -100,9 +100,9 @@ const updateState = (deleteOrder: boolean = false) => {
 								<p class="text-sm font-medium leading-none">Sexo</p>
 								<p class="text-sm text-muted-foreground">
 									{{
-										original.cliente.cli_sex === 'O'
+										original.cliente.cli_sex === 'o'
 											? 'Otro'
-											: original.cliente.cli_sex === 'M'
+											: original.cliente.cli_sex === 'm'
 												? 'Masculino'
 												: 'Femenino'
 									}}
