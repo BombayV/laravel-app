@@ -19,7 +19,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::table('iva', function (Blueprint $table) {
+        Schema::create('iva', function (Blueprint $table) {
             $table->tinyInteger('iva_por')->primary()->autoIncrement();
             $table->decimal('iva_val', 10, 2)->change();
         });

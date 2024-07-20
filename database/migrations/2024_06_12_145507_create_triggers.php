@@ -20,7 +20,7 @@ return new class extends Migration
             END'
         );
         DB::unprepared('
-            CREATE TRIGGER IF NOT EXIST detalle_pedido_BEFORE_INSERT BEFORE INSERT ON detalle_pedido
+            CREATE TRIGGER IF NOT EXISTS detalle_pedido_BEFORE_INSERT BEFORE INSERT ON detalle_pedido
             FOR EACH ROW
             BEGIN
               update inventario i set i.inv_stock = i.inv_stock - New.det_ped_can where New.fk_pro_id = i.fk_pro_id;
@@ -42,7 +42,7 @@ return new class extends Migration
             END'
         );
         DB::unprepared('
-          CREATE TRIGGER pedido_BEFORE_UPDATE BEFORE UPDATE ON pedido
+          CREATE TRIGGER IF NOT EXISTS pedido_BEFORE_UPDATE BEFORE UPDATE ON pedido
           FOR EACH ROW
           BEGIN
             IF NEW.fk_est_ped_id = 4 THEN

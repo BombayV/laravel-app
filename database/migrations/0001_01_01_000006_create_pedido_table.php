@@ -28,8 +28,8 @@ return new class extends Migration
 
         Schema::create('detalle_pedido', function (Blueprint $table) {
             $table->id('det_ped_id');
-            $table->foreignId('fk_ped_id')->references('ped_id')->on('pedido')->onDelete('restrict')->onUpdate('cascade');
-            $table->foreignId('fk_pro_id')->references('pro_id')->on('producto')->onDelete('restrict')->onUpdate('cascade');
+            $table->foreignId('fk_ped_id')->references('ped_id')->on('pedido')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('fk_pro_id')->references('pro_id')->on('producto')->onDelete('cascade')->onUpdate('cascade');
             $table->smallInteger('det_ped_can');
             $table->decimal('det_ped_pre', 8, 2);
         });
