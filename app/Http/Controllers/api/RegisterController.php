@@ -40,7 +40,7 @@ class RegisterController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => bcrypt($request->password),
+            'password' => $request->password,
         ]);
 
         $success['token'] = $user->createToken('authToken')->plainTextToken;
@@ -58,7 +58,7 @@ class RegisterController extends Controller
         ]);
 
         if (!Auth::attempt($request->only('email', 'password'))) {
-            return $this->sendError('Invalid login details', [], 401);
+            return $this->sendError('Unauthorized', [], 401);
         }
 
         $user = Auth::user();
